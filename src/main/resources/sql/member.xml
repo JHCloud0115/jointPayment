@@ -2,7 +2,7 @@
 <!-- src/main/resources/mapper/memberMapper.xml -->
 <mapper namespace="com.example.mapper.memberMapper">
 
-    <select id="selectMemberById" resultType="org.example.model.Member">
+    <select id="selectMemberById" resultType="org.example.model.member.Member">
         SELECT
             *
         FROM
@@ -11,7 +11,7 @@
             memberId = #{memberId}
     </select>
 
-    <insert id="insertMember" resultType="org.example.model.Member" useGeneratedKeys="true" keyProperty="memberUid">
+    <insert id="insertMember" resultType="org.example.model.member.Member" useGeneratedKeys="true" keyProperty="memberUid">
         INSERT INTO
         member(
             member_name,
