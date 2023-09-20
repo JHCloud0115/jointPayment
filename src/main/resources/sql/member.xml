@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- src/main/resources/mapper/memberMapper.xml -->
+<mapper namespace="com.example.mapper.memberMapper">
+
+    <select id="selectMemberById" resultType="org.example.model.Member">
+        SELECT
+            *
+        FROM
+            member
+        WHERE
+            memberId = #{memberId}
+    </select>
+
+    <insert id="insertMember" resultType="org.example.model.Member" useGeneratedKeys="true" keyProperty="memberUid">
+        INSERT INTO
+        member(
+            member_name,
+            password,
+            member_id )
+        VALUES(
+            #{memberName},
+            #{password},
+            #{memberId}
+        )
+    </insert>
+
+
+</mapper>
