@@ -9,10 +9,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.Mapping;
 
+import java.util.List;
+
 
 @Mapper
 @Repository
 public interface MemberMapper {
+    List<Member> selectMembers() throws DataAccessException;
     Member selectMemberById(@Param("memberId") String memberId) throws DataAccessException;
     void insertMember(Member member) throws DataAccessException;
 }

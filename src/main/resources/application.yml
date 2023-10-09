@@ -4,8 +4,6 @@ server:
 spring:
   profiles:
     active: local
-  application:
-    name: member
   dataSource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/payment

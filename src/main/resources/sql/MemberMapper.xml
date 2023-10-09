@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- src/main/resources/mapper/memberMapper.xml -->
-<mapper namespace="com.example.mapper.memberMapper">
+<mapper namespace="org.example.mapper.MemberMapper">
+
+    <select id="selectMembers" resultType="org.example.model.member.Member">
+        SELECT
+             *
+        FROM
+            member
+    </select>
 
     <select id="selectMemberById" resultType="org.example.model.member.Member">
         SELECT
@@ -11,7 +19,7 @@
             memberId = #{memberId}
     </select>
 
-    <insert id="insertMember" resultType="org.example.model.member.Member" useGeneratedKeys="true" keyProperty="memberUid">
+    <insert id="insertMember" parameterType="org.example.model.member.Member" useGeneratedKeys="true" keyProperty="memberUid">
         INSERT INTO
         member(
             member_name,
