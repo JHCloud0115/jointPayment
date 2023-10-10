@@ -1,9 +1,11 @@
 package org.example.config;
 
+import com.zaxxer.hikari.HikariDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,8 +19,15 @@ import javax.sql.DataSource;
 @MapperScan("org.example.mapper")
 public class MyBatisConfig {
 
+    private DataSource dataSource;
+
+    @Autowired
+    public MyBatisConfig(HikariDataSource hikariDataSource){
+        this.dataSource = hikariDataSource;
+    }
+
     @Bean
-    public SqlSessionFactory sqlSessionFactory(@Qualifier("dataSource") DataSource dataSource) throws Exception {
+    public SqlSessionFactory sqlSessionFactory() throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource);
         sqlSessionFactoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:/sql/**/*.xml"));
@@ -26,7 +35,7 @@ public class MyBatisConfig {
     }
 
     @Bean
-    public DataSourceTransactionManager transactionManager(@Qualifier("dataSource") DataSource dataSource) {
+    public DataSourceTransactionManager transactionManager() {
         return new DataSourceTransactionManager(dataSource);
     }
 
