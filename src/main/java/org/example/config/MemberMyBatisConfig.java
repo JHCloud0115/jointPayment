@@ -11,18 +11,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
 
 @Configuration
 @MapperScan("org.example.mapper")
-public class MyBatisConfig {
+public class MemberMyBatisConfig {
 
     private DataSource dataSource;
 
     @Autowired
-    public MyBatisConfig(@Qualifier("memberHikariDataSource") HikariDataSource hikariDataSource){
+    public MemberMyBatisConfig(@Qualifier("memberHikariDataSource") HikariDataSource hikariDataSource){
         this.dataSource = hikariDataSource;
     }
 
@@ -49,14 +48,3 @@ public class MyBatisConfig {
     }
 
 }
-
-//    @Bean
-//    public DataSource dataSource() {
-//        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-//        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-//        dataSource.setUrl("jdbc:mysql://localhost:3306/payment");
-//        dataSource.setUsername("root");
-//        dataSource.setPassword("Dlwngml12!");
-//        return dataSource;
-//    }
-

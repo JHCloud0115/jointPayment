@@ -24,11 +24,13 @@
         member(
             member_name,
             password,
-            member_id )
+            email,
+            mobile)
         VALUES(
             #{memberName},
             #{password},
-            #{memberId}
+            #{email},
+            #{mobile}
         )
     </insert>
 

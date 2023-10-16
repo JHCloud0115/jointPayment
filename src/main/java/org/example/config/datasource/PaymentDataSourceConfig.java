@@ -9,17 +9,17 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 @Configuration
-public class MemberDataSourceConfig extends AbstractDataSourceConfig {
+public class PaymentDataSourceConfig extends AbstractDataSourceConfig {
 
-    @Bean("memberHikariConfig")
+    @Bean("paymentHikariConfig")
     @Primary
-    @ConfigurationProperties("spring.datasource.member")
+    @ConfigurationProperties("spring.datasource.payment")
     public HikariConfig hikariConfig() {
         return new HikariConfig();
     }
 
-    @Bean("memberHikariDataSource")
-    public HikariDataSource hikariDataSource(@Qualifier("memberHikariConfig") HikariConfig hikariConfig) throws Exception{
+    @Bean("paymentDataSource")
+    public HikariDataSource hikariDataSource(@Qualifier("paymentHikariConfig") HikariConfig hikariConfig) throws Exception{
         return getHikariDataSource(hikariConfig);
     }
 
