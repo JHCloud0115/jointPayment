@@ -5,11 +5,16 @@ spring:
   profiles:
     active: local
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    jdbc-url: jdbc:mysql://localhost:3306/payment
-    username: root
-    password: Dlwngml12!
-
+    member:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:3306/member
+      username: root
+      password: Dlwngml12!
+    payment:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:3306/payment
+      username: root
+      password: Dlwngml12!
   security:
     user:
       name: user

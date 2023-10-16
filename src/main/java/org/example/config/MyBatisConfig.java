@@ -22,7 +22,7 @@ public class MyBatisConfig {
     private DataSource dataSource;
 
     @Autowired
-    public MyBatisConfig(HikariDataSource hikariDataSource){
+    public MyBatisConfig(@Qualifier("memberHikariDataSource") HikariDataSource hikariDataSource){
         this.dataSource = hikariDataSource;
     }
 
