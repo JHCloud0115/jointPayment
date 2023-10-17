@@ -11,9 +11,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.sql.DataSource;
 
@@ -50,10 +47,10 @@ public class MemberMyBatisConfig {
         return sqlSessionTemplate;
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-
-    }
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+//
+//    }
 
 }

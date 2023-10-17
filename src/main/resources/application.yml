@@ -15,7 +15,3 @@ spring:
       jdbc-url: jdbc:mysql://localhost:3306/payment
       username: root
       password: Dlwngml12!
-  security:
-    user:
-      name: user
-      password: 1234

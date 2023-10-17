@@ -1,44 +1,50 @@
 package org.example.controller;
 
 import org.example.model.CommonResponse;
+import org.example.model.MemberInsertReq;
 import org.example.model.member.Member;
 import org.example.service.MemberService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
-@Controller
-@RestController("/member")
+
+@RestController()
+@RequestMapping(value = "/member")
 public class MemberController {
 
-//    @Autowired
-//    public MemberController() {
-//    }
-private final MemberService memberService;
+    private final MemberService memberService;
 
+    @Autowired
     public MemberController(MemberService memberService) {
         this.memberService = memberService;
     }
 
 
-    @GetMapping
+    @GetMapping("/test")
     public CommonResponse<Void> selectMember() throws Exception {
+        String test = "test";
         return new CommonResponse<>();
     }
 
     @GetMapping("/All")
-    public List<Member> selectMembers() throws Exception{
+    public List<Member> selectMembers() throws Exception {
         return memberService.selectMembers();
     }
 
-    @ResponseBody
     @PostMapping("/new")
-    public void insertMember(Member member) throws Exception{
+    public void insertMember(Member member) throws Exception {
         memberService.insertMember(member);
+    }
+
+    @PostMapping
+    public CommonResponse<Void> insertMember2(@RequestBody @Valid MemberInsertReq memberInsertReq) throws Exception {
+        memberService.insertMember2(memberInsertReq);
+        return new CommonResponse<>();
     }
 
 

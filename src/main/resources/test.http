@@ -1,0 +1,14 @@
+###
+POST http://localhost:8080/member
+content-type: application/json
+
+{
+ "email":"test"
+, "password":"1"
+, "passwordCheck":"2"
+, "name" : "a "
+, "cellphone" : "a"
+}
+
+###
+GET http://localhost:8080/member/test

@@ -34,5 +34,18 @@
         )
     </insert>
 
+    <insert id="insertMember2">
+        INSERT INTO `member`(
+            email
+            , password
+            , cellphone
+            , member_name
+        )values(
+                #{email}
+                , #{password}
+                , #{cellphone}
+                , #{name}
+                       )
+    </insert>
 
 </mapper>

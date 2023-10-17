@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
@@ -7,6 +8,7 @@
     <style>
         #login_box .signup_btn {background:#42d870; border:0; border-bottom:solid 3px #4ed177; border-radius:50px; width:100%; height:52px; line-height:52px; font-size:16px; color:#fff; text-align:center; margin:20px 0 15px;}
     </style>
+
 </head>
 <body>
 <!--/* 회원가입 popup */-->
@@ -22,25 +24,25 @@
                 <tr>
                     <th scope="row">이메일<span class="es">필수 입력</span></th>
                     <td>
-                        <input type="text" name="loginEmail" placeholder="이메일" maxlength="20" style="width: 80%;" />
+                        <input type="text" name="loginEmail" id="email" placeholder="이메일" maxlength="20" style="width: 80%;" />
                         <button type="button" id="idCheckBtn" class="btns btn_st5" onclick="checkLoginId();" style="width: 20%; float: right;">중복 확인</button>
                     </td>
                 </tr>
                 <tr>
                     <th scope="row">비밀번호<span class="es">필수 입력</span></th>
-                    <td><input type="password" name="password" placeholder="비밀번호" maxlength="30" /></td>
+                    <td><input type="password" id="password" name="password" placeholder="비밀번호" maxlength="30" /></td>
                 </tr>
                 <tr>
                     <th scope="row">비밀번호 재입력<span class="es">필수 입력</span></th>
-                    <td><input type="password" name="passwordCheck" placeholder="비밀번호 재입력" maxlength="30" /></td>
+                    <td><input type="password" id="passwordCheck" name="passwordCheck" placeholder="비밀번호 재입력" maxlength="30" /></td>
                 </tr>
                 <tr>
                     <th scope="row">이름<span class="es">필수 입력</span></th>
-                    <td><input type="text" name="name" placeholder="이름" maxlength="10" /></td>
+                    <td><input type="text" id="name" name="name" placeholder="이름" maxlength="10" /></td>
                 </tr>
                 <tr>
                     <th scope="row">휴대폰<span class="es">필수 입력</span></th>
-                    <td><input type="text" name="cellphone" placeholder="휴대폰" maxlength="10" /></td>
+                    <td><input type="text" id="cellphone" name="cellphone" placeholder="휴대폰" maxlength="10" /></td>
                 </tr>
                 </tbody>
             </table>
@@ -58,6 +60,7 @@
 <script th:src="@{/js/function.js}"></script>
 <script th:src="@{/js/jquery-3.6.0.min.js}"></script>
 <script th:src="@{/js/common.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://kit.fontawesome.com/79613ae794.js" crossorigin="anonymous"></script>
 <script>
 
@@ -75,6 +78,53 @@
         form.reset();
         layerPopClose();
     }
+
+    function saveMember(){
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const passwordCheck = document.getElementById("passwordCheck").value;
+        const name = document.getElementById("name").value;
+        const cellphone = document.getElementById("cellphone").value;
+
+        // 이메일 형식 확인
+
+        // 패스워드 일치 + 대소문자 이런 조건확인
+
+        // 이름 입력확인
+
+        // 전화번호 형식 확인 자리수 등등
+
+        const req = {
+            email
+            , password
+            , passwordCheck
+            , name
+            , cellphone
+        }
+
+        axios.post('/member', req)
+            .then(e => {
+                alert(e)
+                alert("end")
+            }).finally(s => {
+                alert("ssss")
+        });
+        // axios.post('/member', {
+        // params : {
+        //     email: email
+        //     , password: password
+        //     , passwordCheck: passwordCheck
+        //     , name: name
+        //     , cellphone: cellphone
+        // }
+        // })
+        //     .then(response => {
+        //         alert(response);
+        //         alert("완료");
+        //     })
+        //     .finally(e => alert("setsettertesrh"));
+    }
 </script>
 </body>
 </html>
+

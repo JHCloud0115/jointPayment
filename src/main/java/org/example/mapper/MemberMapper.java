@@ -2,6 +2,7 @@ package org.example.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.example.model.MemberInsertReq;
 import org.example.model.member.Member;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
@@ -18,4 +19,6 @@ public interface MemberMapper {
     List<Member> selectMembers() throws DataAccessException;
     Member selectMemberById(@Param("memberId") String memberId) throws DataAccessException;
     void insertMember(Member member) throws DataAccessException;
+
+    void insertMember2(MemberInsertReq memberInsertReq) throws DataAccessException;
 }

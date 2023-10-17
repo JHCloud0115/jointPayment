@@ -1,10 +1,10 @@
 package org.example.service.impl;
 
 import org.example.mapper.MemberMapper;
+import org.example.model.MemberInsertReq;
 import org.example.model.member.Member;
 import org.example.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,9 +13,6 @@ import java.util.List;
 public class MemberServiceImpl implements MemberService {
 
     private MemberMapper memberMapper;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
 
     @Autowired
@@ -41,8 +38,13 @@ public class MemberServiceImpl implements MemberService {
         if (member.getEmail().equals(validateMember.getEmail())){
             throw new IllegalStateException("이미 가입된 회원입니다");
         }
-        member.setPassword(passwordEncoder.encode(member.getPassword()));
+//        member.setPassword(passwordEncoder.encode(member.getPassword()));
         memberMapper.insertMember(member);
+    }
+
+    @Override
+    public void insertMember2(MemberInsertReq memberInsertReq) throws Exception{
+        memberMapper.insertMember2(memberInsertReq);
     }
 
 }
