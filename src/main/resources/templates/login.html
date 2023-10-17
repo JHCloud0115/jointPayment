@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+<div id="login_wrap">
+    <div id="login_box">
+        <div class="login_con">
+            <div class="login_tit">
+                <h2>로그인</h2>
+                <p>LOG<i>IN</i></p>
+            </div>
+
+            <div class="login_input">
+                <form id="loginForm" onsubmit="return false;" autocomplete="off">
+                    <ul>
+                        <li>
+                            <label for="loginId" class="skip_info">아이디</label>
+                            <input type="text" id="loginId" name="loginId" placeholder="아이디" title="아이디" />
+                        </li>
+                        <li>
+                            <label for="password" class="skip_info">비밀번호</label>
+                            <input type="password" id="password" name="password" title="비밀번호" placeholder="비밀번호" />
+                        </li>
+                    </ul>
+                    <button type="button" onclick="login();" class="login_btn">로그인</button>
+                    <button type="button" onclick="openSignupPopup();" class="signup_btn">회원가입</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

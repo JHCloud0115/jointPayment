@@ -6,6 +6,7 @@ import org.example.service.MemberService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -34,6 +35,7 @@ private final MemberService memberService;
         return memberService.selectMembers();
     }
 
+    @ResponseBody
     @PostMapping("/new")
     public void insertMember(Member member) throws Exception{
         memberService.insertMember(member);
