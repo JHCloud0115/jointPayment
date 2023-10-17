@@ -43,6 +43,9 @@ public class MemberController {
 
     @PostMapping
     public CommonResponse<Void> insertMember2(@RequestBody @Valid MemberInsertReq memberInsertReq) throws Exception {
+        if(!memberInsertReq.getPassword().equals(memberInsertReq.getPasswordCheck())){
+            throw new Exception("비밀번호가 일치하지 않습니다");
+        }
         memberService.insertMember2(memberInsertReq);
         return new CommonResponse<>();
     }
