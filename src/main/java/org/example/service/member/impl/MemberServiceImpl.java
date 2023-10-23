@@ -31,15 +31,8 @@ public class MemberServiceImpl implements MemberService {
         return memberMapper.selectMembers();
     }
 
-    @Override
-    public void insertMember(Member member) throws Exception{
-        Member validateMember = new Member();
-
-        if (member.getEmail().equals(validateMember.getEmail())){
-            throw new IllegalStateException("이미 가입된 회원입니다");
-        }
-//        member.setPassword(passwordEncoder.encode(member.getPassword()));
-        memberMapper.insertMember(member);
+    public int selectMemberEmailCheck(String memberId) throws Exception {
+        return memberMapper.selectMemberIdCheck(memberId);
     }
 
     @Override

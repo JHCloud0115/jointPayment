@@ -25,7 +25,9 @@
                     <th scope="row">이메일<span class="es">필수 입력</span></th>
                     <td>
                         <input type="text" name="loginEmail" id="email" placeholder="이메일" maxlength="20" style="width: 80%;" />
-                        <button type="button" id="idCheckBtn" class="btns btn_st5" onclick="checkLoginId();" style="width: 20%; float: right;">중복 확인</button>
+                        <span class="emailCheck1">사용 가능한 이메일 주소입니다.</span>
+                        <span class="emailCheck2">이미 존재하는 이메일 주소입니다.</span>
+                        <button type="button" id="emailCheck" onClick="emailCheckBtn" class="btns btn_st5" style="width:20%; float: right;">중복 확인</button>
                     </td>
                 </tr>
                 <tr>
@@ -69,12 +71,11 @@
         layerPop('signupPopup')
     }
 
-
     // 회원가입 팝업 close
     function closeSignupPopup() {
         const form = document.getElementById('signupForm');
         form.loginId.readOnly = false;
-        form.querySelector('#idCheckBtn').disabled = false;
+        form.querySelector('#emailCheck').disabled = false;
         form.reset();
         layerPopClose();
     }
@@ -85,6 +86,27 @@
         const passwordCheck = document.getElementById("passwordCheck").value;
         const name = document.getElementById("name").value;
         const cellphone = document.getElementById("cellphone").value;
+
+    function emailCheckBtn(){
+        var email = $('emailCheck').val();
+
+        $.ajax({
+            url:'/member/emailCheck',
+            type:'GET',
+            data:{
+                "email" : email
+            },
+            success : function (emailResult){
+                if (emailResult == 0 ){
+                    $("#emailCheck").text("사용할 수 있는 아이디 입니다.").css("color", "green");
+                } else {
+                    $("#emailCheck").text("이미 존재하는 이메일 입니다.").css("color", "red");
+                    alert("아이디를 다시 입력해주세요");
+                    $('#email').val('');
+                }
+            }
+        })
+    }
 
         // 이메일 형식 확인
 
@@ -109,20 +131,8 @@
             }).finally(s => {
                 alert("ssss")
         });
-        // axios.post('/member', {
-        // params : {
-        //     email: email
-        //     , password: password
-        //     , passwordCheck: passwordCheck
-        //     , name: name
-        //     , cellphone: cellphone
-        // }
-        // })
-        //     .then(response => {
-        //         alert(response);
-        //         alert("완료");
-        //     })
-        //     .finally(e => alert("setsettertesrh"));
+
+
     }
 </script>
 </body>

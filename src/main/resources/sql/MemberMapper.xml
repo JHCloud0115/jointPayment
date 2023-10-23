@@ -19,6 +19,15 @@
             memberId = #{memberId}
     </select>
 
+    <select id="selectMemberIdCheck" resultType="int">
+        SELECT
+            count(*)
+        FROM
+            member
+        WHERE
+            memberId = #{memberId}
+    </select>
+
     <insert id="insertMember" parameterType="org.example.model.member.Member" useGeneratedKeys="true" keyProperty="memberUid">
         INSERT INTO
         member(

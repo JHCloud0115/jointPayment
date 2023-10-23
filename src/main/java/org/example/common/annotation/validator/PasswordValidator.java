@@ -7,7 +7,7 @@ import javax.validation.ConstraintValidatorContext;
 import java.util.regex.Pattern;
 
 public class PasswordValidator implements ConstraintValidator<PasswordValidation, String> {
-    private static final Pattern EMAIL_PATTERN = Pattern.compile("^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.{8,})$\n");
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[A-Za-z\\d!@#$%^&*]{8,}$");
 
     @Override
     public void initialize(PasswordValidation constraintAnnotation) {

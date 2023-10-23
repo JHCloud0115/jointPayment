@@ -34,17 +34,23 @@ public class MemberController {
         return memberService.selectMembers();
     }
 
-    @PostMapping("/new")
-    public void insertMember(Member member) throws Exception {
-        memberService.insertMember(member);
+    @GetMapping("/emailCheck")
+    public int selectMemberEmailCheck(String memberId) throws Exception{
+        int emailResult =memberService.selectMemberEmailCheck(memberId);
+        return emailResult;
     }
 
     @PostMapping
     public CommonResponse<Void> insertMember2(@RequestBody @Valid MemberInsertReq memberInsertReq) throws Exception {
-        if(!memberInsertReq.getPassword().equals(memberInsertReq.getPasswordCheck())){
-            throw new Exception("비밀번호가 일치하지 않습니다");
+
+        int emailResult = memberService.selectMemberEmailCheck(memberInsertReq.getEmail());
+
+        if(emailResult == 0){
+            if(!memberInsertReq.getPassword().equals(memberInsertReq.getPasswordCheck())){
+                throw new Exception("비밀번호가 일치하지 않습니다");
+            }
+            memberService.insertMember2(memberInsertReq);
         }
-        memberService.insertMember2(memberInsertReq);
         return new CommonResponse<>();
     }
 

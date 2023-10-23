@@ -15,6 +15,7 @@ import java.util.List;
 public interface MemberMapper {
     List<Member> selectMembers() throws DataAccessException;
     Member selectMemberById(@Param("memberId") String memberId) throws DataAccessException;
+    int selectMemberIdCheck(@Param(("memberID"))String memberId) throws DataAccessException;
     void insertMember(Member member) throws DataAccessException;
 
     void insertMember2(MemberInsertReq memberInsertReq) throws DataAccessException;
