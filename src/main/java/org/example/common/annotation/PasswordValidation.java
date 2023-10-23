@@ -1,4 +1,6 @@
-package org.example.annotation;
+package org.example.common.annotation;
+
+import org.example.common.annotation.validator.PasswordValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

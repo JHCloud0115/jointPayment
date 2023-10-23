@@ -1,12 +1,10 @@
 package org.example.controller;
 
 import org.example.model.CommonResponse;
-import org.example.model.MemberInsertReq;
+import org.example.model.req.member.MemberInsertReq;
 import org.example.model.member.Member;
-import org.example.service.MemberService;
+import org.example.service.member.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

@@ -1,9 +1,9 @@
-package org.example.service.impl;
+package org.example.service.member.impl;
 
-import org.example.mapper.MemberMapper;
-import org.example.model.MemberInsertReq;
+import org.example.mapper.member.MemberMapper;
+import org.example.model.req.member.MemberInsertReq;
 import org.example.model.member.Member;
-import org.example.service.MemberService;
+import org.example.service.member.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

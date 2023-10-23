@@ -1,6 +1,6 @@
-package org.example.service;
+package org.example.service.member;
 
-import org.example.model.MemberInsertReq;
+import org.example.model.req.member.MemberInsertReq;
 import org.example.model.member.Member;
 
 import java.util.List;

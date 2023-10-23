@@ -1,4 +1,6 @@
-package org.example.annotation;
+package org.example.common.annotation.validator;
+
+import org.example.common.annotation.NameValidation;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

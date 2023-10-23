@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class MainController {
 
-    @RequestMapping("/new")
+    @RequestMapping("/member/regist")
     public String newPage() {
-        return "new";
+        return "/member/regist";
     }
 
 }

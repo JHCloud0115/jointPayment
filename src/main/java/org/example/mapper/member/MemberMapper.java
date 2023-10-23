@@ -1,14 +1,11 @@
-package org.example.mapper;
+package org.example.mapper.member;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.example.model.MemberInsertReq;
+import org.example.model.req.member.MemberInsertReq;
 import org.example.model.member.Member;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.Mapping;
 
 import java.util.List;
 

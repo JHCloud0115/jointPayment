@@ -1,11 +1,11 @@
-package org.example.model;
+package org.example.model.req.member;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.example.annotation.CellphoneValidation;
-import org.example.annotation.EmailValidation;
-import org.example.annotation.NameValidation;
-import org.example.annotation.PasswordValidation;
+import org.example.common.annotation.CellphoneValidation;
+import org.example.common.annotation.EmailValidation;
+import org.example.common.annotation.NameValidation;
+import org.example.common.annotation.PasswordValidation;
 
 import javax.validation.constraints.NotBlank;
 

@@ -1,4 +1,4 @@
-package org.example.config;
+package org.example.config.mybatis;
 
 import com.zaxxer.hikari.HikariDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
