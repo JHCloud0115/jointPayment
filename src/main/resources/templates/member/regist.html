@@ -25,9 +25,8 @@
                     <th scope="row">이메일<span class="es">필수 입력</span></th>
                     <td>
                         <input type="text" name="loginEmail" id="email" placeholder="이메일" maxlength="20" style="width: 80%;" />
-                        <span class="emailCheck1">사용 가능한 이메일 주소입니다.</span>
-                        <span class="emailCheck2">이미 존재하는 이메일 주소입니다.</span>
-                        <button type="button" id="emailCheck" onClick="emailCheckBtn" class="btns btn_st5" style="width:20%; float: right;">중복 확인</button>
+                        <div id="emailMessage"></div>
+                        <button type="button" id="emailCheck" onClick="emailCheckBtn()" class="btns btn_st5" style="width:20%; float: right;">중복 확인</button>
                     </td>
                 </tr>
                 <tr>
@@ -58,10 +57,6 @@
 </div>
 
 
-
-<script th:src="@{/js/function.js}"></script>
-<script th:src="@{/js/jquery-3.6.0.min.js}"></script>
-<script th:src="@{/js/common.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://kit.fontawesome.com/79613ae794.js" crossorigin="anonymous"></script>
 <script>
@@ -80,33 +75,36 @@
         layerPopClose();
     }
 
+    function emailCheckBtn() {
+        const email = document.getElementById("email").value;
+        axios.get('/member/emailCheck', {
+            params: { email: email }
+            })
+            .then(function (response) {
+                var emailResult = response.data;
+                var emailMessage = document.getElementById("emailMessage");
+
+                if (emailResult === 0) {
+                    emailMessage.textContent = "사용할 수 있는 이메일 주소입니다.";
+                    emailMessage.style.color = "green";
+                } else {
+                    emailMessage.textContent = "이미 존재하는 이메일 주소입니다.";
+                    emailMessage.style.color = "red";
+                    alert("이메일을 다시 입력해주세요");
+                    document.getElementById("email").value = '';
+                }
+            })
+            .catch(function (error) {
+                console.error(error);
+            });
+    }
+
     function saveMember(){
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
         const passwordCheck = document.getElementById("passwordCheck").value;
         const name = document.getElementById("name").value;
         const cellphone = document.getElementById("cellphone").value;
-
-    function emailCheckBtn(){
-        var email = $('emailCheck').val();
-
-        $.ajax({
-            url:'/member/emailCheck',
-            type:'GET',
-            data:{
-                "email" : email
-            },
-            success : function (emailResult){
-                if (emailResult == 0 ){
-                    $("#emailCheck").text("사용할 수 있는 아이디 입니다.").css("color", "green");
-                } else {
-                    $("#emailCheck").text("이미 존재하는 이메일 입니다.").css("color", "red");
-                    alert("아이디를 다시 입력해주세요");
-                    $('#email').val('');
-                }
-            }
-        })
-    }
 
         // 이메일 형식 확인
 

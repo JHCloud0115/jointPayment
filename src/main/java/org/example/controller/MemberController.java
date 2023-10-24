@@ -5,13 +5,14 @@ import org.example.model.req.member.MemberInsertReq;
 import org.example.model.member.Member;
 import org.example.service.member.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
 
-@RestController()
+@RestController
 @RequestMapping(value = "/member")
 public class MemberController {
 
@@ -35,9 +36,9 @@ public class MemberController {
     }
 
     @GetMapping("/emailCheck")
-    public int selectMemberEmailCheck(String memberId) throws Exception{
-        int emailResult =memberService.selectMemberEmailCheck(memberId);
-        return emailResult;
+    public ResponseEntity<Integer> selectMemberEmailCheck(String email) throws Exception{
+        int emailResult =memberService.selectMemberEmailCheck(email);
+        return ResponseEntity.ok(emailResult);
     }
 
     @PostMapping

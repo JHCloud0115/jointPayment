@@ -8,7 +8,7 @@ public class MainController {
 
     @RequestMapping("/member/regist")
     public String newPage() {
-        return "/member/regist";
+        return "member/regist";
     }
 
 }

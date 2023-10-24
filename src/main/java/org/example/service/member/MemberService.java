@@ -9,8 +9,7 @@ public interface MemberService {
 
     List<Member> selectMembers() throws Exception;
 
-    Member selectMemberById(String memberId) throws Exception;
-    int selectMemberEmailCheck(String memberId) throws Exception;
+    int selectMemberEmailCheck(String email) throws Exception;
 
 //    void insertMember(Member member) throws Exception;
 
