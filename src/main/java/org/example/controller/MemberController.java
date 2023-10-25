@@ -41,7 +41,7 @@ public class MemberController {
         return ResponseEntity.ok(emailResult);
     }
 
-    @PostMapping
+    @PostMapping("/registMember")
     public CommonResponse<Void> insertMember2(@RequestBody @Valid MemberInsertReq memberInsertReq) throws Exception {
 
         int emailResult = memberService.selectMemberEmailCheck(memberInsertReq.getEmail());
