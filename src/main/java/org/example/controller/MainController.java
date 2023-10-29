@@ -7,8 +7,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MainController {
 
     @RequestMapping("/member/regist")
-    public String newPage() {
+    public String registPage() {
         return "member/regist";
+    }
+
+    @RequestMapping("/member/login")
+    public String loginPage() {
+        return "member/login";
     }
 
 }

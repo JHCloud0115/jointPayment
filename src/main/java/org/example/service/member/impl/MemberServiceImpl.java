@@ -5,6 +5,7 @@ import org.example.common.util.SHA256;
 import org.example.mapper.member.MemberMapper;
 import org.example.model.req.member.MemberInsertReq;
 import org.example.model.member.Member;
+import org.example.model.response.MemberPasswordByEmail;
 import org.example.service.member.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,9 +27,13 @@ public class MemberServiceImpl implements MemberService {
     public List<Member> selectMembers() throws Exception {
         return memberMapper.selectMembers();
     }
-
+    @Override
     public int selectMemberEmailCheck(String email) throws Exception {
         return memberMapper.selectMemberIdCheck(email);
+    }
+    @Override
+    public MemberPasswordByEmail selectMemberPasswordByEmail(String email)throws Exception{
+        return memberMapper.selectMemberPasswordByEmail(email);
     }
 
     @Override

@@ -11,7 +11,6 @@
 
 </head>
 <body>
-<!--/* 회원가입 popup */-->
 <div id="signupPopup" class="popLayer">
     <h3>회원가입</h3>
     <div class="pop_container">
@@ -24,14 +23,15 @@
                 <tr>
                     <th scope="row">이메일<span class="es">필수 입력</span></th>
                     <td>
-                        <input type="text" name="loginEmail" id="email" placeholder="이메일" maxlength="20" style="width: 80%;" />
-                        <div id="emailMessage"></div>
-                        <button type="button" id="emailCheck" onClick="emailCheckBtn()" class="btns btn_st5" style="width:20%; float: right;">중복 확인</button>
+                        <input type="text" name="loginEmail" id="email" placeholder="이메일" maxlength="20" style="width: 50%;" />
+                        <div id="emailMessage"></div><button type="button" id="emailCheck" onClick="emailCheckBtn()" class="btns btn_st5" style="width:20%; float: right;">중복 확인</button>
                     </td>
                 </tr>
                 <tr>
                     <th scope="row">비밀번호<span class="es">필수 입력</span></th>
-                    <td><input type="password" id="password" name="password" placeholder="비밀번호" maxlength="30" /></td>
+                    <td><input type="password" id="password" name="password" placeholder="비밀번호" maxlength="30" />
+                        대문자,특수문자가 1글자 이상 포함된 8자 글자 이상의 비밀번호로 생성해주세요.
+                    </td>
                 </tr>
                 <tr>
                     <th scope="row">비밀번호 재입력<span class="es">필수 입력</span></th>
@@ -39,11 +39,15 @@
                 </tr>
                 <tr>
                     <th scope="row">이름<span class="es">필수 입력</span></th>
-                    <td><input type="text" id="name" name="name" placeholder="이름" maxlength="10" /></td>
+                    <td><input type="text" id="name" name="name" placeholder="이름" maxlength="10" />
+                    이름음 한글로 입력해주세요.
+                    </td>
                 </tr>
                 <tr>
                     <th scope="row">휴대폰<span class="es">필수 입력</span></th>
-                    <td><input type="text" id="cellphone" name="cellphone" placeholder="휴대폰" maxlength="11" /></td>
+                    <td><input type="text" id="cellphone" name="cellphone" placeholder="휴대폰" maxlength="11" />
+                    번호는 01012345678과 같은 형식으로 숫자만 입력해주세요.
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -107,12 +111,29 @@
         const cellphone = document.getElementById("cellphone").value;
 
         // 이메일 형식 확인
-
-        // 패스워드 일치 + 대소문자 이런 조건확인
-
+        if(email.indexOf('@') == -1){
+            alert("올바른 이메일 형식으로 입력해주세요.");
+            email.focus();
+            return false;
+        }
+        // 패스워드
+        if(password.value !== passwordCheck.value){
+            alert("비밀번호를 다시 입력해주세요.");
+            passwordCheck.select();
+            return false;
+        }
         // 이름 입력확인
-
+        if(name.length ===0){
+            alert("이름이 누락되었습니다.");
+            name.focus();
+            return false;
+        }
         // 전화번호 형식 확인 자리수 등등
+        if(isNaN(cellphone)){
+            alert("전화번호는 숫자만 가능합니다.");
+            cellphone.focus();
+            return false;
+        }
 
         const req = {
             email
@@ -128,7 +149,8 @@
             .then(response => {
                 if (response) {
                     alert("성공 회원가입이 완료되었습니다.");
-                    // window.location.href = '/otherpage'; // 이동할 페이지 URL로 변경
+                    var url = "/member/login"
+                    location.href = url;
                 } else {
                     alert("위의 조건을 다시 한 번 확인해주세요");
                 }
@@ -141,13 +163,6 @@
                 alert("요청 완료");
             });
 
-        // axios.post('/member/registMember', req)
-        //     .then(e => {
-        //         alert(e)
-        //         alert("end")
-        //     }).finally(s => {
-        //         alert("ssss")
-        // });
     }
 
 

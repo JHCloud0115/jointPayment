@@ -19,6 +19,16 @@
             email = #{email}
     </select>
 
+    <select id="selectMemberPasswordByEmail" resultType="org.example.model.response.MemberPasswordByEmail">
+        SELECT
+            password
+        FROM
+            member
+        WHERE
+            email = #{email}
+
+    </select>
+
     <insert id="insertMember" parameterType="org.example.model.member.Member" useGeneratedKeys="true" keyProperty="memberUid">
         INSERT INTO
         member(
