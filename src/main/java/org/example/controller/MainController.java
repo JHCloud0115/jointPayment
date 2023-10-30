@@ -16,4 +16,9 @@ public class MainController {
         return "member/login";
     }
 
+    @RequestMapping("/member/password")
+    public String passwordCheckPage() {
+        return "member/password";
+    }
+
 }
