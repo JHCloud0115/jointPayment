@@ -21,4 +21,10 @@ public class MainController {
         return "member/password";
     }
 
+    @RequestMapping("/member/home")
+    public String hoemPage() {
+        return "member/home";
+    }
+
+
 }

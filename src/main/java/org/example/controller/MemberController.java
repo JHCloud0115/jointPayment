@@ -44,18 +44,18 @@ public class MemberController {
         return ResponseEntity.ok(emailResult);
     }
 
-    @PostMapping("/password")
-    public Boolean selectMemberPasswordByEmail(@RequestBody @Valid MemberPasswordReq memberPasswordReq)throws Exception{
-        MemberPasswordByEmail memberPasswordCheck = memberService.selectMemberPasswordByEmail(memberPasswordReq.getEmail());
-        SHA256 sha256 = new SHA256();
-
-        if (memberPasswordCheck != null) {
-            if (memberPasswordCheck.getPassword().equals(sha256.encrypt(memberPasswordReq.getPassword()))) {
-                return true;
-            }
-        }
-        return false;
-    }
+//    @PostMapping("/password")
+//    public Boolean selectMemberPasswordByEmail(@RequestBody @Valid MemberPasswordReq memberPasswordReq)throws Exception{
+//        MemberPasswordByEmail memberPasswordCheck = memberService.selectMemberPasswordByEmail(memberPasswordReq.getEmail());
+//        SHA256 sha256 = new SHA256();
+//
+//        if (memberPasswordCheck != null) {
+//            if (memberPasswordCheck.getPassword().equals(sha256.encrypt(memberPasswordReq.getPassword()))) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 
     @PostMapping("/regist")
     public CommonResponse<Void> insertMember2(@RequestBody @Valid MemberInsertReq memberInsertReq) throws Exception {

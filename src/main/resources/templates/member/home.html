@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link th:href="@{/css/bootstrap.min.css}"
+          href="../css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container" style="max-width: 600px">
+    <div class="py-5 text-center">
+        <h2>홈 화면</h2>
+    </div>
+
+    <div class="row" style="display: flex;">
+        <div class="col">
+            <button class="w-100 btn btn-secondary btn-lg" type="button" onclick="payment()">
+                결제 하기
+            </button>
+        </div>
+        <div class="col">
+            <button class="w-100 btn btn-dark btn-lg" onclick="game()" type="button">
+                게임 하기
+            </button>
+        </div>
+    </div>
+
+    <hr class="my-4">
+
+</div>
+
+</body>
+</html>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://kit.fontawesome.com/79613ae794.js" crossorigin="anonymous"></script>
+<script>
+
+    // function signup() {
+    //             window.location.href = '/member/regist';
+    // }
+</script>
+</body>
+</html>
