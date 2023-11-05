@@ -26,5 +26,8 @@ public class MainController {
         return "member/home";
     }
 
+    @RequestMapping("/member/logout")
+    public String logout(){return "/member/logout";}
+
 
 }
