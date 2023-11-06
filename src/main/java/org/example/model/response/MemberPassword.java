@@ -5,6 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class MemberPasswordByEmail {
+public class MemberPassword {
     private String password;
 }

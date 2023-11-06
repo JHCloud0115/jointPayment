@@ -1,8 +1,10 @@
 package org.example.common.util;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
@@ -10,7 +12,7 @@ import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
+@Component
 public class TokenProvider {
     // 암호화 키
     private String secretKey = "joint_payment_secret_key";
@@ -45,4 +47,6 @@ public class TokenProvider {
 
         return builder.compact();
     }
+
+
 }

@@ -3,7 +3,7 @@ package org.example.controller;
 import org.example.common.util.SHA256;
 import org.example.common.util.TokenProvider;
 import org.example.model.req.member.MemberPasswordReq;
-import org.example.model.response.MemberPasswordByEmail;
+import org.example.model.response.MemberPassword;
 import org.example.service.member.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,7 +29,7 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody @Valid MemberPasswordReq memberPasswordReq) throws Exception {
-        MemberPasswordByEmail memberPasswordCheck = memberService.selectMemberPasswordByEmail(memberPasswordReq.getEmail());
+        MemberPassword memberPasswordCheck = memberService.selectMemberPasswordByEmail(memberPasswordReq.getEmail());
         SHA256 sha256 = new SHA256();
 
         if (memberPasswordCheck != null && memberPasswordCheck.getPassword().equals(sha256.encrypt(memberPasswordReq.getPassword()))) {

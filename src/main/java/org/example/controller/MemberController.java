@@ -1,11 +1,8 @@
 package org.example.controller;
 
-import org.example.common.util.SHA256;
 import org.example.model.CommonResponse;
 import org.example.model.req.member.MemberInsertReq;
 import org.example.model.member.Member;
-import org.example.model.req.member.MemberPasswordReq;
-import org.example.model.response.MemberPasswordByEmail;
 import org.example.service.member.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
