@@ -7,8 +7,8 @@ import java.util.Locale;
 
 public interface JwtTokenService  {
 
-    LoginResp signIn(String email, String password, Header header, Locale locale) throws Exception;
+    LoginResp signIn(String email, String password) throws Exception;
 
-    LoginResp loginProcess(String email, String password, String ip) throws Exception ;
+    LoginResp loginProcess(String email, String password,String ip) throws Exception ;
 
 }

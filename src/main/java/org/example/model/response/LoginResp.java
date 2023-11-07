@@ -21,6 +21,5 @@ public class LoginResp {
     private int memberUid;
     private String token;
     private String email;
-    private String secretKey;
 
 }
