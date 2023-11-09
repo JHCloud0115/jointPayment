@@ -28,7 +28,7 @@
             email = #{email}
     </select>
 
-    <select id="selectMemberPasswordByEmail" resultType="org.example.model.response.MemberPassword">
+    <select id="selectMemberPasswordByEmail" resultType="org.example.model.response.member.MemberPassword">
         SELECT
             password
         FROM

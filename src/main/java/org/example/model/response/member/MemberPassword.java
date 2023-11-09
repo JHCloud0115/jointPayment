@@ -1,4 +1,4 @@
-package org.example.model.response;
+package org.example.model.response.member;
 
 import lombok.Getter;
 import lombok.Setter;
