@@ -8,6 +8,7 @@ import org.example.mapper.member.MemberMapper;
 import org.example.mapper.member.MemberTokenMapper;
 import org.example.model.member.Member;
 import org.example.model.member.MemberToken;
+import org.example.model.req.member.MemberTokenReq;
 import org.example.model.response.TokenResponse;
 import org.example.model.response.member.LoginResp;
 import org.example.model.response.member.MemberLoginFailResp;
@@ -16,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.Cookie;
 
 @Service
 public class MemberLoginServiceImpl implements MemberLoginService {
@@ -41,8 +44,14 @@ public class MemberLoginServiceImpl implements MemberLoginService {
 
     }
 
+
+    /**
+     * 로그인
+     *
+     *
+     **/
     @Override
-    public ResponseEntity<TokenResponse> signIn(String email, String password) throws Exception {
+    public ResponseEntity<TokenResponse> loginIn(String email, String password) throws Exception {
 
         Member member =memberMapper.selectMemberByEmail(email);
         SHA256 sha256 = new SHA256();
@@ -55,18 +64,53 @@ public class MemberLoginServiceImpl implements MemberLoginService {
             }
         }
 
+        MemberToken storedToken = memberTokenMapper.selectMemberTokenByEmail(email);
+        if(storedToken == null){
+            // Access Token 및 Refresh Token 생성
+            String accessToken = tokenProvider.createAccessToken(email);
+            String refreshToken = tokenProvider.createRefreshToken(email);
+
+            MemberToken memberToken = new MemberToken();
+            memberToken.setRefreshToken(refreshToken);
+            memberToken.setAccessToken(accessToken);
+            memberToken.setEmail(email);
+            memberTokenMapper.insertMemberToken(memberToken);
+
+            // Refresh Token은 HttpOnly 쿠키에 저장
+            Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
+            refreshTokenCookie.setHttpOnly(true);
+
+            // Secure 속성은 HTTPS 연결에서만 쿠키를 전송하도록 설정
+            refreshTokenCookie.setSecure(true);
+
+            return ResponseEntity.ok()
+                    .header("Set-Cookie", refreshTokenCookie.toString())
+                    .body(new TokenResponse("Login successful.", accessToken, refreshToken));
+        }
+
         if (member.getPassword() != null && member.getPassword().equals(sha256.encrypt(password))) {
             try {
-                // Access Token 및 Refresh Token 생성
+                // 회원 확인하고 새로운 Token 생성
                 String accessToken = tokenProvider.createAccessToken(email);
-                String refreshToken = tokenProvider.createRefreshToken(email);
+                String newRefreshToken = tokenProvider.createRefreshToken(email);
 
-                MemberToken memberToken = new MemberToken();
-                memberToken.setMemberToken(refreshToken);
-                memberToken.setEmail(email);
-                memberTokenMapper.insertMemberToken(memberToken);
+                // 기존 토큰 업데이트
+                MemberTokenReq memberTokenReq =new MemberTokenReq();
+                memberTokenReq.setAccessToken(accessToken);
+                memberTokenReq.setRefreshToken(newRefreshToken);
+                memberTokenMapper.upateMemberToken(memberTokenReq);
 
-                return ResponseEntity.ok(new TokenResponse("Login successful.", accessToken, refreshToken));
+                // 새로운 Refresh Token을 HttpOnly 쿠키에 저장
+                Cookie refreshTokenCookie = new Cookie("refreshToken", newRefreshToken);
+                refreshTokenCookie.setHttpOnly(true);
+
+                // Secure 속성은 HTTPS 연결에서만 쿠키를 전송하도록 설정
+                refreshTokenCookie.setSecure(true);
+
+                return ResponseEntity.ok()
+                        .header("Set-Cookie", refreshTokenCookie.toString())
+                        .body(new TokenResponse("Login successful.", accessToken, newRefreshToken));
+
 
             } catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new TokenResponse("Failed to generate token.", null, null));
@@ -76,6 +120,18 @@ public class MemberLoginServiceImpl implements MemberLoginService {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new TokenResponse("Authentication failed.", null, null));
         }
     }
+
+
+    /**
+     * 로그아웃
+     *
+     */
+    @Override
+    public ResponseEntity<String> logOut(String email) throws Exception {
+        memberTokenMapper.expireRefreshToken(email);
+        return ResponseEntity.status(HttpStatus.OK).body("Logout successful.");
+    }
+
 
 
 

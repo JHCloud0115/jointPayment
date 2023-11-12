@@ -7,8 +7,11 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class MemberToken {
-
+    private int id;
     private String email;
-    private String memberToken;
+    private String refreshToken;
+    private String accessToken;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
 }

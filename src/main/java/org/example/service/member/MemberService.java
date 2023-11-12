@@ -16,7 +16,6 @@ public interface MemberService {
     int selectMemberEmailCheck(String email) throws Exception;
 
     MemberPassword selectMemberPasswordByEmail(String email) throws Exception;
-    MemberLoginFailResp selectMemberLoginFailCnt(String email) throws Exception;
 
     void insertMember2(MemberInsertReq memberInsertReq) throws Exception;
 

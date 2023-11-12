@@ -1,41 +1,41 @@
 package org.example.controller;
 
-import org.example.common.util.SHA256;
 import org.example.common.util.TokenProvider;
 import org.example.model.req.member.MemberPasswordReq;
-import org.example.model.response.member.MemberPassword;
+import org.example.model.response.TokenResponse;
+import org.example.service.member.MemberLoginService;
 import org.example.service.member.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationController {
-    @Autowired
-    private final MemberService memberService;
-    private final TokenProvider tokenProvider;
+    private final MemberLoginService memberLoginService;
 
     @Autowired
     public AuthenticationController(
-            MemberService memberService,
-            TokenProvider tokenProvider
-    ) {
-        this.memberService = memberService;
-        this.tokenProvider = tokenProvider;
+            MemberLoginService memberLoginService) {
+        this.memberLoginService = memberLoginService;
     }
 
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody @Valid MemberPasswordReq memberPasswordReq) throws Exception {
-        return null;
+    public ResponseEntity<TokenResponse> login(@RequestBody @Valid MemberPasswordReq memberPasswordReq) throws Exception {
+        return memberLoginService.loginIn(memberPasswordReq.getEmail(), memberPasswordReq.getPassword());
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logOut(@RequestParam("email") String email) throws Exception {
+        memberLoginService.logOut(email);
+        return ResponseEntity.status(HttpStatus.OK).body("Logout successful.");
+    }
+
 
     // 토큰 체크 api
     // 화면에서 보내준 토큰값 받아오기

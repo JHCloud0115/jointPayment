@@ -14,6 +14,5 @@ public class TokenResponse {
         this.message = message;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
-
     }
 }

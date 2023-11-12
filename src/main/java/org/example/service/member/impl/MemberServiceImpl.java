@@ -44,11 +44,12 @@ public class MemberServiceImpl implements MemberService {
         return memberMapper.selectMemberPasswordByEmail(email);
     }
 
-    @Override
-    public MemberLoginFailResp selectMemberLoginFailCnt(String email) throws Exception{
-        return memberLoginFailMapper.selectMemberLoginFailCnt(email);
-    }
 
+    /**
+     * 회원가입
+     *
+     *
+     **/
     @Override
     public void insertMember2(MemberInsertReq memberInsertReq) throws Exception{
 
