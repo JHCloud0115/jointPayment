@@ -1,12 +1,14 @@
 import styled from '@emotion/styled';
 import HomeSvg from "../svgs/HomeSvg";
+import {useNavigate} from "react-router";
 const Nav = () => {
+    const navigate = useNavigate();
     return (
         <Wrapper>
             <NavWrapper>
                 <div>
                     <NavContent>
-                        <IconWrapper>
+                        <IconWrapper onClick={()=>navigate("/")}>
                             <HomeSvg/>
                         </IconWrapper>
                         <p>홈</p>
@@ -14,17 +16,16 @@ const Nav = () => {
                 </div>
                 <div>
                     <NavContent>
-                        <IconWrapper>
+                        <IconWrapper onClick={()=>navigate("/game")}>
                             <HomeSvg
-
                             />
                         </IconWrapper>
-                        <p>회원가입</p>
+                        <p>게임하기</p>
                     </NavContent>
                 </div>
                 <div>
                     <NavContent >
-                        <IconWrapper>
+                        <IconWrapper onClick={()=>navigate("/login")}>
                             <HomeSvg
                             />
                         </IconWrapper>

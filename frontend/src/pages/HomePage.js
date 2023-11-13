@@ -5,7 +5,7 @@ const HomePage = ()=>{
         <HomeLayout>
             <Wrapper>
                 <Content>
-                    Content
+                    Joint Payment
                 </Content>
             </Wrapper>
         </HomeLayout>
@@ -15,9 +15,8 @@ const HomePage = ()=>{
 export default HomePage
 
 const Wrapper = styled.div`
-  position: relative;
   width: 100%;
+  height: 100%;
 `;
 const Content = styled.div`
-  padding-top: 70px;
 `;

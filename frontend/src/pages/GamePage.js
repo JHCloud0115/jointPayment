@@ -1,15 +1,15 @@
 import styled from '@emotion/styled';
-const RegistPage = ()=>{
+const GamePage = ()=>{
     return(
         <Wrapper>
             <Content>
-                regist
+                게임페이지
             </Content>
         </Wrapper>
     )
 }
 
-export default RegistPage
+export default GamePage
 
 const Wrapper = styled.div`
   width: 100%;

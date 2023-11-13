@@ -1,11 +1,9 @@
-import HomeHeader from "../components/layouts/header/HomeHeader";
 import Nav from "../components/layouts/Nav";
 import styled from "@emotion/styled";
 
 const HomeLayout = ({children, title=""})=>{
     return(
         <LayoutWrapper>
-            <HomeHeader />
             <Content>{children}</Content>
             <Nav />
         </LayoutWrapper>)
@@ -14,12 +12,14 @@ const HomeLayout = ({children, title=""})=>{
 export  default HomeLayout
 
 const LayoutWrapper = styled.div`
-
-  
-`
-const Content = styled.div`  
   width: 100%;
+  height: 100vh;
   max-width: 480px;
-  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`
 
+const Content = styled.div`
  `

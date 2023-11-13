@@ -1,17 +1,20 @@
 import './App.css';
 import {Route, Routes} from "react-router-dom";
-import HomeHeader from "./components/layouts/header/HomeHeader";
 import HomePage from "./pages/HomePage";
 import styled from "@emotion/styled";
 import "./styles/globals.scss";
-import Nav from "./components/layouts/Nav";
+import LoginPage from "./pages/LoginPage";
+import RegistPage from "./pages/RegistPage";
+import GamePage from "./pages/GamePage";
 
 function App() {
   return (
     <AppComponent>
-        <HomeHeader/>
         <Routes>
             <Route path={"/"} element={<HomePage/>}/>
+            <Route path={"/game"} element={<GamePage/>}/>
+            <Route path={"/login"} element={<LoginPage/>}/>
+            <Route path={"/regist"} element={<RegistPage/>}/>
         </Routes>
     </AppComponent>
   );
