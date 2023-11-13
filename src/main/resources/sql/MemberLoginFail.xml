@@ -4,18 +4,43 @@
 <mapper namespace="org.example.mapper.member.MemberLoginFailMapper">
 
 
-    <select id="selectMemberLoginFailCnt" resultType="MemberLoginFailResp">
+    <select id="selectMemberLoginFailCnt" resultType="org.example.model.response.member.MemberLoginFailResp">
         SELECT
-            b.*
-             ,IFNULL(MAX(fail.try_count) + 1, 1) as fail_cnt
+            m.*,
+            COALESCE(MAX(m.try_count) + 1, 1) AS fail_cnt
         FROM
-            member_login_fail a
-        LEFT JOIN
-            member b on a.member_uid = b.member_uid
-        WHERE
-            b.email = #{email}
-
+            member_login_fail m
+                LEFT JOIN
+            member mlf ON m.email = mlf.email
+        GROUP BY
+            m.email, m.login_fail_uid, m.ip, m.try_count, m.edited_at;
     </select>
+
+    <insert id="insertLoginFail"  parameterType="LoginFail" useGeneratedKeys="true" >
+        INSERT INTO member_login_fail (
+                                      email
+                                     ,ip
+                                     ,try_count
+                                     ,edited_at
+        ) SELECT
+                 #{email}
+               , #{ip}
+               , IFNULL(MAX(try_count) + 1, 1)
+               , now()
+        FROM
+            member_login_fail
+        WHERE
+            email = #{email}
+    </insert>
+
+    <update id="updateLoginFailCount">
+        UPDATE
+            member_login_fail
+        SET
+            try_count = #{tryCount}
+        WHERE
+            email = #{email}
+    </update>
 
 
 </mapper>

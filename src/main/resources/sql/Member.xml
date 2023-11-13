@@ -39,17 +39,21 @@
     </select>
 
 
-    <insert id="insertMember2">
+    <insert id="insertMember2" useGeneratedKeys="true" keyProperty="memberUid">
         INSERT INTO `member`(
-            email
+            member_uid
+            ,email
             , password
             , cellphone
             , member_name
+            , created_at
         )values(
-                #{email}
+                 #{memberUid}
+                , #{email}
                 , #{password}
                 , #{cellphone}
-                , #{name}
+                , #{memberName}
+                ,now()
              )
     </insert>
 

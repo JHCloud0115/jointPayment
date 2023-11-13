@@ -8,10 +8,13 @@ import org.example.common.annotation.NameValidation;
 import org.example.common.annotation.PasswordValidation;
 
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 public class MemberInsertReq {
+
+    private Long memberUid;
 
     @NotBlank
     @EmailValidation(message = "영문으로 시작하는 올바른 이메일 형식으로 입력해주세요")
@@ -27,7 +30,7 @@ public class MemberInsertReq {
 
     @NotBlank
     @NameValidation(message ="한글로 입력해주세요")
-    private String name;
+    private String memberName;
 
     @NotBlank
     @CellphoneValidation(message = "01로 시작하는 숫자만 입력해주세요")
