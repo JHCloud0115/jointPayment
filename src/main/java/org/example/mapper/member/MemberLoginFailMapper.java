@@ -12,6 +12,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MemberLoginFailMapper {
     MemberLoginFailResp selectMemberLoginFailCnt(@Param("email") String email) throws Exception;
-    void insertLoginFail(LoginFail fail) throws DataAccessException;
-    void updateLoginFailCount(LoginFail fail) throws DataAccessException;
+    void insertLoginFail(LoginFail loginFail) throws DataAccessException;
+    void updateLoginFailCount(LoginFail loginFail) throws DataAccessException;
 }

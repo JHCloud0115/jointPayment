@@ -62,25 +62,33 @@ public class MemberLoginServiceImpl implements MemberLoginService {
         SHA256 sha256 = new SHA256();
 
 
-        MemberLoginFailResp memberLoginFailResp = memberLoginFailMapper.selectMemberLoginFailCnt(email);
+        if (member.getPassword() != null) {
+            MemberLoginFailResp memberLoginFailResp = memberLoginFailMapper.selectMemberLoginFailCnt(email);
 
-        if(member.getPassword()!=null){
-            LoginFail fail = LoginFail.builder()
+            try {
+                if (memberLoginFailResp != null) {
+                    LoginFail loginFail = LoginFail.builder()
                             .email(email)
-//                            .ip()
+                            .ip("") // TODO ip 값 할당.
                             .tryCount(memberLoginFailResp.getFailCnt())
                             .build();
 
-
-            if(memberLoginFailResp.getFailCnt()> ApplicationConstants.PASSWORD_FAILL_LOCK){
-                memberLoginMapper.updateMemberBlock(member.getMemberUid());
-                throw new Exception("비밀번호가 유효하지 않습니다.");
-            }else if(memberLoginFailResp.getFailCnt() == ApplicationConstants.ONE){
-                memberLoginFailMapper.insertLoginFail(fail);
-            }else{
-                memberLoginFailMapper.updateLoginFailCount(fail);
+                    if (memberLoginFailResp.getFailCnt() > ApplicationConstants.PASSWORD_FAILL_LOCK) {
+                        memberLoginMapper.updateMemberBlock(member.getMemberUid());
+                        throw new Exception("비밀번호가 유효하지 않습니다.");
+                    } else if (memberLoginFailResp.getFailCnt() == ApplicationConstants.ONE) {
+                        memberLoginFailMapper.insertLoginFail(loginFail);
+                    } else {
+                        memberLoginFailMapper.updateLoginFailCount(loginFail);
+                    }
+                } else {
+                    throw new Exception("로그인 실패 정보를 가져올 수 없습니다.");
+                }
+            } catch (Exception e) {
+                throw new Exception("로그인 실패 처리 중 오류 발생");
             }
         }
+
 
         MemberToken storedToken = memberTokenMapper.selectMemberTokenByEmail(email);
         if(storedToken == null){
