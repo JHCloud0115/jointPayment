@@ -1,0 +1,60 @@
+:root {
+// Text
+--main: #21252f;
+    --sub: #868d9a;
+    --text3: #86909c;
+    --disableTxt: #afbaca;
+    --btnText: #ffffff;
+
+    --brandColor: #f9a62b;
+    --light-brand-color: rgba(249, 166, 43, 0.1);
+    --bg: #ffffff;
+    --dimmed: rgba(0, 0, 0, 0.3);
+    --light-dimmed: rgba(0, 0, 0, 0.05);
+
+//Fill
+--textBox: #f9f9f9;
+
+// Components
+--buttonStroke: #e9eaed;
+    --badge: #868d94;
+    --icon1: #b4b9c1;
+    --light-material-divider: #f0f0f0;
+    --dimmed: rgba(0, 0, 0, 0.3);
+    --bar: #b4b9c1;
+    --light-material-icon-sub: #727988;
+
+// status
+--status-increase: #fa5f5f;
+    --status-increase-fill: rgba(250, 95, 95, 0.1);
+    --status-increase-fill-solid: #feefef;
+    --status-decrease: #2475ef;
+    --status-decrease-fill: rgba(36, 117, 239, 0.1);
+
+    --chart-line-orange: #f98e41;
+    --chart-fill-start-orange: rgba(249, 142, 65, 0.2);
+    --chart-fill-end-orange: rgba(249, 142, 65, 0);
+    --chart-line-blue: #418bf9;
+    --chart-fill-start-blue: rgba(65, 139, 249, 0.2);
+    --chart-fill-end-blue: rgba(65, 139, 249, 0);
+
+    --line2: #e5e6eb;
+    --line3: #c9cdd4;
+}
+
+[data-theme="Dark"] {
+    --main: #ffffff;
+    --sub: #868d9a;
+    --disableTxt: #575d65;
+
+    --bg: #1d1d21;
+
+//Fill
+--textBox: #242429;
+
+// Components
+--buttonStroke: #303036;
+    --sectionLine: #343a45;
+    --badge: #868d94;
+    --icon1: #727988;
+}

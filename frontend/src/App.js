@@ -1,16 +1,15 @@
 import './App.css';
 import {Route, Routes} from "react-router-dom";
-import {Global} from "@emotion/react";
-import {reset} from "./styles/reset";
-import Header from "./components/layouts/header";
+import HomeHeader from "./components/layouts/header/HomeHeader";
 import HomePage from "./pages/HomePage";
 import styled from "@emotion/styled";
+import "./styles/globals.scss";
+import Nav from "./components/layouts/Nav";
 
 function App() {
   return (
     <AppComponent>
-        <Global styles={reset}/>
-        <Header/>
+        <HomeHeader/>
         <Routes>
             <Route path={"/"} element={<HomePage/>}/>
         </Routes>
