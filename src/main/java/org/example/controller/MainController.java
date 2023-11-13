@@ -11,9 +11,9 @@ public class MainController {
         return "member/regist";
     }
 
-    @RequestMapping("/member/login")
+    @RequestMapping("/auth/logIn")
     public String loginPage() {
-        return "member/login";
+        return "auth/login";
     }
 
     @RequestMapping("/member/password")
@@ -26,8 +26,8 @@ public class MainController {
         return "member/home";
     }
 
-    @RequestMapping("/member/logout")
-    public String logout(){return "/member/logout";}
+    @RequestMapping("/auth/logout")
+    public String logout(){return "/auth/logout";}
 
 
 }

@@ -70,6 +70,9 @@ public class MemberController {
     }
 
     @GetMapping("/logout")
+    // 로그인 상태에서만 로그아웃
+    // 쿠키로 로그인 상태인 회원만 로그아웃
+
     public String logout(HttpSession httpSession){
         httpSession.invalidate();
         return "/member/login";

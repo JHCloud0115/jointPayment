@@ -28,7 +28,7 @@
             email = #{email}
     </select>
 
-    <select id="selectMemberPasswordByEmail" resultType="org.example.model.response.MemberPassword">
+    <select id="selectMemberPasswordByEmail" resultType="org.example.model.response.member.MemberPassword">
         SELECT
             password
         FROM
@@ -38,20 +38,6 @@
 
     </select>
 
-    <insert id="insertMember" parameterType="org.example.model.member.Member" useGeneratedKeys="true" keyProperty="memberUid">
-        INSERT INTO
-        member(
-            member_name,
-            password,
-            email,
-            mobile)
-        VALUES(
-            #{memberName},
-            #{password},
-            #{email},
-            #{mobile}
-        )
-    </insert>
 
     <insert id="insertMember2">
         INSERT INTO `member`(

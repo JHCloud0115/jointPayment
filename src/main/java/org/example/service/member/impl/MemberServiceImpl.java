@@ -2,10 +2,12 @@ package org.example.service.member.impl;
 
 import org.example.common.util.AES256;
 import org.example.common.util.SHA256;
+import org.example.mapper.member.MemberLoginFailMapper;
 import org.example.mapper.member.MemberMapper;
 import org.example.model.req.member.MemberInsertReq;
 import org.example.model.member.Member;
-import org.example.model.response.MemberPassword;
+import org.example.model.response.member.MemberLoginFailResp;
+import org.example.model.response.member.MemberPassword;
 import org.example.service.member.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import java.util.List;
 public class MemberServiceImpl implements MemberService {
 
     private MemberMapper memberMapper;
+    private MemberLoginFailMapper memberLoginFailMapper;
 
 
     @Autowired
@@ -41,6 +44,12 @@ public class MemberServiceImpl implements MemberService {
         return memberMapper.selectMemberPasswordByEmail(email);
     }
 
+
+    /**
+     * 회원가입
+     *
+     *
+     **/
     @Override
     public void insertMember2(MemberInsertReq memberInsertReq) throws Exception{
 

@@ -1,4 +1,4 @@
-package org.example.model.response;
+package org.example.model.response.member;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
@@ -21,6 +21,5 @@ public class LoginResp {
     private int memberUid;
     private String token;
     private String email;
-    private String secretKey;
 
 }
