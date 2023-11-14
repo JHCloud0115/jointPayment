@@ -58,7 +58,7 @@ public class MemberLoginServiceImpl implements MemberLoginService {
     @Override
     public ResponseEntity<TokenResponse> loginIn(String email, String password) throws Exception {
 
-        Member member =memberMapper.selectMemberByEmail(email);
+        Member member = memberMapper.selectMemberByEmail(email);
         SHA256 sha256 = new SHA256();
 
 

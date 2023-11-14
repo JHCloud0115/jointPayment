@@ -31,7 +31,7 @@
         ) SELECT
                  #{email}
                , #{ip}
-               , COALESCE(MAX(m.try_count) + 1, 1)
+               , COALESCE(MAX(try_count) + 1, 1)
                , now()
         FROM
             member_login_fail
