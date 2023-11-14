@@ -36,4 +36,6 @@ public class MemberInsertReq {
     @CellphoneValidation(message = "01로 시작하는 숫자만 입력해주세요")
     private String cellphone;
 
+    private LocalDateTime createdAt;
+
 }

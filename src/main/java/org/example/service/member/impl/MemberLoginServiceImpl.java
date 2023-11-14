@@ -61,7 +61,6 @@ public class MemberLoginServiceImpl implements MemberLoginService {
         Member member = memberMapper.selectMemberByEmail(email);
         SHA256 sha256 = new SHA256();
 
-
         if (member.getPassword() != null) {
             MemberLoginFailResp memberLoginFailResp = memberLoginFailMapper.selectMemberLoginFailCnt(email);
 
@@ -85,10 +84,10 @@ public class MemberLoginServiceImpl implements MemberLoginService {
                     throw new Exception("로그인 실패 정보를 가져올 수 없습니다.");
                 }
             } catch (Exception e) {
+                e.printStackTrace();
                 throw new Exception("로그인 실패 처리 중 오류 발생");
             }
         }
-
 
         MemberToken storedToken = memberTokenMapper.selectMemberTokenByEmail(email);
         if(storedToken == null){

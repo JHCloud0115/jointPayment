@@ -66,7 +66,6 @@ public class MemberServiceImpl implements MemberService {
         AES256 aes256 = new AES256();
         memberInsertReq.setMemberName(aes256.encrypt(memberInsertReq.getMemberName()));
         memberInsertReq.setCellphone(aes256.encrypt(memberInsertReq.getCellphone()));
-
         memberMapper.insertMember2(memberInsertReq);
     }
 

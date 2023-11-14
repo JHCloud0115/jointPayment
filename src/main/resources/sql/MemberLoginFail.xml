@@ -29,14 +29,16 @@
                                      ,try_count
                                      ,edited_at
         ) SELECT
-                 #{email}
+                 m.#{email}
                , #{ip}
                , COALESCE(MAX(try_count) + 1, 1)
                , now()
         FROM
-            member_login_fail
+            member_login_fail mlf
+        left join
+                member m on m.email = mlf.email
         WHERE
-            email = #{email}
+            m.email = #{email}
     </insert>
 
     <update id="updateLoginFailCount" >
