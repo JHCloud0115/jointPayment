@@ -42,18 +42,6 @@ public class MemberController {
         return ResponseEntity.ok(emailResult);
     }
 
-//    @PostMapping("/password")
-//    public Boolean selectMemberPasswordByEmail(@RequestBody @Valid MemberPasswordReq memberPasswordReq)throws Exception{
-//        MemberPasswordByEmail memberPasswordCheck = memberService.selectMemberPasswordByEmail(memberPasswordReq.getEmail());
-//        SHA256 sha256 = new SHA256();
-//
-//        if (memberPasswordCheck != null) {
-//            if (memberPasswordCheck.getPassword().equals(sha256.encrypt(memberPasswordReq.getPassword()))) {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
 
     @PostMapping("/regist")
     public CommonResponse<Void> insertMember2(@RequestBody @Valid MemberInsertReq memberInsertReq) throws Exception {
@@ -69,14 +57,7 @@ public class MemberController {
         return new CommonResponse<>();
     }
 
-    @GetMapping("/logout")
-    // 로그인 상태에서만 로그아웃
-    // 쿠키로 로그인 상태인 회원만 로그아웃
 
-    public String logout(HttpSession httpSession){
-        httpSession.invalidate();
-        return "/member/login";
-    }
 
 
 }

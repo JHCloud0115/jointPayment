@@ -11,8 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class LoginFail  {
 
-    private String loginFailUid;
-    private String serviceCode;
+    private int loginFailUid;
     private String email;
     private String ip;
     private Integer tryCount;

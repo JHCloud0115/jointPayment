@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.validation.constraints.NotEmpty;
+import java.time.LocalDateTime;
 
 
 @Getter
@@ -27,5 +28,7 @@ public class Member {
     private String password;
 
     private String cellphone;
+
+    private LocalDateTime createdAt;
 
 }

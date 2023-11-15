@@ -14,4 +14,8 @@ spring:
       driver-class-name: com.mysql.cj.jdbc.Driver
       jdbc-url: jdbc:mysql://localhost:3306/payment
       username: root
-      password: tpdms10915
+      password: Dlwngml12!
+  logging:
+    level:
+      root: INFO
+      com.example.YourClass: DEBUG

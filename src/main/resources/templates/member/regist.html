@@ -35,11 +35,11 @@
                 </tr>
                 <tr>
                     <th scope="row">비밀번호 재입력<span class="es">필수 입력</span></th>
-                    <td><input type="password" id="passwordCheck" name="passwordCheck" placeholder="비밀번호 재입력" maxlength="30" /></td>
+                    <td><input type="password" id="passwordCheck" placeholder="비밀번호 재입력" maxlength="30" /></td>
                 </tr>
                 <tr>
                     <th scope="row">이름<span class="es">필수 입력</span></th>
-                    <td><input type="text" id="name" name="name" placeholder="이름" maxlength="10" />
+                    <td><input type="text" id="memberName" name="memberName" placeholder="이름" maxlength="10" />
                     이름음 한글로 입력해주세요.
                     </td>
                 </tr>
@@ -81,7 +81,7 @@
 
     function emailCheckBtn() {
         const email = document.getElementById("email").value;
-        axios.get('/member/emailCheck', {
+        axios.get('/member/email/check', {
             params: { email: email }
             })
             .then(function (response) {
@@ -107,25 +107,26 @@
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
         const passwordCheck = document.getElementById("passwordCheck").value;
-        const name = document.getElementById("name").value;
+        const memberName = document.getElementById("memberName").value;
         const cellphone = document.getElementById("cellphone").value;
 
         // 이메일 형식 확인
-        if(email.indexOf('@') == -1){
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
             alert("올바른 이메일 형식으로 입력해주세요.");
             email.focus();
             return false;
         }
         // 패스워드
-        if(password.value !== passwordCheck.value){
+        if(password !== passwordCheck){
             alert("비밀번호를 다시 입력해주세요.");
             passwordCheck.select();
             return false;
         }
         // 이름 입력확인
-        if(name.length ===0){
+        if(memberName.length ===0){
             alert("이름이 누락되었습니다.");
-            name.focus();
+            memberName.focus();
             return false;
         }
         // 전화번호 형식 확인 자리수 등등
@@ -139,7 +140,7 @@
             email
             , password
             , passwordCheck
-            , name
+            , memberName
             , cellphone
         }
 
@@ -155,10 +156,6 @@
                     alert("위의 조건을 다시 한 번 확인해주세요");
                 }
             })
-            // .catch(error => {
-            //     // 에러가 발생한 경우
-            //     alert("에러 발생: " + error.message);
-            // })
             .finally(() => {
                 alert("요청 완료");
             });

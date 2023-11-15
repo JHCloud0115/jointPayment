@@ -22,5 +22,4 @@ public interface MemberMapper {
 
     void insertMember2(MemberInsertReq memberInsertReq) throws DataAccessException;
 
-    void updateMemberBlock(@Param("memberUid") int memberUid) throws DataAccessException;
 }

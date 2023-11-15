@@ -4,8 +4,10 @@ import org.example.common.constants.ApplicationConstants;
 import org.example.common.util.SHA256;
 import org.example.common.util.TokenProvider;
 import org.example.mapper.member.MemberLoginFailMapper;
+import org.example.mapper.member.MemberLoginMapper;
 import org.example.mapper.member.MemberMapper;
 import org.example.mapper.member.MemberTokenMapper;
+import org.example.model.member.LoginFail;
 import org.example.model.member.Member;
 import org.example.model.member.MemberToken;
 import org.example.model.req.member.MemberTokenReq;
@@ -26,6 +28,7 @@ public class MemberLoginServiceImpl implements MemberLoginService {
     private MemberMapper memberMapper;
     private MemberLoginFailMapper memberLoginFailMapper;
     private MemberTokenMapper memberTokenMapper;
+    private MemberLoginMapper memberLoginMapper;
     private TokenProvider tokenProvider;
 
 
@@ -35,12 +38,14 @@ public class MemberLoginServiceImpl implements MemberLoginService {
             MemberMapper memberMapper,
             TokenProvider tokenProvider,
             MemberLoginFailMapper memberLoginFailMapper,
-            MemberTokenMapper memberTokenMapper
+            MemberTokenMapper memberTokenMapper,
+            MemberLoginMapper memberLoginMapper
     ){
         this.memberMapper =memberMapper;
         this.tokenProvider = tokenProvider;
         this.memberLoginFailMapper = memberLoginFailMapper;
         this.memberTokenMapper = memberTokenMapper;
+        this.memberLoginMapper = memberLoginMapper;
 
     }
 
@@ -53,14 +58,34 @@ public class MemberLoginServiceImpl implements MemberLoginService {
     @Override
     public ResponseEntity<TokenResponse> loginIn(String email, String password) throws Exception {
 
-        Member member =memberMapper.selectMemberByEmail(email);
+        Member member = memberMapper.selectMemberByEmail(email);
         SHA256 sha256 = new SHA256();
 
-        if(member.getPassword()!=null){
+        if (member.getPassword() != null) {
             MemberLoginFailResp memberLoginFailResp = memberLoginFailMapper.selectMemberLoginFailCnt(email);
-            if(memberLoginFailResp.getFailCnt()> ApplicationConstants.PASSWORD_FAILL_LOCK){
-                memberMapper.updateMemberBlock(member.getMemberUid());
-                throw new Exception("비밀번호가 유효하지 않습니다.");
+
+            try {
+                if (memberLoginFailResp != null) {
+                    LoginFail loginFail = LoginFail.builder()
+                            .email(email)
+                            .ip("") // TODO ip 값 할당.
+                            .tryCount(memberLoginFailResp.getFailCnt())
+                            .build();
+
+                    if (memberLoginFailResp.getFailCnt() > ApplicationConstants.PASSWORD_FAILL_LOCK) {
+                        memberLoginMapper.updateMemberBlock(member.getMemberUid());
+                        throw new Exception("비밀번호가 유효하지 않습니다.");
+                    } else if (memberLoginFailResp.getFailCnt() == ApplicationConstants.ONE) {
+                        memberLoginFailMapper.insertLoginFail(loginFail);
+                    } else {
+                        memberLoginFailMapper.updateLoginFailCount(loginFail);
+                    }
+                } else {
+                    throw new Exception("로그인 실패 정보를 가져올 수 없습니다.");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new Exception("로그인 실패 처리 중 오류 발생");
             }
         }
 
