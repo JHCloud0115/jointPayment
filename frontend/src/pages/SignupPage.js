@@ -1,15 +1,15 @@
 import styled from '@emotion/styled';
 import DefaultLayout from "../layouts/DefaultLayout";
-import LoginInputs from "../components/login/LoginInputs";
-const LoginPage = ()=>{
+import SignupInputs from "../components/signup/SignupInputs";
+const SignupPage = ()=>{
     return(
-        <DefaultLayout title={"로그인"}>
-            <LoginInputs/>
+        <DefaultLayout title={"회원가입"}>
+            <SignupInputs/>
         </DefaultLayout>
     )
 }
 
-export default LoginPage
+export default SignupPage
 
 const Wrapper = styled.div`
   width: 100%;

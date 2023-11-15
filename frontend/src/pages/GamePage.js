@@ -1,19 +1,12 @@
-import styled from '@emotion/styled';
+import DefaultLayout from "../layouts/DefaultLayout";
 const GamePage = ()=>{
     return(
-        <Wrapper>
-            <Content>
-                게임페이지
-            </Content>
-        </Wrapper>
+        <DefaultLayout title={"게임"}>
+
+        </DefaultLayout>
     )
 }
 
 export default GamePage
 
-const Wrapper = styled.div`
-  width: 100%;
-  height: 100%;
-`;
-const Content = styled.div`
-`;
+

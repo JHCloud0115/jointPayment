@@ -1,29 +1,35 @@
 import styled from '@emotion/styled';
+import {useNavigate} from "react-router";
 
 const LoginInputs = () => {
+    const navigate = useNavigate();
     return (
         <Wrapper>
-            <InputWrap>
-                <Label>아이디</Label>
-                <Input
-                    minLength={4}
-                    maxLength={50}
-                    placeholder="아이디 입력"
-                />
-                <Label>비밀번호</Label>
-                <Input
-                    minLength={10}
-                    maxLength={50}
-                    placeholder="비밀번호 입력"
-                    type="password"
-                />
-            </InputWrap>
+            <LoginInputWrap>
+                <InputWrap>
+                    <Label>아이디</Label>
+                    <Input
+                        minLength={4}
+                        maxLength={50}
+                        placeholder="아이디 입력"
+                    />
+                </InputWrap>
+                <InputWrap>
+                    <Label>비밀번호</Label>
+                    <Input
+                        minLength={10}
+                        maxLength={50}
+                        placeholder="비밀번호 입력"
+                        type="password"
+                    />
+                </InputWrap>
+            </LoginInputWrap>
 
             <Button>
                 로그인
             </Button>
             <SubBtnWrap>
-                <SubButton>
+                <SubButton onClick={()=>navigate("/regist")}>
                     회원가입
                 </SubButton>
                 <SubButton>
@@ -44,16 +50,21 @@ const Wrapper = styled.div`
   gap: 24px;
   margin-bottom: 40px;
 `;
-
+const LoginInputWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 40px 0;
+`;
 const InputWrap = styled.div`
-
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 `;
 const Label = styled.div`
 
 `;
 const Input = styled.input`
-  width: 100%;
-  height: 100%;
   padding: 8px 16px;
   border-radius: 5px;
   transition: all 0.1s ease-in-out;
@@ -85,16 +96,19 @@ const Button = styled.div`
   width: 100%;
   height: 56px;
   border-radius: 10px;
-  text-align: center;
-  white-space: nowrap;
+  display: flex;
+  align-items: center;  
+  justify-content: center;
   opacity: 0.4;
 `;
 const SubBtnWrap = styled.div`
   display: flex;
   gap: 16px;
   justify-content: center;
+  margin: 16px 0;
 `;
 
 const SubButton = styled.div`
+    cursor: pointer;
 
 `;

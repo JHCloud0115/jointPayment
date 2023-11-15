@@ -4,7 +4,7 @@ import HomePage from "./pages/HomePage";
 import styled from "@emotion/styled";
 import "./styles/globals.scss";
 import LoginPage from "./pages/LoginPage";
-import RegistPage from "./pages/RegistPage";
+import SignupPage from "./pages/SignupPage";
 import GamePage from "./pages/GamePage";
 
 function App() {
@@ -14,7 +14,7 @@ function App() {
             <Route path={"/"} element={<HomePage/>}/>
             <Route path={"/game"} element={<GamePage/>}/>
             <Route path={"/login"} element={<LoginPage/>}/>
-            <Route path={"/regist"} element={<RegistPage/>}/>
+            <Route path={"/regist"} element={<SignupPage/>}/>
         </Routes>
     </AppComponent>
   );

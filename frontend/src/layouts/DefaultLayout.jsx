@@ -1,12 +1,14 @@
 import styled from "@emotion/styled";
 import SvgWrapper from "../components/SvgWrapper";
 import ArrowLeftSvg from "../components/svgs/ArrowLeftSvg";
+import {useNavigate} from "react-router";
 
 const DefaultLayout = ({children, title=""})=>{
+    const navigate = useNavigate();
     return(
         <LayoutWrapper>
             <ContentHeader>
-                <SvgWrapper>
+                <SvgWrapper onClick = {()=> navigate(-1)}>
                     <ArrowLeftSvg diameter={18} color="var(--main)" />
                 </SvgWrapper>
                 <h1>{title}</h1>
@@ -18,9 +20,9 @@ const DefaultLayout = ({children, title=""})=>{
 export  default DefaultLayout
 
 const LayoutWrapper = styled.div`
-  width: 100%;
+  display: flex;
+  justify-content: center;
   height: 100vh;
-  max-width: 480px;
 `
 const ContentHeader = styled.div`
   width: 100%;
@@ -53,5 +55,8 @@ const ContentHeader = styled.div`
 `;
 
 const Content = styled.div`
-    margin-top: 48px;
+    width: 100%;
+    max-width: 480px;
+    padding: 16px;
+    margin-top: 16px;
  `
