@@ -12,8 +12,6 @@ import java.time.LocalDateTime;
 public class LoginFail  {
 
     private int loginFailUid;
-    private String email;
-    private String ip;
     private Integer tryCount;
     private LocalDateTime editedAt;
 

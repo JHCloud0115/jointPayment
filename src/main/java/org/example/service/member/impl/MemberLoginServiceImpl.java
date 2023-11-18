@@ -67,8 +67,6 @@ public class MemberLoginServiceImpl implements MemberLoginService {
             try {
                 if (memberLoginFailResp != null) {
                     LoginFail loginFail = LoginFail.builder()
-                            .email(email)
-                            .ip("") // TODO ip 값 할당.
                             .tryCount(memberLoginFailResp.getFailCnt())
                             .build();
 
@@ -101,15 +99,8 @@ public class MemberLoginServiceImpl implements MemberLoginService {
             memberToken.setEmail(email);
             memberTokenMapper.insertMemberToken(memberToken);
 
-            // Refresh Token은 HttpOnly 쿠키에 저장
-            Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
-            refreshTokenCookie.setHttpOnly(true);
-
-            // Secure 속성은 HTTPS 연결에서만 쿠키를 전송하도록 설정
-            refreshTokenCookie.setSecure(true);
-
             return ResponseEntity.ok()
-                    .header("Set-Cookie", refreshTokenCookie.toString())
+                    .header("Set-Cookie", refreshToken.toString())
                     .body(new TokenResponse("Login successful.", accessToken, refreshToken));
         }
 

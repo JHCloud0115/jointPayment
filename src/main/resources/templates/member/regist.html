@@ -115,25 +115,25 @@
         if (!emailRegex.test(email)) {
             alert("올바른 이메일 형식으로 입력해주세요.");
             email.focus();
-            return false;
+            return true;
         }
         // 패스워드
         if(password !== passwordCheck){
             alert("비밀번호를 다시 입력해주세요.");
             passwordCheck.select();
-            return false;
+            return true;
         }
         // 이름 입력확인
         if(memberName.length ===0){
             alert("이름이 누락되었습니다.");
             memberName.focus();
-            return false;
+            return true;
         }
         // 전화번호 형식 확인 자리수 등등
         if(isNaN(cellphone)){
             alert("전화번호는 숫자만 가능합니다.");
             cellphone.focus();
-            return false;
+            return true;
         }
 
         const req = {

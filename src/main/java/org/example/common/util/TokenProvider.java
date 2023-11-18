@@ -1,10 +1,14 @@
 package org.example.common.util;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.example.mapper.member.MemberTokenMapper;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
 import java.util.Date;
@@ -17,6 +21,12 @@ public class TokenProvider {
     private final int accessTokenValidity = 1000 * 60 * 30; // 30분
     private final int refreshTokenValidity = 1000 * 60 * 60 * 24 * 7; // 7일
 
+    private final MemberTokenMapper memberTokenMapper;
+
+    public TokenProvider(MemberTokenMapper memberTokenMapper) {
+        this.memberTokenMapper = memberTokenMapper;
+    }
+
     public String createAccessToken(String id) throws Exception {
         return createToken(id, accessTokenValidity);
     }
@@ -25,8 +35,10 @@ public class TokenProvider {
         return createToken(id, refreshTokenValidity);
     }
 
+    // 토큰 생성
     private String createToken(String id, int validity) throws Exception {
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+        Claims claims = Jwts.claims().setSubject(id); // user 식별할 값
 
         Date now = new Date();
         Date validityDate = new Date(now.getTime() + validity);
@@ -40,10 +52,32 @@ public class TokenProvider {
 
         return Jwts.builder()
                 .setHeader(headerMap)
-                .setIssuer(id)
+                .setClaims(claims)
                 .setExpiration(validityDate)
                 .setIssuedAt(now)
                 .signWith(signatureAlgorithm, signingKey)
                 .compact();
     }
+
+
+    // 토큰에서 회원 정보 추출
+    public String getUserPk(String token) {
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+    }
+
+    // Request의 Header에서 token 값을 가져옵니다. "Authorization" : "TOKEN값'
+    public String resolveToken(HttpServletRequest request) {
+        return request.getHeader("Authorization");
+    }
+
+    // 토큰의 유효성 + 만료일자 확인
+    public boolean validateToken(String jwtToken) {
+        try {
+            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
+            return !claims.getBody().getExpiration().before(new Date());
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
 }
