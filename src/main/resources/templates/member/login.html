@@ -48,7 +48,8 @@
             return false;
         }
 
-        return true;
+        alert('이메일과 비밀번호를 입력해주세요.')
+        return false;
     }
 
     function loginClick() {
@@ -74,7 +75,8 @@
                 }
             })
             .catch(function (error) {
-                console.error(error);
+                alert('다시 입력해주세요');
+                return false;
             });
     }
 

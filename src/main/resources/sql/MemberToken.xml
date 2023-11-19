@@ -35,14 +35,12 @@
     <insert id="insertMemberToken" useGeneratedKeys="true">
         INSERT INTO member_token (
             email,
-            access_token,
-            refresh_token,
+            token,
             created_at,
             updated_at
         )VALUES (
                     #{email},
-                    #{accessToken},
-                    #{refreshToken},
+                    #{token},
                     now(),
                     now()
                 )

@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.apache.ibatis.annotations.Param;
 import org.example.mapper.member.MemberTokenMapper;
 import org.springframework.stereotype.Component;
 
@@ -27,21 +28,21 @@ public class TokenProvider {
         this.memberTokenMapper = memberTokenMapper;
     }
 
-    public String createAccessToken(String id) throws Exception {
-        return createToken(id, accessTokenValidity);
+    public String createAccessToken(@Param("email") String email) throws Exception {
+        return createToken(email);
     }
 
-    public String createRefreshToken(String id) throws Exception {
-        return createToken(id, refreshTokenValidity);
+    public String createRefreshToken(@Param("email") String email) throws Exception {
+        return createToken(email);
     }
 
     // 토큰 생성
-    private String createToken(String id, int validity) throws Exception {
+    public String createToken(@Param("email") String email) throws Exception {
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-        Claims claims = Jwts.claims().setSubject(id); // user 식별할 값
+        Claims claims = Jwts.claims().setSubject(email); // user 식별할 값
 
         Date now = new Date();
-        Date validityDate = new Date(now.getTime() + validity);
+        Date validityDate = new Date(now.getTime() + refreshTokenValidity);
 
         byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(secretKey);
         Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());

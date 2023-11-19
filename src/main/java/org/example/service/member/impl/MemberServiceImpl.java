@@ -2,8 +2,11 @@ package org.example.service.member.impl;
 
 import org.example.common.util.AES256;
 import org.example.common.util.SHA256;
+import org.example.common.util.TokenProvider;
 import org.example.mapper.member.MemberLoginFailMapper;
 import org.example.mapper.member.MemberMapper;
+import org.example.mapper.member.MemberTokenMapper;
+import org.example.model.member.MemberToken;
 import org.example.model.req.member.MemberInsertReq;
 import org.example.model.member.Member;
 import org.example.model.response.member.MemberLoginFailResp;
@@ -18,12 +21,21 @@ import java.util.List;
 public class MemberServiceImpl implements MemberService {
 
     private MemberMapper memberMapper;
+    private MemberTokenMapper memberTokenMapper;
     private MemberLoginFailMapper memberLoginFailMapper;
+
+    private TokenProvider tokenProvider;
 
 
     @Autowired
-    public MemberServiceImpl(MemberMapper memberMapper) {
+    public MemberServiceImpl(MemberMapper memberMapper
+                            ,MemberTokenMapper memberTokenMapper
+                            ,MemberLoginFailMapper memberLoginFailMapper
+                            ,TokenProvider tokenProvider) {
         this.memberMapper = memberMapper;
+        this.memberTokenMapper = memberTokenMapper;
+        this.memberLoginFailMapper = memberLoginFailMapper;
+        this.tokenProvider = tokenProvider;
     }
 
     @Override
@@ -66,7 +78,16 @@ public class MemberServiceImpl implements MemberService {
         AES256 aes256 = new AES256();
         memberInsertReq.setMemberName(aes256.encrypt(memberInsertReq.getMemberName()));
         memberInsertReq.setCellphone(aes256.encrypt(memberInsertReq.getCellphone()));
+
+        // 토큰 생성
+        MemberToken memberToken = new MemberToken();
+        String token = tokenProvider.createToken(memberInsertReq.getEmail());
+        memberToken.setToken(token);
+        memberToken.setEmail(memberInsertReq.getEmail());
+        memberTokenMapper.insertMemberToken(memberToken);
+
         memberMapper.insertMember2(memberInsertReq);
+
     }
 
 }

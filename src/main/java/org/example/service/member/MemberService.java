@@ -1,5 +1,6 @@
 package org.example.service.member;
 
+import org.example.model.member.MemberToken;
 import org.example.model.req.member.MemberInsertReq;
 import org.example.model.member.Member;
 import org.example.model.response.member.MemberLoginFailResp;

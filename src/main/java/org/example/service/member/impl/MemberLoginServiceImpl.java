@@ -51,91 +51,43 @@ public class MemberLoginServiceImpl implements MemberLoginService {
 
 
     /**
-     * 로그인
-     *
+     * 로그인 횟수 확인
      *
      **/
     @Override
-    public ResponseEntity<TokenResponse> loginIn(String email, String password) throws Exception {
+    public boolean loginInCnt(String email, String password) throws Exception {
 
-        Member member = memberMapper.selectMemberByEmail(email);
-        SHA256 sha256 = new SHA256();
+            Member member = memberMapper.selectMemberByEmail(email);
+            SHA256 sha256 = new SHA256();
 
-        if (member.getPassword() != null) {
+            if (member.getPassword() == null) {
+                throw new Exception("Check Password");
+            }
+            if(member.getPassword().equals(sha256.encrypt(password))){
+                throw new Exception("Check Password");
+            }
+
             MemberLoginFailResp memberLoginFailResp = memberLoginFailMapper.selectMemberLoginFailCnt(email);
 
-            try {
-                if (memberLoginFailResp != null) {
-                    LoginFail loginFail = LoginFail.builder()
-                            .tryCount(memberLoginFailResp.getFailCnt())
-                            .build();
+            LoginFail loginFail = new LoginFail();
+            loginFail.setLoginFailUid(member.getMemberUid());
+            loginFail.setTryCount(memberLoginFailResp.getTryCount());
 
-                    if (memberLoginFailResp.getFailCnt() > ApplicationConstants.PASSWORD_FAILL_LOCK) {
-                        memberLoginMapper.updateMemberBlock(member.getMemberUid());
-                        throw new Exception("비밀번호가 유효하지 않습니다.");
-                    } else if (memberLoginFailResp.getFailCnt() == ApplicationConstants.ONE) {
-                        memberLoginFailMapper.insertLoginFail(loginFail);
-                    } else {
-                        memberLoginFailMapper.updateLoginFailCount(loginFail);
-                    }
-                } else {
-                    throw new Exception("로그인 실패 정보를 가져올 수 없습니다.");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new Exception("로그인 실패 처리 중 오류 발생");
+            if (loginFail.getTryCount() > ApplicationConstants.PASSWORD_FAILL_LOCK) {
+                memberLoginMapper.updateMemberBlock(member.getMemberUid());
+                throw new Exception("계정 잠금 처리 되었습니다.");
+            } else if (loginFail.getTryCount() == ApplicationConstants.ZERO) {
+                memberLoginFailMapper.insertLoginFail(loginFail);
+            } else {
+                memberLoginFailMapper.updateLoginFailCount(loginFail);
             }
+            return true;
         }
 
-        MemberToken storedToken = memberTokenMapper.selectMemberTokenByEmail(email);
-        if(storedToken == null){
-            // Access Token 및 Refresh Token 생성
-            String accessToken = tokenProvider.createAccessToken(email);
-            String refreshToken = tokenProvider.createRefreshToken(email);
-
-            MemberToken memberToken = new MemberToken();
-            memberToken.setRefreshToken(refreshToken);
-            memberToken.setAccessToken(accessToken);
-            memberToken.setEmail(email);
-            memberTokenMapper.insertMemberToken(memberToken);
-
-            return ResponseEntity.ok()
-                    .header("Set-Cookie", refreshToken.toString())
-                    .body(new TokenResponse("Login successful.", accessToken, refreshToken));
-        }
-
-        if (member.getPassword() != null && member.getPassword().equals(sha256.encrypt(password))) {
-            try {
-                // 회원 확인하고 새로운 Token 생성
-                String accessToken = tokenProvider.createAccessToken(email);
-                String newRefreshToken = tokenProvider.createRefreshToken(email);
-
-                // 기존 토큰 업데이트
-                MemberTokenReq memberTokenReq =new MemberTokenReq();
-                memberTokenReq.setAccessToken(accessToken);
-                memberTokenReq.setRefreshToken(newRefreshToken);
-                memberTokenMapper.upateMemberToken(memberTokenReq);
-
-                // 새로운 Refresh Token을 HttpOnly 쿠키에 저장
-                Cookie refreshTokenCookie = new Cookie("refreshToken", newRefreshToken);
-                refreshTokenCookie.setHttpOnly(true);
-
-                // Secure 속성은 HTTPS 연결에서만 쿠키를 전송하도록 설정
-                refreshTokenCookie.setSecure(true);
-
-                return ResponseEntity.ok()
-                        .header("Set-Cookie", refreshTokenCookie.toString())
-                        .body(new TokenResponse("Login successful.", accessToken, newRefreshToken));
-
-
-            } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new TokenResponse("Failed to generate token.", null, null));
-            }
-        } else {
-            // 인증 실패 응답 반환
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new TokenResponse("Authentication failed.", null, null));
-        }
-    }
+    /**
+     * 토큰 확인 및 refreshToken 적용
+     *
+      */
 
 
     /**
