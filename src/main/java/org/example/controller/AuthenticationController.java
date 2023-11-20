@@ -1,16 +1,13 @@
 package org.example.controller;
 
-import org.example.common.util.TokenProvider;
 import org.example.model.req.member.MemberPasswordReq;
 import org.example.model.response.TokenResponse;
 import org.example.service.member.MemberLoginService;
-import org.example.service.member.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @RestController
@@ -27,8 +24,8 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public TokenResponse login(@RequestBody @Valid MemberPasswordReq memberPasswordReq) throws Exception {
-//        return memberLoginService.loginIn(memberPasswordReq.getEmail(), memberPasswordReq.getPassword());
-        return null;
+       memberLoginService.loginInCnt(memberPasswordReq);
+       return memberLoginService.createToken(memberPasswordReq);
     }
 
     @PostMapping("/logout")

@@ -50,7 +50,7 @@ public class MemberController {
 
         if(emailResult == 0){
             if(!memberInsertReq.getPassword().equals(memberInsertReq.getPasswordCheck())){
-                throw new Exception("비밀번호가 일치하지 않습니다");
+                throw new Exception("Check Password");
             }
             memberService.insertMember2(memberInsertReq);
         }

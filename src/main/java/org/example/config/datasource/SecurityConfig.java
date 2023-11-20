@@ -1,22 +1,19 @@
 package org.example.config.datasource;
 
 
+import org.example.common.util.JwtAuthenticationFilter;
 import org.example.common.util.TokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final TokenProvider tokenProvider;
-
     public SecurityConfig(TokenProvider tokenProvider) {
         this.tokenProvider = tokenProvider;
     }
@@ -41,12 +38,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID")
                 .and()
+                .addFilter(new JwtAuthenticationFilter(tokenProvider))
                 .sessionManagement().disable();
-
-//                .addFilterBefore(new JwtAuthenticationFilter(tokenProvider),
-//                        UsernamePasswordAuthenticationFilter.class); // JwtAuthenticationFilter를 UsernamePasswordAuthenticationFilter 전에 넣는다
-        // + 토큰에 저장된 유저정보를 활용하여야 하기 때문에 CustomUserDetailService 클래스를 생성합니다.
-//        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
     }
 }

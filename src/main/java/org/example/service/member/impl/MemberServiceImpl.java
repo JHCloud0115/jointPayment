@@ -9,6 +9,7 @@ import org.example.mapper.member.MemberTokenMapper;
 import org.example.model.member.MemberToken;
 import org.example.model.req.member.MemberInsertReq;
 import org.example.model.member.Member;
+import org.example.model.response.TokenResponse;
 import org.example.model.response.member.MemberLoginFailResp;
 import org.example.model.response.member.MemberPassword;
 import org.example.service.member.MemberService;
@@ -79,12 +80,6 @@ public class MemberServiceImpl implements MemberService {
         memberInsertReq.setMemberName(aes256.encrypt(memberInsertReq.getMemberName()));
         memberInsertReq.setCellphone(aes256.encrypt(memberInsertReq.getCellphone()));
 
-        // 토큰 생성
-        MemberToken memberToken = new MemberToken();
-        String token = tokenProvider.createToken(memberInsertReq.getEmail());
-        memberToken.setToken(token);
-        memberToken.setEmail(memberInsertReq.getEmail());
-        memberTokenMapper.insertMemberToken(memberToken);
 
         memberMapper.insertMember2(memberInsertReq);
 

@@ -1,18 +1,19 @@
 package org.example.model.response;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+
+import java.util.Collection;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class TokenResponse {
     private String message;
     private String accessToken;
     private String refreshToken;
+    private Collection<? extends GrantedAuthority> authorities;
 
-    public TokenResponse(String message, String accessToken, String refreshToken) {
-        this.message = message;
-        this.accessToken = accessToken;
-        this.refreshToken = refreshToken;
-    }
 }

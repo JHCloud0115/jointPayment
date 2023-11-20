@@ -1,13 +1,14 @@
 package org.example.service.member;
 
-import org.example.model.member.LoginFail;
+import org.example.model.req.member.MemberPasswordReq;
 import org.example.model.response.TokenResponse;
-import org.springframework.http.ResponseEntity;
 
 public interface MemberLoginService {
 
-    boolean loginInCnt(String email, String password) throws Exception;
+    boolean loginInCnt(MemberPasswordReq memberPasswordReq) throws Exception;
 
-    ResponseEntity<String> logOut(String email) throws Exception;
+    TokenResponse createToken(MemberPasswordReq memberPasswordReq) throws Exception;
+
+    void logOut(String email) throws Exception;
 
 }
