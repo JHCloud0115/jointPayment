@@ -1,7 +1,6 @@
 package org.example.config.datasource;
 
 
-import org.example.common.util.JwtAuthenticationFilter;
 import org.example.common.util.TokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .anyRequest().permitAll()
+                .antMatchers("/member/login").permitAll()
                 .and()
                 .formLogin()
                 .loginPage("/member/lgoin")
@@ -38,7 +37,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID")
                 .and()
-                .addFilter(new JwtAuthenticationFilter(tokenProvider))
                 .sessionManagement().disable();
 
     }

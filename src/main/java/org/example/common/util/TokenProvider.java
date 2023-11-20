@@ -47,6 +47,7 @@ public class TokenProvider {
     public String createToken(@Param("email") String email,int validity) throws Exception {
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
         Claims claims = Jwts.claims().setSubject(email); // user 식별할 값
+        claims.put("auth","auth");
 
 
         Date now = new Date();
@@ -68,12 +69,19 @@ public class TokenProvider {
 
 
     // 토큰에서 회원 정보 추출
-    public Claims paresClaims(String token) {
-        try{
-            return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
-        }catch (ExpiredJwtException e){
-            return e.getClaims();
+    public Authentication getAutnentication (String token) {
+        Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+
+        if(claims.get("auth")==null){
+            throw  new RuntimeException("권한 정보가 없음");
         }
+
+        List<SimpleGrantedAuthority> authorities = Arrays.stream(claims.get("auth").toString().split(","))
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+        UserDetails principal = new User(claims.getSubject(), "", authorities);
+        return new UsernamePasswordAuthenticationToken(principal, "", authorities);
+
     }
 
 
