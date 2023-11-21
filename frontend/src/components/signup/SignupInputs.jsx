@@ -1,21 +1,28 @@
 import styled from '@emotion/styled';
 import axios from "axios";
+import {useState} from "react";
 
 const SignupInputs = () => {
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [passwordCheck, setPasswordCheck] = useState("")
+    const [memberName, setMemberName] = useState("")
+    const [cellphone, setCellPhone] = useState("")
     const onSubmit = () => {
 
             let req = {};
-            req.email = "seeun@naver.com";
-            req.password = "Newlink!234";
-            req.passwordCheck = "Newlink!234";
-            req.name = "박세은";
-            req.cellphone = "01025456557";
+            req.email = email;
+            req.password = password;
+            req.passwordCheck = passwordCheck;
+            req.memberName = memberName;
+            req.cellphone = cellphone;
 
             console.log(req)
             axios.post(" http://localhost:8080/member/regist", req).then((res) => {
-                const recv = res.data;
-                console.log(recv)
-                if (res.code !== "0") {
+                const response = res.data;
+                console.log(response)
+                if (response.code !== "0") {
+                    alert(response.message)
                 }
             });
     };
@@ -26,6 +33,8 @@ const SignupInputs = () => {
                 <InputWrap>
                     <Label>이메일*</Label>
                     <Input
+                        value={email}
+                        onChange={(event)=>{setEmail(event.target.value)}}
                         minLength={4}
                         maxLength={50}
                         placeholder="이메일 입력"
@@ -34,6 +43,8 @@ const SignupInputs = () => {
                 <InputWrap>
                     <Label>비밀번호*</Label>
                     <Input
+                        value={password}
+                        onChange={(event)=>{setPassword(event.target.value)}}
                         minLength={10}
                         maxLength={50}
                         placeholder="비밀번호 입력"
@@ -43,6 +54,8 @@ const SignupInputs = () => {
                 <InputWrap>
                     <Label>비밀번호 확인*</Label>
                     <Input
+                        value={passwordCheck}
+                        onChange={(event)=>{setPasswordCheck(event.target.value)}}
                         minLength={10}
                         maxLength={50}
                         placeholder="비밀번호 확인"
@@ -52,19 +65,21 @@ const SignupInputs = () => {
                 <InputWrap>
                     <Label>이름*</Label>
                     <Input
+                        value={memberName}
+                        onChange={(event)=>{setMemberName(event.target.value)}}
                         minLength={10}
                         maxLength={50}
                         placeholder="이름 입력"
-                        type="password"
                     />
                 </InputWrap>
                 <InputWrap>
                     <Label>휴대폰 번호*</Label>
                     <Input
+                        value={cellphone}
+                        onChange={(event)=>{setCellPhone(event.target.value)}}
                         minLength={10}
                         maxLength={50}
                         placeholder="휴대폰 번호 입력"
-                        type="password"
                     />
                 </InputWrap>
             </LoginInputWrap>

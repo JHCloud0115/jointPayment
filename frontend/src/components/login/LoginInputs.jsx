@@ -1,14 +1,37 @@
 import styled from '@emotion/styled';
 import {useNavigate} from "react-router";
+import {useState} from "react";
+import axios from "axios";
 
 const LoginInputs = () => {
     const navigate = useNavigate();
+    const [id, setId] = useState("")
+    const [password, setPassword] = useState("")
+
+    const onSubmit = () => {
+
+        let req = {};
+        req.id = id;
+        req.password = password;
+
+        console.log(req)
+        axios.post(" http://localhost:8080/member/login", req).then((res) => {
+            const response = res.data;
+            console.log(response)
+            if (response.code !== "0") {
+                alert(response.message)
+            }
+        });
+    };
+
     return (
         <Wrapper>
             <LoginInputWrap>
                 <InputWrap>
                     <Label>아이디</Label>
                     <Input
+                        value={id}
+                        onChange={(event)=>{setId(event.target.value)}}
                         minLength={4}
                         maxLength={50}
                         placeholder="아이디 입력"
@@ -17,6 +40,8 @@ const LoginInputs = () => {
                 <InputWrap>
                     <Label>비밀번호</Label>
                     <Input
+                        value={password}
+                        onChange={(event)=>{setPassword(event.target.value)}}
                         minLength={10}
                         maxLength={50}
                         placeholder="비밀번호 입력"
@@ -25,7 +50,7 @@ const LoginInputs = () => {
                 </InputWrap>
             </LoginInputWrap>
 
-            <Button>
+            <Button onClick={()=>onSubmit()}>
                 로그인
             </Button>
             <SubBtnWrap>
