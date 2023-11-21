@@ -5,19 +5,18 @@
 
 
     <select id="selectMemberLoginFailCnt" resultType="org.example.model.response.member.MemberLoginFailResp">
-        SELECT
-            mlf.login_fail_uid,
-            mlf.try_count,
-            mlf.edited_at,
+        select
+            m.email as login_fail_uid,
+            ifnull(mlf.try_count,0) as try_count,
+            ifnull(mlf.edited_at,now()) as edited_at,
             COALESCE(MAX(mlf.try_count) + 1, 1) AS fail_cnt
-        FROM
-            member_login_fail mlf
-                LEFT JOIN
-            member m ON m.member_uid = mlf.login_fail_uid
+        from
+            member m
+                left join member_login_fail mlf  ON m.email = mlf.login_fail_uid
         WHERE
             m.email =#{email}
         GROUP BY
-            mlf.login_fail_uid,mlf.try_count,mlf.edited_at;
+            m.email,mlf.try_count,mlf.edited_at
     </select>
 
     <insert id="insertLoginFail"  parameterType="org.example.model.member.LoginFail" useGeneratedKeys="true" >
@@ -26,15 +25,15 @@
                                      ,try_count
                                      ,edited_at
         ) SELECT
-                ,login_fail_uid
+                m.email as login_fail_uid
                , COALESCE(MAX(try_count) + 1, 1)
                , now()
         FROM
             member_login_fail mlf
-        left join
-                member m on m.member_uid = mlf.login_fail_uid
+        right join
+                member m  ON m.member_uid = mlf.login_fail_uid
         WHERE
-            m.email = #{email}
+            m.email = #{loginFailUid}
     </insert>
 
     <update id="updateLoginFailCount" >

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class LoginFail  {
 
-    private int loginFailUid; //memberUid
+    private String loginFailUid; //회원이메일
     private Integer tryCount;
     private LocalDateTime editedAt;
 

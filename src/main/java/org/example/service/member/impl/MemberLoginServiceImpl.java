@@ -66,17 +66,13 @@ public class MemberLoginServiceImpl implements MemberLoginService {
             Member member = memberMapper.selectMemberByEmail(memberPasswordReq.getEmail());
             SHA256 sha256 = new SHA256();
 
-            if (member.getPassword() == null) {
+            if (member.getPassword() == null || ! member.getPassword().equals(sha256.encrypt(memberPasswordReq.getPassword()))) {
                 throw new Exception("Check Password");
             }
-            if(member.getPassword().equals(sha256.encrypt(memberPasswordReq.getPassword()))){
-                throw new Exception("Check Password");
-            }
-
             MemberLoginFailResp memberLoginFailResp = memberLoginFailMapper.selectMemberLoginFailCnt(member.getEmail());
 
             LoginFail loginFail = new LoginFail();
-            loginFail.setLoginFailUid(member.getMemberUid());
+            loginFail.setLoginFailUid(member.getEmail());
             loginFail.setTryCount(memberLoginFailResp.getTryCount());
 
             if (loginFail.getTryCount() > ApplicationConstants.PASSWORD_FAILL_LOCK) {
