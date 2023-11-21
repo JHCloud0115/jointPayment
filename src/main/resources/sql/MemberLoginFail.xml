@@ -6,37 +6,33 @@
 
     <select id="selectMemberLoginFailCnt" resultType="org.example.model.response.member.MemberLoginFailResp">
         SELECT
-            m.email,
-            m.login_fail_uid,
-            m.ip,
-            m.try_count,
-            m.edited_at,
-            COALESCE(MAX(m.try_count) + 1, 1) AS fail_cnt
+            mlf.login_fail_uid,
+            mlf.try_count,
+            mlf.edited_at,
+            COALESCE(MAX(mlf.try_count) + 1, 1) AS fail_cnt
         FROM
-            member_login_fail m
-        LEFT JOIN
-            member mlf ON m.email = mlf.email
+            member_login_fail mlf
+                LEFT JOIN
+            member m ON m.member_uid = mlf.login_fail_uid
         WHERE
-            mlf.email =#{email}
+            m.email =#{email}
         GROUP BY
-            m.email, m.login_fail_uid, m.ip, m.try_count, m.edited_at;
+            mlf.login_fail_uid,mlf.try_count,mlf.edited_at;
     </select>
 
     <insert id="insertLoginFail"  parameterType="org.example.model.member.LoginFail" useGeneratedKeys="true" >
         INSERT INTO member_login_fail (
-                                      email
-                                     ,ip
+                                      login_fail_uid
                                      ,try_count
                                      ,edited_at
         ) SELECT
-                 m.#{email}
-               , #{ip}
+                ,login_fail_uid
                , COALESCE(MAX(try_count) + 1, 1)
                , now()
         FROM
             member_login_fail mlf
         left join
-                member m on m.email = mlf.email
+                member m on m.member_uid = mlf.login_fail_uid
         WHERE
             m.email = #{email}
     </insert>
@@ -47,7 +43,7 @@
         SET
             try_count = #{tryCount}
         WHERE
-            email = #{email}
+            login_fail_uid = #{loginFailUid}
     </update>
 
 </mapper>

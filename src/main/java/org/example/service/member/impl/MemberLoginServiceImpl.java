@@ -10,6 +10,7 @@ import org.example.mapper.member.MemberTokenMapper;
 import org.example.model.member.LoginFail;
 import org.example.model.member.Member;
 import org.example.model.member.MemberToken;
+import org.example.model.req.member.MemberPasswordReq;
 import org.example.model.req.member.MemberTokenReq;
 import org.example.model.response.TokenResponse;
 import org.example.model.response.member.LoginResp;
@@ -18,6 +19,8 @@ import org.example.service.member.MemberLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
@@ -30,6 +33,7 @@ public class MemberLoginServiceImpl implements MemberLoginService {
     private MemberTokenMapper memberTokenMapper;
     private MemberLoginMapper memberLoginMapper;
     private TokenProvider tokenProvider;
+    private AuthenticationManagerBuilder authenticationManagerBuilder;
 
 
 
@@ -39,112 +43,72 @@ public class MemberLoginServiceImpl implements MemberLoginService {
             TokenProvider tokenProvider,
             MemberLoginFailMapper memberLoginFailMapper,
             MemberTokenMapper memberTokenMapper,
-            MemberLoginMapper memberLoginMapper
+            MemberLoginMapper memberLoginMapper,
+            AuthenticationManagerBuilder authenticationManagerBuilder
     ){
         this.memberMapper =memberMapper;
         this.tokenProvider = tokenProvider;
         this.memberLoginFailMapper = memberLoginFailMapper;
         this.memberTokenMapper = memberTokenMapper;
         this.memberLoginMapper = memberLoginMapper;
+        this.authenticationManagerBuilder =authenticationManagerBuilder;
 
     }
 
 
     /**
-     * 로그인
-     *
+     * 로그인 횟수 확인
      *
      **/
     @Override
-    public ResponseEntity<TokenResponse> loginIn(String email, String password) throws Exception {
+    public boolean loginInCnt(MemberPasswordReq memberPasswordReq) throws Exception {
 
-        Member member = memberMapper.selectMemberByEmail(email);
-        SHA256 sha256 = new SHA256();
+            Member member = memberMapper.selectMemberByEmail(memberPasswordReq.getEmail());
+            SHA256 sha256 = new SHA256();
 
-        if (member.getPassword() != null) {
-            MemberLoginFailResp memberLoginFailResp = memberLoginFailMapper.selectMemberLoginFailCnt(email);
+            if (member.getPassword() == null) {
+                throw new Exception("Check Password");
+            }
+            if(member.getPassword().equals(sha256.encrypt(memberPasswordReq.getPassword()))){
+                throw new Exception("Check Password");
+            }
 
-            try {
-                if (memberLoginFailResp != null) {
-                    LoginFail loginFail = LoginFail.builder()
-                            .email(email)
-                            .ip("") // TODO ip 값 할당.
-                            .tryCount(memberLoginFailResp.getFailCnt())
+            MemberLoginFailResp memberLoginFailResp = memberLoginFailMapper.selectMemberLoginFailCnt(member.getEmail());
+
+            LoginFail loginFail = new LoginFail();
+            loginFail.setLoginFailUid(member.getMemberUid());
+            loginFail.setTryCount(memberLoginFailResp.getTryCount());
+
+            if (loginFail.getTryCount() > ApplicationConstants.PASSWORD_FAILL_LOCK) {
+                memberLoginMapper.updateMemberBlock(member.getMemberUid());
+                throw new Exception("Blocked");
+            } else if (loginFail.getTryCount() == ApplicationConstants.ZERO) {
+                memberLoginFailMapper.insertLoginFail(loginFail);
+            } else {
+                memberLoginFailMapper.updateLoginFailCount(loginFail);
+            }
+            return true;
+        }
+
+    /**
+     * 토큰 생성
+     *
+     */
+    public TokenResponse createToken(MemberPasswordReq memberPasswordReq) throws Exception{
+
+        // 토큰 생성
+        MemberToken memberToken = new MemberToken();
+        memberToken.setAccessToken(tokenProvider.createAccessToken(memberPasswordReq.getEmail()));
+        memberToken.setRefreshToken(tokenProvider.createRefreshToken(memberPasswordReq.getEmail()));
+        memberToken.setEmail(memberPasswordReq.getEmail());
+        memberTokenMapper.insertMemberToken(memberToken);
+
+        return TokenResponse.builder()
+                            .refreshToken(memberToken.getRefreshToken())
+                            .accessToken(memberToken.getAccessToken())
                             .build();
-
-                    if (memberLoginFailResp.getFailCnt() > ApplicationConstants.PASSWORD_FAILL_LOCK) {
-                        memberLoginMapper.updateMemberBlock(member.getMemberUid());
-                        throw new Exception("비밀번호가 유효하지 않습니다.");
-                    } else if (memberLoginFailResp.getFailCnt() == ApplicationConstants.ONE) {
-                        memberLoginFailMapper.insertLoginFail(loginFail);
-                    } else {
-                        memberLoginFailMapper.updateLoginFailCount(loginFail);
-                    }
-                } else {
-                    throw new Exception("로그인 실패 정보를 가져올 수 없습니다.");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new Exception("로그인 실패 처리 중 오류 발생");
-            }
-        }
-
-        MemberToken storedToken = memberTokenMapper.selectMemberTokenByEmail(email);
-        if(storedToken == null){
-            // Access Token 및 Refresh Token 생성
-            String accessToken = tokenProvider.createAccessToken(email);
-            String refreshToken = tokenProvider.createRefreshToken(email);
-
-            MemberToken memberToken = new MemberToken();
-            memberToken.setRefreshToken(refreshToken);
-            memberToken.setAccessToken(accessToken);
-            memberToken.setEmail(email);
-            memberTokenMapper.insertMemberToken(memberToken);
-
-            // Refresh Token은 HttpOnly 쿠키에 저장
-            Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
-            refreshTokenCookie.setHttpOnly(true);
-
-            // Secure 속성은 HTTPS 연결에서만 쿠키를 전송하도록 설정
-            refreshTokenCookie.setSecure(true);
-
-            return ResponseEntity.ok()
-                    .header("Set-Cookie", refreshTokenCookie.toString())
-                    .body(new TokenResponse("Login successful.", accessToken, refreshToken));
-        }
-
-        if (member.getPassword() != null && member.getPassword().equals(sha256.encrypt(password))) {
-            try {
-                // 회원 확인하고 새로운 Token 생성
-                String accessToken = tokenProvider.createAccessToken(email);
-                String newRefreshToken = tokenProvider.createRefreshToken(email);
-
-                // 기존 토큰 업데이트
-                MemberTokenReq memberTokenReq =new MemberTokenReq();
-                memberTokenReq.setAccessToken(accessToken);
-                memberTokenReq.setRefreshToken(newRefreshToken);
-                memberTokenMapper.upateMemberToken(memberTokenReq);
-
-                // 새로운 Refresh Token을 HttpOnly 쿠키에 저장
-                Cookie refreshTokenCookie = new Cookie("refreshToken", newRefreshToken);
-                refreshTokenCookie.setHttpOnly(true);
-
-                // Secure 속성은 HTTPS 연결에서만 쿠키를 전송하도록 설정
-                refreshTokenCookie.setSecure(true);
-
-                return ResponseEntity.ok()
-                        .header("Set-Cookie", refreshTokenCookie.toString())
-                        .body(new TokenResponse("Login successful.", accessToken, newRefreshToken));
-
-
-            } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new TokenResponse("Failed to generate token.", null, null));
-            }
-        } else {
-            // 인증 실패 응답 반환
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new TokenResponse("Authentication failed.", null, null));
-        }
     }
+
 
 
     /**
@@ -152,9 +116,8 @@ public class MemberLoginServiceImpl implements MemberLoginService {
      *
      */
     @Override
-    public ResponseEntity<String> logOut(String email) throws Exception {
+    public void logOut(String email) throws Exception {
         memberTokenMapper.expireRefreshToken(email);
-        return ResponseEntity.status(HttpStatus.OK).body("Logout successful.");
     }
 
 

@@ -46,3 +46,9 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js

@@ -18,9 +18,9 @@ import java.util.List;
 @Repository
 public interface MemberTokenMapper {
 
-    MemberToken selectMemberTokenByEmail(@Param(("email"))String email) throws Exception;
+    MemberToken selectMemberTokenByEmail(@Param("email") String email) throws Exception;
     void upateMemberToken(MemberTokenReq memberTokenReq) throws Exception;
-    void expireRefreshToken(@Param(("email"))String email) throws Exception;
-    MemberToken insertMemberToken(MemberToken memberToken) throws Exception;
+    void expireRefreshToken(@Param("email") String email) throws Exception;
+    void insertMemberToken(MemberToken memberToken) throws Exception;
 
 }
