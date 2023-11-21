@@ -113,7 +113,7 @@ public class MemberLoginServiceImpl implements MemberLoginService {
      */
     @Override
     public void logOut(String email) throws Exception {
-        memberTokenMapper.expireRefreshToken(email);
+        memberTokenMapper.deleteTokenByEmail(email);
     }
 
 
