@@ -9,7 +9,6 @@ const LoginInputs = () => {
     const [password, setPassword] = useState("")
 
     const onSubmit = () => {
-
         let req = {};
         req.email = email;
         req.password = password;
@@ -19,7 +18,9 @@ const LoginInputs = () => {
             const response = res.data;
             console.log(response)
 
-            if (response.code !== "0") {
+            if (response.code === "0") {
+                navigate("/home")
+            }else{
                 alert(response.message)
             }
         });
