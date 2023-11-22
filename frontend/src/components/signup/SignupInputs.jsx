@@ -1,8 +1,10 @@
 import styled from '@emotion/styled';
 import axios from "axios";
 import {useState} from "react";
+import {useNavigate} from "react-router";
 
 const SignupInputs = () => {
+    const navigate = useNavigate();
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [passwordCheck, setPasswordCheck] = useState("")
@@ -21,7 +23,9 @@ const SignupInputs = () => {
             axios.post(" http://localhost:8080/member/regist", req).then((res) => {
                 const response = res.data;
                 console.log(response)
-                if (response.code !== "0") {
+                if (response.code === "0") {
+                    navigate("/login")
+                }else{
                     alert(response.message)
                 }
             });
