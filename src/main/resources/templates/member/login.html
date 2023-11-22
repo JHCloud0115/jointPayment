@@ -70,6 +70,8 @@
                     axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
 
                     alert("로그인 성공");
+
+                    window.location.href = '/member/home';
                 } else {
                     alert("로그인 실패");
                 }

@@ -48,6 +48,12 @@
                 )
     </insert>
 
+    <delete id="deleteTokenByEmail" parameterType="String">
+        DELETE
+        FROM
+            member_token
+        WHERE email = #{email}
+    </delete>
 </mapper>
 
 

@@ -23,4 +23,6 @@ public interface MemberTokenMapper {
     void expireRefreshToken(@Param("email") String email) throws Exception;
     void insertMemberToken(MemberToken memberToken) throws Exception;
 
+    void deleteTokenByEmail(@Param("email") String email) throws Exception;
+
 }
