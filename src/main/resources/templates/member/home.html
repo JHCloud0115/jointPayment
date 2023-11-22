@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link th:href="@{/css/bootstrap.min.css}"
+          href="../css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container" style="max-width: 600px">
+    <div class="py-5 text-center">
+        <h2>홈 화면</h2>
+    </div>
+
+    <div class="row" style="display: flex;">
+        <div class="col">
+            <button class="w-100 btn btn-secondary btn-lg" name="payment" value="paymnet" type="button" onclick="payment()">
+                결제 하기
+            </button>
+        </div>
+        <div class="col">
+            <button class="w-100 btn btn-dark btn-lg" onclick="game()" type="button">
+                게임 하기
+            </button>
+        </div>
+        <div class="col">
+            <button class="w-100 btn btn-dark btn-lg" name="logout" value="logout" onclick="logout()" type="button">
+                로그아웃
+            </button>
+        </div>
+    </div>
+
+    <hr class="my-4">
+
+</div>
+
+</body>
+</html>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://kit.fontawesome.com/79613ae794.js" crossorigin="anonymous"></script>
+<script>
+    function logout() {
+        fetch('/auth/logout', {
+            method: 'post'
+        }).then(response => {
+            if (response.status === 200) {
+                deleteCookie('JWT_TOKEN'); // 설정 토큰 이름 삭제
+
+                window.location.href = '/auth/login';
+            } else {
+                alert('로그아웃에 실패했습니다.');
+            }
+        })
+            .catch(error => {
+                console.error('로그아웃 에러:', error);
+            });
+    }
+
+</script>
+</body>
+</html>

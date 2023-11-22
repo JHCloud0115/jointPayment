@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- src/main/resources/mapper/memberMapper.xml -->
+<mapper namespace="org.example.mapper.member.MemberTokenMapper">
+
+    <select id="selectMemberTokenByEmail">
+        SELECT
+            *
+        FROM
+            member_token
+        WHERE
+            email = #{email}
+    </select>
+
+    <update id="updateMemberToken" parameterType="org.example.model.req.member.MemberTokenReq" >
+        UPDATE
+            member_token
+        SET
+            refresh_token = #{refreshToken},
+            updated_at = NOW()
+        WHERE
+            email = #{email}
+    </update>
+
+    <update id="expireRefreshToken" parameterType="String">
+        UPDATE
+            member_token
+        SET
+            refresh_token = NULL,
+            access_token = NULL
+        WHERE
+            email = #{email}
+    </update>
+
+    <insert id="insertMemberToken" useGeneratedKeys="true">
+        INSERT INTO member_token (
+            email,
+            access_token,
+            refresh_token,
+            created_at,
+            updated_at
+        )VALUES (
+                    #{email},
+                    #{accessToken},
+                    #{refreshToken},
+                    now(),
+                    now()
+                )
+    </insert>
+
+    <delete id="deleteTokenByEmail" parameterType="String">
+        DELETE
+        FROM
+            member_token
+        WHERE email = #{email}
+    </delete>
+</mapper>
+
+

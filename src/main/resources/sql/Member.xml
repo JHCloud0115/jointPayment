@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- src/main/resources/mapper/memberMapper.xml -->
+<mapper namespace="org.example.mapper.member.MemberMapper">
+
+    <select id="selectMembers" resultType="org.example.model.member.Member">
+        SELECT
+             *
+        FROM
+            member
+    </select>
+
+    <select id="selectMemberByEmail" resultType="org.example.model.member.Member">
+        SELECT
+            *
+        FROM
+            member
+        where
+           email = #{email}
+    </select>
+
+    <select id="selectMemberIdCheck" resultType="int">
+        SELECT
+            count(*)
+        FROM
+            member
+        WHERE
+            email = #{email}
+    </select>
+
+    <select id="selectMemberPasswordByEmail" resultType="org.example.model.response.member.MemberPassword">
+        SELECT
+            password
+        FROM
+            member
+        WHERE
+            email = #{email}
+
+    </select>
+
+
+    <insert id="insertMember2" useGeneratedKeys="true" keyProperty="memberUid">
+        INSERT INTO `member`(
+            member_uid
+            ,email
+            , password
+            , cellphone
+            , member_name
+            , created_at
+        )values(
+                 #{memberUid}
+                , #{email}
+                , #{password}
+                , #{cellphone}
+                , #{memberName}
+                ,now()
+             )
+    </insert>
+
+</mapper>

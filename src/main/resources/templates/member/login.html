@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+<div id="login_wrap">
+    <div id="login_box">
+        <div class="login_con">
+            <div class="login_tit">
+                <h2>로그인</h2>
+                <p>LOGIN</p>
+            </div>
+
+            <div class="login_input">
+                    <ul>
+                        <li>
+                            <label for="email" class="skip_info">아이디</label>
+                            <input type="text" id="email" name="email" placeholder="이메일" title="이메일" />
+                        </li>
+                        <li>
+                            <label for="password" class="skip_info">비밀번호</label>
+                            <input type="password" id="password" name="password" title="비밀번호" placeholder="비밀번호" />
+                        </li>
+                    </ul>
+                    <button type="button" id="login" class="login_btn" onclick="loginClick()">로그인</button>
+                    <button type="button" id="signup" class="signup" onclick="signup()">회원가입</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://kit.fontawesome.com/79613ae794.js" crossorigin="anonymous"></script>
+<script>
+    function validateForm() {
+        var email = document.getElementById('email').value;
+        var password = document.getElementById('password').value;
+
+        if (!email) {
+            alert('올바른 이메일 주소를 입력하세요.');
+            return false;
+        }
+
+        if (!password) {
+            alert('비밀번호를 입력하세요.');
+            return false;
+        }
+
+        alert('이메일과 비밀번호를 입력해주세요.')
+        return false;
+    }
+
+    function loginClick() {
+        var email = document.getElementById('email').value;
+        var password = document.getElementById('password').value;
+
+        axios.post('/auth/login', {
+            email: email,
+            password: password
+        })
+            .then(function (response) {
+                console.log(response);
+                if (response.status === 200 && response.data) {
+                    var token = response.data.accessToken;
+                    localStorage.setItem('token', token);
+
+                    // 이후의 요청에 "Authorization" 헤더에 토큰을 추가
+                    axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+
+                    alert("로그인 성공");
+
+                    window.location.href = '/member/home';
+                } else {
+                    alert("로그인 실패");
+                }
+            })
+            .catch(function (error) {
+                alert('다시 입력해주세요');
+                return false;
+            });
+    }
+
+    function signup() {
+                window.location.href = '/member/regist';
+    }
+</script>
+</body>
+</html>
