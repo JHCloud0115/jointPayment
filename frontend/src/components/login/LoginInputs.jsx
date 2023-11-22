@@ -5,19 +5,20 @@ import axios from "axios";
 
 const LoginInputs = () => {
     const navigate = useNavigate();
-    const [id, setId] = useState("")
+    const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
     const onSubmit = () => {
 
         let req = {};
-        req.id = id;
+        req.email = email;
         req.password = password;
 
         console.log(req)
         axios.post(" http://localhost:8080/member/login", req).then((res) => {
             const response = res.data;
             console.log(response)
+
             if (response.code !== "0") {
                 alert(response.message)
             }
@@ -30,8 +31,8 @@ const LoginInputs = () => {
                 <InputWrap>
                     <Label>아이디</Label>
                     <Input
-                        value={id}
-                        onChange={(event)=>{setId(event.target.value)}}
+                        value={email}
+                        onChange={(event)=>{setEmail(event.target.value)}}
                         minLength={4}
                         maxLength={50}
                         placeholder="아이디 입력"
