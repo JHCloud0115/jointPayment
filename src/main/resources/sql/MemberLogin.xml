@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- src/main/resources/mapper/memberMapper.xml -->
+<mapper namespace="org.example.mapper.member.MemberLoginMapper">
+
+
+    <update id="updateMemberBlock" parameterType="int">
+        UPDATE
+            member_login
+        SET
+            blocked_at = now()
+        WHERE
+            member_uid = #{memberUid}
+    </update>
+
+</mapper>
+
+

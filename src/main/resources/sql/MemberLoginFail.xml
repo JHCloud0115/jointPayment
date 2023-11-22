@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- src/main/resources/mapper/memberMapper.xml -->
+<mapper namespace="org.example.mapper.member.MemberLoginFailMapper">
+
+
+    <select id="selectMemberLoginFailCnt" resultType="org.example.model.response.member.MemberLoginFailResp">
+        select
+            m.email as login_fail_uid,
+            ifnull(mlf.try_count,0) as try_count,
+            ifnull(mlf.edited_at,now()) as edited_at,
+            COALESCE(MAX(mlf.try_count) + 1, 1) AS fail_cnt
+        from
+            member m
+                left join member_login_fail mlf  ON m.email = mlf.login_fail_uid
+        WHERE
+            m.email =#{email}
+        GROUP BY
+            m.email,mlf.try_count,mlf.edited_at
+    </select>
+
+    <insert id="insertLoginFail"  parameterType="org.example.model.member.LoginFail" useGeneratedKeys="true" >
+        INSERT INTO member_login_fail (
+                                      login_fail_uid
+                                     ,try_count
+                                     ,edited_at
+        ) SELECT
+                m.email as login_fail_uid
+               , COALESCE(MAX(try_count) + 1, 1)
+               , now()
+        FROM
+            member_login_fail mlf
+        right join
+                member m  ON m.member_uid = mlf.login_fail_uid
+        WHERE
+            m.email = #{loginFailUid}
+    </insert>
+
+    <update id="updateLoginFailCount" >
+        UPDATE
+            member_login_fail
+        SET
+            try_count = #{tryCount}
+        WHERE
+            login_fail_uid = #{loginFailUid}
+    </update>
+
+</mapper>
