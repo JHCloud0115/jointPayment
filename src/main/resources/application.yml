@@ -9,12 +9,30 @@ spring:
       driver-class-name: com.mysql.cj.jdbc.Driver
       jdbc-url: jdbc:mysql://localhost:3306/member
       username: root
+<<<<<<< Updated upstream
+      password: tpdms10915
+=======
+<<<<<<< Updated upstream
       password: Dlwngml12!
+=======
+      password: Rkskekfk1234!
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
     payment:
       driver-class-name: com.mysql.cj.jdbc.Driver
       jdbc-url: jdbc:mysql://localhost:3306/payment
       username: root
+<<<<<<< Updated upstream
+      password: tpdms10915
+=======
+<<<<<<< Updated upstream
       password: Dlwngml12!
+security:
+  jwt:
+    secret-key: local-secrey-key
+=======
+      password: Rkskekfk1234!
+>>>>>>> Stashed changes
   logging:
     level:
       root: INFO
@@ -24,4 +42,9 @@ spring:
       allowed-origins: "http://localhost:3000" # 허용할 Origin 설정
       allowed-methods: "GET,POST,PUT,DELETE" # 허용할 HTTP 메서드 설정
       allowed-headers: "*" # 허용할 헤더 설정
+<<<<<<< Updated upstream
       allow-credentials: true # 자격 증명 허용 설정
+=======
+      allow-credentials: true # 자격 증명 허용 설정
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
