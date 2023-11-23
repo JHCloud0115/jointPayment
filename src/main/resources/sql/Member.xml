@@ -35,7 +35,16 @@
             member
         WHERE
             email = #{email}
+    </select>
 
+
+    <select id="selectMemberEmail" resultType="org.example.model.response.member.MemberEmailResponse">
+        select
+            email
+        from
+            member
+        where
+            member_name = #{memberName} AND cellphone = #{cellphone}
     </select>
 
 

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <title>아이디 찾기</title>
+    <style>
+        #login_box .signup_btn {background:#42d870; border:0; border-bottom:solid 3px #4ed177; border-radius:50px; width:100%; height:52px; line-height:52px; font-size:16px; color:#fff; text-align:center; margin:20px 0 15px;}
+    </style>
+
+</head>
+<body>
+<div id="signupPopup" class="popLayer">
+    <h3>아이디 찾기</h3>
+    <div class="pop_container">
+        <form id="signupForm" onsubmit="return false;" autocomplete="off">
+            <table class="tb tb_row tl">
+                <colgroup>
+                    <col style="width:30%;" /><col style="width:70%;" />
+                </colgroup>
+                <tbody>
+                <tr>
+                    <th scope="row">이름 <span class="es">필수 입력</span></th>
+                    <td><input type="text" id="memberName" name="memberName" placeholder="이름" maxlength="10" />
+                    이름음 한글로 입력해주세요.
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">휴대폰 <span class="es">필수 입력</span></th>
+                    <td><input type="text" id="cellphone" name="cellphone" placeholder="휴대폰" maxlength="11" />
+                    번호는 01012345678과 같은 형식으로 숫자만 입력해주세요.
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+        <p class="btn_set">
+            <button type="button" class="btns btn_st2" id="saveMember" onclick="saveMember();">입력완료</button>
+            <button type="button" class="btns btn_bdr2" onclick="login();">로그인 화면 이동</button>
+        </p>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://kit.fontawesome.com/79613ae794.js" crossorigin="anonymous"></script>
+<script>
+
+
+    function saveMember(){
+        const memberName = document.getElementById("memberName").value;
+        const cellphone = document.getElementById("cellphone").value;
+
+        if(memberName.length ===0){
+            alert("이름이 누락되었습니다.");
+            memberName.focus();
+            return true;
+        }
+        if(isNaN(cellphone)){
+            alert("전화번호는 숫자만 가능합니다.");
+            cellphone.focus();
+            return true;
+        }
+
+        const req = {
+            memberName
+            , cellphone
+        }
+
+        axios.post('/member/find/email', req)
+            .then(response => {
+                console.log(response.data);
+
+                alert("성공 회원가입이 완료되었습니다.");
+                location.href = "/member/login";
+            })
+            .catch(error => {
+                alert("위의 조건을 다시 한 번 확인해주세요: " + error.response.data);
+            });
+
+    }
+
+    function login(){
+        location.href = "/member/login";
+    }
+
+
+
+</script>
+</body>
+</html>
+

@@ -7,9 +7,11 @@ import org.example.mapper.member.MemberLoginFailMapper;
 import org.example.mapper.member.MemberMapper;
 import org.example.mapper.member.MemberTokenMapper;
 import org.example.model.member.MemberToken;
+import org.example.model.req.member.MemberFindReq;
 import org.example.model.req.member.MemberInsertReq;
 import org.example.model.member.Member;
 import org.example.model.response.TokenResponse;
+import org.example.model.response.member.MemberEmailResponse;
 import org.example.model.response.member.MemberLoginFailResp;
 import org.example.model.response.member.MemberPassword;
 import org.example.service.member.MemberService;
@@ -55,6 +57,10 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberPassword selectMemberPasswordByEmail(String email)throws Exception{
         return memberMapper.selectMemberPasswordByEmail(email);
+    }
+    @Override
+    public MemberEmailResponse selectMemberEmail(MemberFindReq memberFindReq) throws Exception{
+        return memberMapper.selectMemberEmail(memberFindReq);
     }
 
 

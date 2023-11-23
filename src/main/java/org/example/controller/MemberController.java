@@ -1,8 +1,12 @@
 package org.example.controller;
 
+import org.example.common.util.SHA256;
 import org.example.model.CommonResponse;
+import org.example.model.req.member.MemberFindReq;
 import org.example.model.req.member.MemberInsertReq;
 import org.example.model.member.Member;
+import org.example.model.req.member.MemberPasswordReq;
+import org.example.model.response.member.MemberEmailResponse;
 import org.example.service.member.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Objects;
 
 
 @RestController
@@ -57,6 +62,17 @@ public class MemberController {
         return new CommonResponse<>();
     }
 
+    @PostMapping("/find/email")
+    public MemberEmailResponse findEmail(@RequestBody @Valid MemberFindReq memberFindReq) throws Exception{
+        if(memberFindReq == null){
+            throw new IllegalArgumentException("Plz Check Again");
+        } else {
+            SHA256 sha256 = new SHA256();
+            memberFindReq.setMemberName(sha256.encrypt(memberFindReq.getMemberName()));
+            memberFindReq.setCellphone(sha256.encrypt(memberFindReq.getCellphone()));
+            return memberService.selectMemberEmail(memberFindReq);
+        }
+    }
 
 
 
