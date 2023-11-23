@@ -1,5 +1,10 @@
 package org.example.service.member.impl;
 
+<<<<<<< Updated upstream
+=======
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+>>>>>>> Stashed changes
 import org.example.common.constants.ApplicationConstants;
 import org.example.common.util.SHA256;
 import org.example.common.util.TokenProvider;
@@ -11,6 +16,7 @@ import org.example.model.member.LoginFail;
 import org.example.model.member.Member;
 import org.example.model.member.MemberToken;
 import org.example.model.req.member.MemberPasswordReq;
+<<<<<<< Updated upstream
 import org.example.model.req.member.MemberTokenReq;
 import org.example.model.response.TokenResponse;
 import org.example.model.response.member.LoginResp;
@@ -24,6 +30,18 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
+=======
+import org.example.model.response.TokenResponse;
+import org.example.model.response.member.MemberLoginFailResp;
+import org.example.service.member.MemberLoginService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Objects;
+>>>>>>> Stashed changes
 
 @Service
 public class MemberLoginServiceImpl implements MemberLoginService {
@@ -110,6 +128,7 @@ public class MemberLoginServiceImpl implements MemberLoginService {
     /**
      * 로그아웃
      *
+<<<<<<< Updated upstream
      */
     @Override
     public void logOut(String email) throws Exception {
@@ -118,5 +137,34 @@ public class MemberLoginServiceImpl implements MemberLoginService {
 
 
 
+=======
+     * @return
+     */
+    @Override
+    public boolean logOut(HttpServletRequest request) throws Exception {
+        String memberToken = request.getHeader("Authorization");
+
+        if (memberToken != null && memberToken.startsWith("Bearer ")) {
+            String token = memberToken.substring(7);
+
+            try {
+               String username= tokenProvider.validateToken(token);
+
+                if (username != null) {
+                    int checkEmail = memberMapper.selectMemberIdCheck(username);
+                    if (checkEmail > ApplicationConstants.ZERO) {
+                        memberTokenMapper.deleteTokenByEmail(username);
+                        return true;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new Exception("Invalid token or user not found");
+            }
+        }
+
+        throw new Exception("Invalid token or user not found");
+    }
+>>>>>>> Stashed changes
 
 }
