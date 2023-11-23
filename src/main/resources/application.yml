@@ -9,12 +9,15 @@ spring:
       driver-class-name: com.mysql.cj.jdbc.Driver
       jdbc-url: jdbc:mysql://localhost:3306/member
       username: root
-      password: tpdms10915
+      password: Rkskekfk1234!
     payment:
       driver-class-name: com.mysql.cj.jdbc.Driver
       jdbc-url: jdbc:mysql://localhost:3306/payment
       username: root
-      password: tpdms10915
+      password: Rkskekfk1234!
+security:
+  jwt:
+    secret-key: local-secrey-key
   logging:
     level:
       root: INFO

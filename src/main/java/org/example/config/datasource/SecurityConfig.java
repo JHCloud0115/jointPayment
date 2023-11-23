@@ -9,8 +9,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import java.util.Arrays;
-
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -19,21 +17,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
+                .formLogin().disable()
+                .sessionManagement().disable()
                 .authorizeRequests()
-                .antMatchers("/member/login").permitAll()
+                .antMatchers("/member/login", "/auth/logout").permitAll()
                 .and()
-                .formLogin()
-                .loginPage("/member/lgoin")
-                .loginProcessingUrl("/member/login")
-                .defaultSuccessUrl("/")
-                .and()
-                .logout()
-                .logoutUrl("/member/logout")
-                .logoutSuccessUrl("/member/home")
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")
-                .and()
-                .sessionManagement().disable();
+                .addFilter(corsFilter());
     }
 
     @Bean
@@ -48,3 +37,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new CorsFilter(source);
     }
 }
+
