@@ -9,11 +9,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-<<<<<<< Updated upstream
-import java.util.Arrays;
-
-=======
->>>>>>> Stashed changes
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -22,30 +17,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-<<<<<<< Updated upstream
-                .authorizeRequests()
-                .antMatchers("/member/login").permitAll()
-                .and()
-                .formLogin()
-                .loginPage("/member/lgoin")
-                .loginProcessingUrl("/member/login")
-                .defaultSuccessUrl("/")
-                .and()
-                .logout()
-                .logoutUrl("/member/logout")
-                .logoutSuccessUrl("/member/home")
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")
-                .and()
-                .sessionManagement().disable();
-=======
                 .formLogin().disable()
                 .sessionManagement().disable()
                 .authorizeRequests()
                 .antMatchers("/member/login", "/auth/logout").permitAll()
                 .and()
                 .addFilter(corsFilter());
->>>>>>> Stashed changes
     }
 
     @Bean
@@ -60,7 +37,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new CorsFilter(source);
     }
 }
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
