@@ -26,4 +26,6 @@ public interface MemberMapper {
 
     void insertMember2(MemberInsertReq memberInsertReq) throws DataAccessException;
 
+    void updatePassword(String email,String password) throws DataAccessException;
+
 }
