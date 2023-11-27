@@ -6,13 +6,10 @@ import org.example.common.util.TokenProvider;
 import org.example.mapper.member.MemberLoginFailMapper;
 import org.example.mapper.member.MemberMapper;
 import org.example.mapper.member.MemberTokenMapper;
-import org.example.model.member.MemberToken;
+import org.example.model.member.Member;
 import org.example.model.req.member.MemberFindReq;
 import org.example.model.req.member.MemberInsertReq;
-import org.example.model.member.Member;
-import org.example.model.response.TokenResponse;
 import org.example.model.response.member.MemberEmailResponse;
-import org.example.model.response.member.MemberLoginFailResp;
 import org.example.model.response.member.MemberPassword;
 import org.example.service.member.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +58,11 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberEmailResponse selectMemberEmail(MemberFindReq memberFindReq) throws Exception{
         return memberMapper.selectMemberEmail(memberFindReq);
+    }
+
+    @Override
+    public int selectMemberMemberCheck(MemberFindReq memberFindReq) throws Exception{
+        return memberMapper.selectMemberMemberCheck(memberFindReq);
     }
 
 

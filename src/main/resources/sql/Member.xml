@@ -47,6 +47,23 @@
             member_name = #{memberName} AND cellphone = #{cellphone}
     </select>
 
+    <select id="selectMemberMemberCheck" resultType="int">
+        select
+            1
+        from
+            member
+        where
+            member_name = #{memberName} AND cellphone = #{cellphone} and email =#{email}
+    </select>
+
+    <update id="updateMemberPassword" >
+        UPDATE
+            member
+        SET
+            password = #{password}
+        WHERE
+            email = #{email}
+    </update>
 
     <insert id="insertMember2" useGeneratedKeys="true" keyProperty="memberUid">
         INSERT INTO `member`(

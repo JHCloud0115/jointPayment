@@ -15,6 +15,17 @@ spring:
       jdbc-url: jdbc:mysql://localhost:3306/payment
       username: root
       password: Rkskekfk1234!
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: juhee115@newlink.co.kr
+    password: dlwngml12!
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 security:
   jwt:
     secret-key: local-secrey-key

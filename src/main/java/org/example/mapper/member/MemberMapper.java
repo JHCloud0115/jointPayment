@@ -23,7 +23,10 @@ public interface MemberMapper {
     MemberPassword selectMemberPasswordByEmail(@Param("email") String email) throws DataAccessException;
 
     MemberEmailResponse selectMemberEmail(MemberFindReq memberFindReq) throws DataAccessException;
+    int selectMemberMemberCheck (MemberFindReq memberFindReq) throws DataAccessException;
 
+    void updateMemberPassword()throws DataAccessException;
     void insertMember2(MemberInsertReq memberInsertReq) throws DataAccessException;
+
 
 }

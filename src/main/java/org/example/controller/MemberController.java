@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import org.example.common.util.AES256;
 import org.example.common.util.SHA256;
 import org.example.model.CommonResponse;
 import org.example.model.req.member.MemberFindReq;
@@ -9,6 +10,7 @@ import org.example.model.req.member.MemberPasswordReq;
 import org.example.model.response.member.MemberEmailResponse;
 import org.example.service.member.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -63,17 +65,44 @@ public class MemberController {
     }
 
     @PostMapping("/find/email")
-    public MemberEmailResponse findEmail(@RequestBody @Valid MemberFindReq memberFindReq) throws Exception{
-        if(memberFindReq == null){
-            throw new IllegalArgumentException("Plz Check Again");
-        } else {
-            SHA256 sha256 = new SHA256();
-            memberFindReq.setMemberName(sha256.encrypt(memberFindReq.getMemberName()));
-            memberFindReq.setCellphone(sha256.encrypt(memberFindReq.getCellphone()));
-            return memberService.selectMemberEmail(memberFindReq);
+    public ResponseEntity<?> findEmail(@RequestBody @Valid MemberFindReq memberFindReq) throws Exception{
+        AES256 aes256 = new AES256();
+
+        try {
+            memberFindReq.setMemberName(aes256.encrypt(memberFindReq.getMemberName().trim()));
+            memberFindReq.setCellphone(aes256.encrypt(memberFindReq.getCellphone().trim()));
+
+            MemberEmailResponse memberEmail = memberService.selectMemberEmail(memberFindReq);
+
+            if (memberEmail == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("일치하는 이메일이 없습니다");
+            } else {
+                return ResponseEntity.ok().body(memberEmail);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류 발생");
         }
     }
 
+    @PostMapping("/find/password")
+    public ResponseEntity<?> findPassword(@RequestBody @Valid MemberFindReq memberFindReq) throws Exception{
+        AES256 aes256 = new AES256();
 
+        try {
+            memberFindReq.setEmail(aes256.encrypt(memberFindReq.getEmail().trim()));
+            memberFindReq.setMemberName(aes256.encrypt(memberFindReq.getMemberName().trim()));
+            memberFindReq.setCellphone(aes256.encrypt(memberFindReq.getCellphone().trim()));
+
+            MemberEmailResponse memberEmail = memberService.selectMemberEmail(memberFindReq);
+
+            if (memberEmail == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("일치하는 이메일이 없습니다");
+            } else {
+                return ResponseEntity.ok().body(memberEmail);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류 발생");
+        }
+    }
 
 }
