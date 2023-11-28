@@ -1,10 +1,10 @@
 package org.example.service.member.impl;
 
 import org.example.common.util.PasswordGenerator;
+import org.example.common.util.SHA256;
 import org.example.mapper.member.MemberMapper;
 import org.example.model.member.Mail;
 import org.example.service.member.EmailService;
-import org.example.service.member.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -38,15 +38,14 @@ public class EmailServiceImpl implements EmailService {
         mail.setTitle("임시 비밀번호 안내 이메일 입니다.");
         mail.setMessage("안녕하세요. 임시비밀번호 안내 관련 이메일입니다."+"회원님의 임시 비밀번호는"
             +password+"입니다."+"로그인 후 비밀번호를 변경해주세요");
-        updatePassword(email,password);
+
+        SHA256 sha256 = new SHA256();
+        password = sha256.encrypt(password);
+        memberMapper.updateMemberPassword(email,password);
         return mail;
     }
 
-    //임시 비밀번호로 업데이트
-    @Override
-    public void updatePassword(String password, String userEmail)throws Exception{
-         memberMapper.updatePassword(userEmail,password);
-    }
+
 
     //메일 발송
     @Override
@@ -57,7 +56,6 @@ public class EmailServiceImpl implements EmailService {
         message.setText(mail.getMessage());
         message.setFrom("@@@@gmail.com"); // 추후설정
         javaMailSender.send(message);
-
     }
 
 

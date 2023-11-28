@@ -9,6 +9,7 @@ import org.example.mapper.member.MemberTokenMapper;
 import org.example.model.member.Member;
 import org.example.model.req.member.MemberFindReq;
 import org.example.model.req.member.MemberInsertReq;
+import org.example.model.req.member.MemberUpdateReq;
 import org.example.model.response.member.MemberEmailResponse;
 import org.example.model.response.member.MemberPassword;
 import org.example.service.member.MemberService;
@@ -61,8 +62,18 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public int selectMemberMemberCheck(MemberFindReq memberFindReq) throws Exception{
+    public Integer selectMemberMemberCheck(MemberFindReq memberFindReq) throws Exception{
         return memberMapper.selectMemberMemberCheck(memberFindReq);
+    }
+
+
+    @Override
+    public void updatePassword(String password, String email)throws Exception{
+        memberMapper.updateMemberPassword(email,password);
+    }
+    @Override
+    public void updateMypage(MemberUpdateReq memberUpdateReq,String email) throws Exception{
+        memberMapper.updateMember(memberUpdateReq,email);
     }
 
 
@@ -92,5 +103,7 @@ public class MemberServiceImpl implements MemberService {
         memberMapper.insertMember2(memberInsertReq);
 
     }
+
+
 
 }

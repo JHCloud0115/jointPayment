@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 import org.example.model.req.member.MemberFindReq;
 import org.example.model.req.member.MemberInsertReq;
 import org.example.model.member.Member;
+import org.example.model.req.member.MemberUpdateReq;
 import org.example.model.response.member.MemberEmailResponse;
 import org.example.model.response.member.MemberPassword;
 import org.springframework.dao.DataAccessException;
@@ -23,12 +24,12 @@ public interface MemberMapper {
     MemberPassword selectMemberPasswordByEmail(@Param("email") String email) throws DataAccessException;
 
     MemberEmailResponse selectMemberEmail(MemberFindReq memberFindReq) throws DataAccessException;
-    int selectMemberMemberCheck (MemberFindReq memberFindReq) throws DataAccessException;
+    Integer selectMemberMemberCheck (MemberFindReq memberFindReq) throws DataAccessException;
 
-    void updateMemberPassword()throws DataAccessException;
+    void updateMemberPassword(String password, String email)throws DataAccessException;
+    void updateMember(MemberUpdateReq memberUpdateReq,String email)throws DataAccessException;
     void insertMember2(MemberInsertReq memberInsertReq) throws DataAccessException;
 
 
-    void updatePassword(String email,String password) throws DataAccessException;
 
 }

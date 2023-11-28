@@ -12,7 +12,7 @@
 </head>
 <body>
 <div id="signupPopup" class="popLayer">
-    <h3>비밀번호 찾기</h3>
+    <h3>아이디 찾기</h3>
     <div class="pop_container">
         <form id="signupForm" onsubmit="return false;" autocomplete="off">
             <table class="tb tb_row tl">
@@ -21,19 +21,19 @@
                 </colgroup>
                 <tbody>
                 <tr>
-                    <th scope="row">이메일 <span class="es">필수 입력</span></th>
-                    <td><input type="text" name="email" id="email" placeholder="이메일" maxlength="20" style="width: 50%;" />
-                        이메일을 입력해주세요.
+                    <th scope="row">비밀번호 변경 <span class="es">필수 입력</span></th>
+                    <td><input type="password" id="password" name="password" placeholder="비밀번호 변경" maxlength="30"  />
+                        대문자,특수문자가 1글자 이상 포함된 8자 글자 이상의 비밀번호로 생성해주세요.
                     </td>
                 </tr>
                 <tr>
-                    <th scope="row">이름 <span class="es">필수 입력</span></th>
-                    <td><input type="text" id="memberName" name="memberName" placeholder="이름" maxlength="10" />
-                        이름음 한글로 입력해주세요.
+                    <th scope="row">비밀번호 변경 확인 <span class="es">필수 입력</span></th>
+                    <td><input type="password" id="passwordCheck" name="passwordCheck" placeholder="비밀번호 변경 확인" maxlength="30" />
+                        비밀빈호를 한 번 더 입력해주세요.
                     </td>
                 </tr>
                 <tr>
-                    <th scope="row">휴대폰 <span class="es">필수 입력</span></th>
+                    <th scope="row">휴대폰 변경 <span class="es">필수 입력</span></th>
                     <td><input type="text" id="cellphone" name="cellphone" placeholder="휴대폰" maxlength="11" />
                         번호는 01012345678과 같은 형식으로 숫자만 입력해주세요.
                     </td>
@@ -43,7 +43,7 @@
         </form>
         <p class="btn_set">
             <button type="button" class="btns btn_st2" id="saveMember" onclick="saveMember();">입력완료</button>
-            <button type="button" class="btns btn_bdr2" onclick="login();">로그인 화면 이동</button>
+            <button type="button" class="btns btn_bdr2" onclick="home();">홈 화면 이동</button>
         </p>
     </div>
 </div>
@@ -55,17 +55,11 @@
 
 
     function saveMember(){
-        const email = document.getElementById("email").value;
-        const memberName = document.getElementById("memberName").value;
+        const password = document.getElementById("password").value;
+        const passwordCheck = document.getElementById("passwordCheck").value;
         const cellphone = document.getElementById("cellphone").value;
 
-        if(email.length ===0){
-            alert("이메일을 입력해주세요.");
-            memberName.focus();
-            return true;
-        }
-
-        if(memberName.length ===0){
+        if(password.length ===0){
             alert("이름이 누락되었습니다.");
             memberName.focus();
             return true;
@@ -77,17 +71,17 @@
         }
 
         const req = {
-             email
-            ,memberName
+            password
+            ,passwordCheck
             , cellphone
         }
 
-        axios.post('/member/find/password', req)
+        axios.post('/member/mypage', req)
             .then(response => {
                 console.log(response.data);
 
-                alert("가입한 이메일로 임시 비밀번호가 발송되었습니다.");
-                location.href = "/member/login";
+                alert("나의 정보가 수정되었습니다.");
+                location.href = "/member/home";
             })
             .catch(error => {
                 alert("위의 조건을 다시 한 번 확인해주세요: " + error.response.data);
@@ -95,8 +89,8 @@
 
     }
 
-    function login(){
-        location.href = "/member/login";
+    function home(){
+        location.href = "/member/home";
     }
 
 
