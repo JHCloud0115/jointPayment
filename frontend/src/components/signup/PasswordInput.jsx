@@ -37,7 +37,7 @@ const PasswordInput = () => {
                 onChange: (e) => {
                     const replaced = e.target.value.replace(/\s/gi, "");
                     e.target.value = replaced;
-                    if (e.target.value !== passwdConfirm) {
+                    if (passwdConfirm && e.target.value !== passwdConfirm) {
                         setError("passwdConfirm", {
                             type: "unmatched",
                             message: "입력하신 비밀번호와 일치하지 않습니다.",
@@ -76,7 +76,7 @@ const PasswordInput = () => {
             passwdConfirm: {
                 required: "10자 이상 입력해주세요.",
                 validate: (value) => {
-                    if (value !== passwd) {
+                    if (value && value !== passwd) {
                         return "입력하신 비밀번호와 일치하지 않습니다.";
                     }
                     return true;

@@ -119,10 +119,10 @@ const LoginInputs = () => {
                 <SubButton onClick={()=>navigate("/regist")}>
                     회원가입
                 </SubButton>
-                <SubButton>
+                <SubButton onClick={()=>navigate("/findId")}>
                     아이디 찾기
                 </SubButton>
-                <SubButton>
+                <SubButton onClick={()=>navigate("/findPasswd")}>
                     비밀번호 찾기
                 </SubButton>
             </SubBtnWrap>

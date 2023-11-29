@@ -48,7 +48,8 @@ const SignupInputs = () => {
             </InputWrap>
 
             <Button
-                disabled={errors.email || errors.passwd ||errors.passwdConfirm || errors.name ||errors.phone}
+                disabled={errors.email || errors.passwd ||errors.passwdConfirm || errors.name ||errors.phone
+                    ||!email||!passwd||!passwdConfirm||!name||!phone}
                 onClick={handleSubmit(onSubmit)}>
                 회원가입
             </Button>
