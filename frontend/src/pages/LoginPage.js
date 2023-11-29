@@ -1,10 +1,19 @@
 import styled from '@emotion/styled';
 import DefaultLayout from "../layouts/DefaultLayout";
 import LoginInputs from "../components/login/LoginInputs";
+import {FormProvider, useForm} from "react-hook-form";
+
+const initialFormState = {
+    id: "",
+    passwd: "",
+};
 const LoginPage = ()=>{
+    const methods = useForm({ defaultValues: initialFormState });
     return(
         <DefaultLayout title={"로그인"}>
-            <LoginInputs/>
+            <FormProvider {...methods}>
+                <LoginInputs/>
+            </FormProvider>
         </DefaultLayout>
     )
 }
