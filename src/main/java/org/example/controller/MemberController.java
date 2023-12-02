@@ -51,12 +51,25 @@ public class MemberController {
         return memberService.selectMembers();
     }
 
+    /**
+     * 이메일 중복 확인
+     * @param email
+     * @return
+     * @throws Exception
+     */
+
     @GetMapping("/email/check")
     public ResponseEntity<Integer> selectMemberEmailCheck(@RequestParam("email") String email) throws Exception{
         int emailResult =memberService.selectMemberEmailCheck(email);
         return ResponseEntity.ok(emailResult);
     }
 
+    /**
+     * 회원가입
+     * @param memberInsertReq
+     * @return
+     * @throws Exception
+     */
 
     @PostMapping("/regist")
     public CommonResponse<Void> insertMember2(@RequestBody @Valid MemberInsertReq memberInsertReq) throws Exception {
@@ -72,26 +85,23 @@ public class MemberController {
         return new CommonResponse<>();
     }
 
+    /**
+     * 이메일 찾기
+     * @param memberFindReq
+     * @return
+     * @throws Exception
+     */
     @PostMapping("/find/email")
-    public ResponseEntity<?> findEmail(@RequestBody @Valid MemberFindReq memberFindReq) throws Exception{
-        AES256 aes256 = new AES256();
-
-        try {
-            memberFindReq.setMemberName(aes256.encrypt(memberFindReq.getMemberName().trim()));
-            memberFindReq.setCellphone(aes256.encrypt(memberFindReq.getCellphone().trim()));
-
-            MemberEmailResponse memberEmail = memberService.selectMemberEmail(memberFindReq);
-
-            if (memberEmail == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("일치하는 이메일이 없습니다");
-            } else {
-                return ResponseEntity.ok().body(memberEmail);
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류 발생");
-        }
+    public MemberEmailResponse findEmail(@RequestBody @Valid MemberFindReq memberFindReq) throws Exception{
+        return memberService.findEmail(memberFindReq);
     }
 
+    /**
+     * 비밀번호 찾기 및 메일 발송
+     * @param memberFindReq
+     * @return
+     * @throws Exception
+     */
     @PostMapping("/find/password")
     public ResponseEntity<?> findPassword(@RequestBody @Valid MemberFindReq memberFindReq) throws Exception {
 
@@ -115,23 +125,10 @@ public class MemberController {
 
     @PostMapping("/mypage")
     public boolean updateMypage(@RequestBody @Valid MemberUpdateReq memberUpdateReq, HttpServletRequest request) throws Exception {
-        String memberToken = request.getHeader("Authorization");
 
-        if (memberToken != null && memberToken.startsWith("Bearer ")) {
-            String token = memberToken.substring(7);
-
-            String email= tokenProvider.validateToken(token);
-            Member member = memberService.selectMemberByEmail(email); // 토큰에서 회원 이메일 확인해서 전달
-
-            if(member !=null){
-                if(memberUpdateReq.getPassword().equals(memberUpdateReq.getPasswordCheck())){
-                    memberService.updateMypage(memberUpdateReq,email);
-                    return true;
-                }
-
-            }
-        }
-        return false; // 맞는건지 확인 필요..
+        String email = (String) request.getAttribute("email");
+        memberUpdateReq.setEmail(email);
+        return  memberService.updateMypage(memberUpdateReq);
 
     }
 

@@ -1,5 +1,6 @@
 package org.example.service.member;
 
+import org.example.model.CommonResponse;
 import org.example.model.member.Member;
 import org.example.model.req.member.MemberFindReq;
 import org.example.model.req.member.MemberInsertReq;
@@ -27,6 +28,7 @@ public interface MemberService {
 
     void updatePassword(String password, String email)throws Exception;
 
-    void updateMypage(MemberUpdateReq memberUpdateReq, String email) throws Exception;
+    MemberEmailResponse findEmail(MemberFindReq memberFindReq) throws Exception;
+    boolean updateMypage(MemberUpdateReq memberUpdateReq) throws Exception;
 
 }

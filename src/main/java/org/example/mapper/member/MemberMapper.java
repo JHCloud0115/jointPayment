@@ -27,7 +27,7 @@ public interface MemberMapper {
     Integer selectMemberMemberCheck (MemberFindReq memberFindReq) throws DataAccessException;
 
     void updateMemberPassword(String password, String email)throws DataAccessException;
-    void updateMember(MemberUpdateReq memberUpdateReq,String email)throws DataAccessException;
+    boolean updateMember(MemberUpdateReq memberUpdateReq)throws DataAccessException;
     void insertMember2(MemberInsertReq memberInsertReq) throws DataAccessException;
 
 

@@ -18,8 +18,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: juhee115@newlink.co.kr
-    password: dlwngml12!
+#    username: 지메일 계정
+#    password: 2차 인증번호 
     properties:
       mail:
         smtp:
@@ -28,7 +28,7 @@ spring:
             enable: true
 security:
   jwt:
-    secret-key: local-secrey-key
+    secret-key: local-secret-key
   logging:
     level:
       root: INFO
@@ -39,3 +39,19 @@ security:
       allowed-methods: "GET,POST,PUT,DELETE" # 허용할 HTTP 메서드 설정
       allowed-headers: "*" # 허용할 헤더 설정
       allow-credentials: true # 자격 증명 허용 설정
+  filter:
+    order: 1
+    chain:
+      none: skip
+  basic:
+    enabled: true
+
+  form:
+    loginPage: member/login
+    defaultSuccessUrl: member/home
+    failureUrl: login?error=true
+    usernameParameter: email
+    passwordParameter: password
+
+main:
+  allow-bean-definition-overriding: true # 스프링 빈 재정의 허용

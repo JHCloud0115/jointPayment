@@ -6,6 +6,7 @@ import org.example.mapper.member.MemberMapper;
 import org.example.model.member.Mail;
 import org.example.service.member.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,10 @@ public class EmailServiceImpl implements EmailService {
     private PasswordGenerator passwordGenerator;
     private MemberMapper memberMapper;
     private JavaMailSender javaMailSender;
+
+    @Value("${spring.mail.username}")
+    private String fromEmail;
+
 
     @Autowired
     public EmailServiceImpl(
@@ -54,7 +59,7 @@ public class EmailServiceImpl implements EmailService {
         message.setTo(mail.getAddress());
         message.setSubject(mail.getTitle());
         message.setText(mail.getMessage());
-        message.setFrom("@@@@gmail.com"); // 추후설정
+        message.setFrom(fromEmail);
         javaMailSender.send(message);
     }
 

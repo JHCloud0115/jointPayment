@@ -2,6 +2,7 @@ package org.example.service.member.impl;
 
 import org.example.common.util.AES256;
 import org.example.common.util.SHA256;
+import org.example.common.util.TokenAuthenticationFilter;
 import org.example.common.util.TokenProvider;
 import org.example.mapper.member.MemberLoginFailMapper;
 import org.example.mapper.member.MemberMapper;
@@ -71,10 +72,6 @@ public class MemberServiceImpl implements MemberService {
     public void updatePassword(String password, String email)throws Exception{
         memberMapper.updateMemberPassword(email,password);
     }
-    @Override
-    public void updateMypage(MemberUpdateReq memberUpdateReq,String email) throws Exception{
-        memberMapper.updateMember(memberUpdateReq,email);
-    }
 
 
     /**
@@ -104,6 +101,30 @@ public class MemberServiceImpl implements MemberService {
 
     }
 
+    /**
+     * 이메일 찾기
+     *
+     */
+    public MemberEmailResponse findEmail(MemberFindReq memberFindReq) throws Exception{
+        AES256 aes256 = new AES256();
+        memberFindReq.setMemberName(aes256.encrypt(memberFindReq.getMemberName().trim()));
+        memberFindReq.setCellphone(aes256.encrypt(memberFindReq.getCellphone().trim()));
 
+        MemberEmailResponse memberEmail = memberMapper.selectMemberEmail(memberFindReq);
+
+        if (memberEmail == null) {
+            throw new Exception("일치하는 이메일이 없습니다.");
+        } else {
+            return memberEmail;
+        }
+    }
+
+    /**
+     * 회원 정보 변경
+     *
+     */
+    public boolean updateMypage(MemberUpdateReq memberUpdateReq) throws Exception{
+        return memberMapper.updateMember(memberUpdateReq);
+    }
 
 }
