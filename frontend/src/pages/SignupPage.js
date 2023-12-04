@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import DefaultLayout from "../layouts/DefaultLayout";
-import SignupInputs from "../components/signup";
+import SignupInputs from "../components/pages/signup";
 import {FormProvider, useForm} from "react-hook-form";
 const initialFormState ={
     email:"",

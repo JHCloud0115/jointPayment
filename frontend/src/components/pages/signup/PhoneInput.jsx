@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 import styled from '@emotion/styled';
-import UseFormInput from "../inputs/FormInput";
+import UseFormInput from "../../inputs/FormInput";
 
 const PhoneInput = () => {
     const {

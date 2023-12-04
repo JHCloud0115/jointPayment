@@ -1,8 +1,8 @@
 import React, { useMemo } from "react";
 import { RegisterOptions, useFormContext } from "react-hook-form";
 import styled from '@emotion/styled';
-import UseFormInput from "../inputs/FormInput";
-import CommonUtils from "../../utils/CommonUtils";
+import UseFormInput from "../../inputs/FormInput";
+import CommonUtils from "../../../utils/CommonUtils";
 
 const PasswordInput = () => {
     const {

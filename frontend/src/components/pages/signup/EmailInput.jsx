@@ -1,8 +1,8 @@
 import React, { useMemo } from "react";
 import { RegisterOptions, useFormContext } from "react-hook-form";
 import styled from '@emotion/styled';
-import ApplicationConstants from "../../common/ApplicationConstants";
-import UseFormInput from "../inputs/FormInput";
+import ApplicationConstants from "../../../common/ApplicationConstants";
+import UseFormInput from "../../inputs/FormInput";
 
 
 const EmailInput = () => {

@@ -7,7 +7,7 @@ import {useFormContext} from "react-hook-form";
 import PasswordInput from "./PasswordInput";
 import NameInput from "./NameInput";
 import PhoneInput from "./PhoneInput";
-import Button from "../button";
+import Button from "../../button";
 
 const SignupInputs = () => {
     const navigate = useNavigate();

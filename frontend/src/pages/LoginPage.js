@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import DefaultLayout from "../layouts/DefaultLayout";
-import LoginInputs from "../components/login/LoginInputs";
+import LoginInputs from "../components/pages/login/LoginInputs";
 import {FormProvider, useForm} from "react-hook-form";
 
 const initialFormState = {

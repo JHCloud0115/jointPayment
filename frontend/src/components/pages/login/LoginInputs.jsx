@@ -2,9 +2,9 @@ import styled from '@emotion/styled';
 import {useNavigate} from "react-router";
 import {useMemo} from "react";
 import axios from "axios";
-import UseFormInput from "../inputs/FormInput";
+import UseFormInput from "../../inputs/FormInput";
 import {useFormContext} from "react-hook-form";
-import Buttons from "../button";
+import Buttons from "../../button";
 
 
 const LoginInputs = () => {
