@@ -5,9 +5,10 @@ import axios from "axios";
 import UseFormInput from "../../inputs/FormInput";
 import {useFormContext} from "react-hook-form";
 import Buttons from "../../button";
+import ApplicationConstants from "../../../common/ApplicationConstants";
 
 
-const FindIdInputs = () => {
+const FindPasswdInputs = () => {
     const navigate = useNavigate();
     const {
         watch,
@@ -17,10 +18,54 @@ const FindIdInputs = () => {
         handleSubmit,
         formState: { errors },
     } = useFormContext();
-    const{ name, phone } = watch();
+    const{ email, name, phone } = watch();
 
     const validate = useMemo(
         () => ({
+            /**
+             * @type {RegisterOptions}
+             */
+            email: {
+                required: "4자 이상의 영문 및 숫자의 조합으로 입력해주세요.",
+                minLength: {
+                    value: 4,
+                    message: "4자 이상의 영문 및 숫자의 조합으로 입력해주세요.",
+                },
+                maxLength: {
+                    value: 50,
+                    message: "50자 이하의 영문 및 숫자의 조합으로 입력해주세요.",
+                },
+                pattern: {
+                    value: ApplicationConstants.EMAIL_REGEX,
+                    message: "이메일 형식으로 입력해주세요.",
+                },
+                onChange: (e) => {
+                    const replaced = e.target.value.replace(/\s/gi, "");
+                    e.target.value = replaced;
+                    if (e.target.value === "" || e.target.value.length < 4) {
+                        setError("email", {
+                            type: "required",
+                            message: "4자 이상의 영문 및 숫자의 조합으로 입력해주세요.",
+                        });
+                        return;
+                    }
+                    if (e.target.value.length > 50) {
+                        setError("email", {
+                            type: "maxLength",
+                            message: "50자 이하의 영문 및 숫자의 조합으로 입력해주세요.",
+                        });
+                        return;
+                    }
+                    if (!ApplicationConstants.EMAIL_REGEX.test(e.target.value)) {
+                        setError("email", {
+                            type: "regExp",
+                            message: "이메일 형식으로 입력해주세요.",
+                        });
+                        return;
+                    }
+                    clearErrors("email");
+                },
+            },
             /**
              * @type {RegisterOptions}
              */
@@ -59,6 +104,7 @@ const FindIdInputs = () => {
 
     const onSubmit = () => {
         let req = {};
+        req.email = email;
         req.name = name;
         req.cellphone = phone;
 
@@ -66,12 +112,15 @@ const FindIdInputs = () => {
 
     };
 
-    console.log(name)
-    console.log(phone)
-
     return (
         <Wrapper>
             <InputWrap>
+                <UseFormInput
+                    placeholder="이메일 입력"
+                    label="이메일"
+                    err={errors.email}
+                    {...register("email", validate.email)}
+                />
                 <UseFormInput
                     minLength={4}
                     maxLength={50}
@@ -88,17 +137,16 @@ const FindIdInputs = () => {
                 />
             </InputWrap>
 
-
             <Buttons
-                disabled={errors.name || errors.phone || !name || !phone}
+                disabled={errors.email || errors.name || errors.phone || !email || !name || !phone}
                 onClick={handleSubmit(onSubmit)}>
-                아이디 찾기
+                비밀번호 찾기
             </Buttons>
         </Wrapper>
     );
 };
 
-export default FindIdInputs;
+export default FindPasswdInputs;
 
 const Wrapper = styled.div`
   gap: 24px;

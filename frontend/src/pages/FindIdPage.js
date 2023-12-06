@@ -1,8 +1,9 @@
 import DefaultLayout from "../layouts/DefaultLayout";
 import FindIdInputs from "../components/pages/findId/FindIdInputs";
 import {FormProvider, useForm} from "react-hook-form";
+
 const initialFormState = {
-    id: "",
+    name: "",
     phone: "",
 };
 const FindIdPage = ()=>{

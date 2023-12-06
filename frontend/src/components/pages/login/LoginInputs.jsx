@@ -5,6 +5,7 @@ import axios from "axios";
 import UseFormInput from "../../inputs/FormInput";
 import {useFormContext} from "react-hook-form";
 import Buttons from "../../button";
+import LoginUtils from "../../../utils/LoginUtils";
 
 
 const LoginInputs = () => {
@@ -80,7 +81,14 @@ const LoginInputs = () => {
             const response = res.data;
             console.log(response)
 
-            if (response.code === "0") {
+            // if (response.code === "0") {
+            //     navigate("/home")
+            // }else{
+            //     alert(response.message)
+            // }
+
+            if (response.accessToken) {
+                LoginUtils.login(response.accessToken);
                 navigate("/home")
             }else{
                 alert(response.message)
