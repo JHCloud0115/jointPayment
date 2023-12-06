@@ -27,12 +27,16 @@
                     <button type="button" id="login" class="login_btn" onclick="loginClick()">로그인</button>
                     <button type="button" id="signup" class="signup" onclick="signup()">회원가입</button>
             </div>
+            <div>
+                <button type="button" id="findEmail" class="find_email" onclick="findEmail()">이메일 찾기</button>
+                <button type="button" id="findPassword" class="find_password" onclick="findPassword()">비밀번호 찾기</button>
+            </div>
         </div>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="https://kit.fontawesome.com/79613ae794.js" crossorigin="anonymous"></script>
+<script src="https://k´it.fontawesome.com/79613ae794.js" crossorigin="anonymous"></script>
 <script>
     function validateForm() {
         var email = document.getElementById('email').value;
@@ -86,8 +90,18 @@
     }
 
     function signup() {
-                window.location.href = '/member/regist';
+        location.href = '/member/regist';
     }
+
+    function findEmail() {
+       location.href = '/member/findEmail';
+    }
+
+    function findPassword() {
+        location.href = '/member/findPassword';
+    }
+
+
 </script>
 </body>
 </html>

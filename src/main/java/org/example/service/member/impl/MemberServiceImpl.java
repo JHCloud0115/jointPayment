@@ -2,15 +2,16 @@ package org.example.service.member.impl;
 
 import org.example.common.util.AES256;
 import org.example.common.util.SHA256;
+import org.example.common.util.TokenAuthenticationFilter;
 import org.example.common.util.TokenProvider;
 import org.example.mapper.member.MemberLoginFailMapper;
 import org.example.mapper.member.MemberMapper;
 import org.example.mapper.member.MemberTokenMapper;
-import org.example.model.member.MemberToken;
-import org.example.model.req.member.MemberInsertReq;
 import org.example.model.member.Member;
-import org.example.model.response.TokenResponse;
-import org.example.model.response.member.MemberLoginFailResp;
+import org.example.model.req.member.MemberFindReq;
+import org.example.model.req.member.MemberInsertReq;
+import org.example.model.req.member.MemberUpdateReq;
+import org.example.model.response.member.MemberEmailResponse;
 import org.example.model.response.member.MemberPassword;
 import org.example.service.member.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,21 @@ public class MemberServiceImpl implements MemberService {
     public MemberPassword selectMemberPasswordByEmail(String email)throws Exception{
         return memberMapper.selectMemberPasswordByEmail(email);
     }
+    @Override
+    public MemberEmailResponse selectMemberEmail(MemberFindReq memberFindReq) throws Exception{
+        return memberMapper.selectMemberEmail(memberFindReq);
+    }
+
+    @Override
+    public Integer selectMemberMemberCheck(MemberFindReq memberFindReq) throws Exception{
+        return memberMapper.selectMemberMemberCheck(memberFindReq);
+    }
+
+
+    @Override
+    public void updatePassword(String password, String email)throws Exception{
+        memberMapper.updateMemberPassword(email,password);
+    }
 
 
     /**
@@ -83,6 +99,32 @@ public class MemberServiceImpl implements MemberService {
 
         memberMapper.insertMember2(memberInsertReq);
 
+    }
+
+    /**
+     * 이메일 찾기
+     *
+     */
+    public MemberEmailResponse findEmail(MemberFindReq memberFindReq) throws Exception{
+        AES256 aes256 = new AES256();
+        memberFindReq.setMemberName(aes256.encrypt(memberFindReq.getMemberName().trim()));
+        memberFindReq.setCellphone(aes256.encrypt(memberFindReq.getCellphone().trim()));
+
+        MemberEmailResponse memberEmail = memberMapper.selectMemberEmail(memberFindReq);
+
+        if (memberEmail == null) {
+            throw new Exception("일치하는 이메일이 없습니다.");
+        } else {
+            return memberEmail;
+        }
+    }
+
+    /**
+     * 회원 정보 변경
+     *
+     */
+    public boolean updateMypage(MemberUpdateReq memberUpdateReq) throws Exception{
+        return memberMapper.updateMember(memberUpdateReq);
     }
 
 }

@@ -35,9 +35,46 @@
             member
         WHERE
             email = #{email}
-
     </select>
 
+
+    <select id="selectMemberEmail" resultType="org.example.model.response.member.MemberEmailResponse">
+        select
+            email
+        from
+            member
+        where
+            member_name = #{memberName} AND cellphone = #{cellphone}
+    </select>
+
+    <select id="selectMemberMemberCheck" resultType="Integer">
+        select
+            1
+        from
+            member
+        where
+            member_name = #{memberName} AND cellphone = #{cellphone} and email =#{email}
+    </select>
+
+    <update id="updateMemberPassword" >
+        UPDATE
+            member
+        SET
+            password = #{password}
+        WHERE
+            email = #{email}
+    </update>
+
+
+    <update id="updateMember" >
+        UPDATE
+            member
+        SET
+            password = #{password},
+            cellphone = #{cellphone}
+        WHERE
+            email = #{email}
+    </update>
 
     <insert id="insertMember2" useGeneratedKeys="true" keyProperty="memberUid">
         INSERT INTO `member`(

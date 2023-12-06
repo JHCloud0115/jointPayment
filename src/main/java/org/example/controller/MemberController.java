@@ -1,14 +1,22 @@
 package org.example.controller;
 
+import org.example.common.util.AES256;
+import org.example.common.util.TokenProvider;
 import org.example.model.CommonResponse;
-import org.example.model.req.member.MemberInsertReq;
+import org.example.model.member.Mail;
 import org.example.model.member.Member;
+import org.example.model.req.member.MemberFindReq;
+import org.example.model.req.member.MemberInsertReq;
+import org.example.model.req.member.MemberUpdateReq;
+import org.example.model.response.member.MemberEmailResponse;
+import org.example.service.member.EmailService;
 import org.example.service.member.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -18,10 +26,17 @@ import java.util.List;
 public class MemberController {
 
     private final MemberService memberService;
+    private final EmailService emailService;
+    private final TokenProvider tokenProvider;
 
     @Autowired
-    public MemberController(MemberService memberService) {
+    public MemberController(
+            MemberService memberService,
+            EmailService emailService,
+            TokenProvider tokenProvider) {
         this.memberService = memberService;
+        this.emailService = emailService;
+        this.tokenProvider =tokenProvider;
     }
 
 
@@ -36,12 +51,25 @@ public class MemberController {
         return memberService.selectMembers();
     }
 
+    /**
+     * 이메일 중복 확인
+     * @param email
+     * @return
+     * @throws Exception
+     */
+
     @GetMapping("/email/check")
     public ResponseEntity<Integer> selectMemberEmailCheck(@RequestParam("email") String email) throws Exception{
         int emailResult =memberService.selectMemberEmailCheck(email);
         return ResponseEntity.ok(emailResult);
     }
 
+    /**
+     * 회원가입
+     * @param memberInsertReq
+     * @return
+     * @throws Exception
+     */
 
     @PostMapping("/regist")
     public CommonResponse<Void> insertMember2(@RequestBody @Valid MemberInsertReq memberInsertReq) throws Exception {
@@ -57,7 +85,51 @@ public class MemberController {
         return new CommonResponse<>();
     }
 
+    /**
+     * 이메일 찾기
+     * @param memberFindReq
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/find/email")
+    public MemberEmailResponse findEmail(@RequestBody @Valid MemberFindReq memberFindReq) throws Exception{
+        return memberService.findEmail(memberFindReq);
+    }
+
+    /**
+     * 비밀번호 찾기 및 메일 발송
+     * @param memberFindReq
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/find/password")
+    public ResponseEntity<?> findPassword(@RequestBody @Valid MemberFindReq memberFindReq) throws Exception {
+
+        if(memberFindReq.getEmail()==null){
+            throw new Exception("이메일을 입력해주세요");
+        }
+
+        AES256 aes256 = new AES256();
+        memberFindReq.setMemberName(aes256.encrypt(memberFindReq.getMemberName().trim()));
+        memberFindReq.setCellphone(aes256.encrypt(memberFindReq.getCellphone().trim()));
+        Integer  check = memberService.selectMemberMemberCheck(memberFindReq);
+        if(check == null){
+            throw  new Exception("등록된 이메일이 아닙니다.");
+        }
+
+        Mail mail = emailService.createMailAndChangePassword(memberFindReq.getEmail());
+        emailService.mailSend(mail);
+        return ResponseEntity.ok().body("이메일로 임시 비밀번호가 발송되었습니다.");
+    }
 
 
+    @PostMapping("/mypage")
+    public boolean updateMypage(@RequestBody @Valid MemberUpdateReq memberUpdateReq, HttpServletRequest request) throws Exception {
+
+        String email = (String) request.getAttribute("email");
+        memberUpdateReq.setEmail(email);
+        return  memberService.updateMypage(memberUpdateReq);
+
+    }
 
 }
