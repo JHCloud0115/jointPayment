@@ -36,12 +36,12 @@ public class LoginController {
 
     @PostMapping("/logout")
     public boolean logOut(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        boolean result = memberLoginService.logOut(request);
+//        boolean result = memberLoginService.logOut(request);
         Cookie cookie = new Cookie("accessToken", null);
         cookie.setMaxAge(0);
         cookie.setPath("/");
         response.addCookie(cookie);
-        return result;
+        return true;
     }
 
     // 게이트웨이 > 서버 전체를 혼자 구축 못해. ㅎㅎㅎ 하면 시니어개발자 할수있음

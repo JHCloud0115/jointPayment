@@ -11,6 +11,6 @@ public interface MemberLoginService {
 
     TokenResponse createToken(MemberPasswordReq memberPasswordReq) throws Exception;
 
-    boolean logOut(HttpServletRequest request) throws Exception;
+    boolean logOut(HttpServletRequest request, String email) throws Exception;
 
 }
