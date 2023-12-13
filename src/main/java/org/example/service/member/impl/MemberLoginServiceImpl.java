@@ -76,9 +76,18 @@ public class MemberLoginServiceImpl implements MemberLoginService {
     public boolean loginInCnt(MemberPasswordReq memberPasswordReq) throws Exception {
 
             Member member = memberMapper.selectMemberByEmail(memberPasswordReq.getEmail());
-            SHA256 sha256 = new SHA256();
 
-            if (member.getPassword() == null || ! member.getPassword().equals(sha256.encrypt(memberPasswordReq.getPassword()))) {
+            if(Objects.isNull(member)){
+                throw new Exception("member null");
+            }
+
+            // 캐셔에서는 모든걸다 200 으로 로직처리에서 에러나는건
+        // 500 으로 내려감
+        // custom exception 만들어야지 가능
+        // axios > catch > 처리
+
+
+            if (member.getPassword() == null || ! member.getPassword().equals(SHA256.encrypt(memberPasswordReq.getPassword()))) {
                 throw new Exception("Check Password");
             }
             MemberLoginFailResp memberLoginFailResp = memberLoginFailMapper.selectMemberLoginFailCnt(member.getEmail());
@@ -125,7 +134,7 @@ public class MemberLoginServiceImpl implements MemberLoginService {
      **/
 
     @Override
-    public boolean logOut(HttpServletRequest request) throws Exception {
+    public boolean logOut(HttpServletRequest request, String email) throws Exception {
         String memberToken = request.getHeader("Authorization");
 
         if (memberToken != null && memberToken.startsWith("Bearer ")) {

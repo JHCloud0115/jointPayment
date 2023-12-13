@@ -4,7 +4,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class SHA256 {
-    public String encrypt(String text) throws NoSuchAlgorithmException {
+
+    public static String encrypt(String text) throws NoSuchAlgorithmException {
         // SHA-256 알고리즘의 인스턴스 생성
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         // 입력 문자열의 바이트 배열을 업데이트하여 해시 값을 계산
@@ -14,7 +15,7 @@ public class SHA256 {
     }
 
     // 바이트 배열을 16진수 문자열로 변환하는 메서드
-    private String bytesToHex(byte[] bytes) {
+    private static String bytesToHex(byte[] bytes) {
         StringBuilder builder = new StringBuilder();
         for (byte b : bytes) {
             // 바이트 값을 16진수 문자열로 변환하여 StringBuilder에 추가

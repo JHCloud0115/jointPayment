@@ -32,14 +32,9 @@ public class SecurityConfig {
                 .cors().configurationSource(corsConfigurationSource())
                 .and()
                 .csrf().disable()
+                .formLogin().disable()
                 .authorizeRequests()
-                .antMatchers("/member/login","/member/regist", "/auth/logout").permitAll()
-                .and()
-                .logout() // 로그아웃 설정 추가
-                .logoutUrl("/auth/logout") // 로그아웃 URL 지정
-                .logoutSuccessUrl("/member/login") // 로그아웃 성공 시 리다이렉트할 URL 지정
-                .invalidateHttpSession(true) // HTTP 세션 무효화
-                .deleteCookies("JSESSIONID", "accessToken"); // 로그아웃 시 삭제할 쿠키 지정
+                .antMatchers("/member/login","/member/regist", "/auth/logout").permitAll();
 
 
 
