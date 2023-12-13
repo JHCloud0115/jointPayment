@@ -89,7 +89,7 @@ const LoginInputs = () => {
 
             if (response.accessToken) {
                 LoginUtils.login(response.accessToken);
-                navigate("/home")
+                navigate("/")
             }else{
                 alert(response.message)
             }

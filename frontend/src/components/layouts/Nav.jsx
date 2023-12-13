@@ -1,8 +1,10 @@
 import styled from '@emotion/styled';
 import HomeSvg from "../svgs/HomeSvg";
 import {useNavigate} from "react-router";
+import LoginUtils from "../../utils/LoginUtils";
 const Nav = () => {
     const navigate = useNavigate();
+    const isLogin = LoginUtils.isLogin()
     return (
         <Wrapper>
             <NavWrapper>
@@ -24,13 +26,23 @@ const Nav = () => {
                     </NavContent>
                 </div>
                 <div>
-                    <NavContent >
-                        <IconWrapper onClick={()=>navigate("/login")}>
-                            <HomeSvg
-                            />
-                        </IconWrapper>
-                        <p>로그인</p>
-                    </NavContent>
+                    {isLogin ?
+                        <NavContent >
+                            <IconWrapper onClick={()=>navigate("/mypage")}>
+                                <HomeSvg
+                                />
+                            </IconWrapper>
+                            <p>내 정보</p>
+                        </NavContent>:
+                        <NavContent >
+                            <IconWrapper onClick={()=>navigate("/login")}>
+                                <HomeSvg
+                                />
+                            </IconWrapper>
+                            <p>로그인</p>
+                        </NavContent>
+                    }
+
                 </div>
             </NavWrapper>
         </Wrapper>

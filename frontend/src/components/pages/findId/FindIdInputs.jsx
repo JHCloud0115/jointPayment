@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import {useNavigate} from "react-router";
-import {useMemo} from "react";
+import {useMemo, useState} from "react";
 import axios from "axios";
 import UseFormInput from "../../inputs/FormInput";
 import {useFormContext} from "react-hook-form";
@@ -11,6 +11,7 @@ const FindIdInputs = () => {
     const navigate = useNavigate();
     const {
         watch,
+        reset,
         register,
         setError,
         clearErrors,
@@ -18,6 +19,7 @@ const FindIdInputs = () => {
         formState: { errors },
     } = useFormContext();
     const{ name, phone } = watch();
+    const [email, setEmail] =useState("")
 
     const validate = useMemo(
         () => ({
@@ -67,18 +69,16 @@ const FindIdInputs = () => {
         axios.post(" http://localhost:8080/member/find/email", req).then((res) => {
             const response = res.data;
             console.log(response)
-            if (response.code === "0") {
-                alert(response.data)
-                // navigate("/login")
+            if (response.email) {
+                setEmail(response.email)
+                alert("이메일은 "+ response.email + " 입니다.")
+                reset()
             }else{
                 alert(response.message)
             }
         });
 
     };
-
-    console.log(name)
-    console.log(phone)
 
     return (
         <Wrapper>
@@ -99,12 +99,12 @@ const FindIdInputs = () => {
                 />
             </InputWrap>
 
-
             <Buttons
                 disabled={errors.name || errors.phone || !name || !phone}
                 onClick={handleSubmit(onSubmit)}>
                 아이디 찾기
             </Buttons>
+
         </Wrapper>
     );
 };

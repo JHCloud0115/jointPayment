@@ -113,8 +113,8 @@ const FindPasswdInputs = () => {
         axios.post(" http://localhost:8080/member/find/password", req).then((res) => {
             const response = res.data;
             console.log(response)
-            if (response.code === "0") {
-                alert(response.data)
+            if (response) {
+                alert(response)
                 // navigate("/login")
             }else{
                 alert(response.message)

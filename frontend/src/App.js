@@ -8,6 +8,7 @@ import SignupPage from "./pages/SignupPage";
 import GamePage from "./pages/GamePage";
 import FindIdPage from "./pages/FindIdPage";
 import FindPasswdPage from "./pages/FindPasswdPage";
+import MyPage from "./pages/MyPage";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
             <Route path={"/game"} element={<GamePage/>}/>
             <Route path={"/login"} element={<LoginPage/>}/>
             <Route path={"/regist"} element={<SignupPage/>}/>
+            <Route path={"/mypage"} element={<MyPage/>}/>
             <Route path={"/findId"} element={<FindIdPage/>}/>
             <Route path={"/findPasswd"} element={<FindPasswdPage/>}/>
         </Routes>

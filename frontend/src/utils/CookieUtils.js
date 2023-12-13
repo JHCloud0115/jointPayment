@@ -5,7 +5,9 @@ const COOKIE_DOMAIN = process.env.NEXT_PUBLIC_COOKIE_DOMAIN;
 const CookieUtils = {
     setCookie: (name, value, options = {}) => {
         if (!CommonUtils.isClient()) return;
-        const COOKIE_NAME = COOKIE_DOMAIN + "-" + name;
+        const COOKIE_NAME =
+            // COOKIE_DOMAIN + "-" +
+            name;
         options = {
             path: "/",
             domain: window.location.href.split("/")[2].includes("localhost")
@@ -40,7 +42,9 @@ const CookieUtils = {
      */
     getCookie: (name) => {
         if (!CommonUtils.isClient()) return;
-        const COOKIE_NAME = COOKIE_DOMAIN + "-" + name;
+        const COOKIE_NAME =
+            // COOKIE_DOMAIN + "-" +
+            name;
         let matches = document.cookie.match(
             new RegExp(
                 "(?:^|; )" +
