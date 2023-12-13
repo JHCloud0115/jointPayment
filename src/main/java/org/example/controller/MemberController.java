@@ -2,6 +2,8 @@ package org.example.controller;
 
 import org.example.common.util.AES256;
 import org.example.common.util.TokenProvider;
+import org.example.exception.errorCode.CommonErrorCode;
+import org.example.exception.exception.RestApiException;
 import org.example.model.CommonResponse;
 import org.example.model.member.Mail;
 import org.example.model.member.Member;
@@ -12,7 +14,6 @@ import org.example.model.response.member.MemberEmailResponse;
 import org.example.service.member.EmailService;
 import org.example.service.member.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -78,7 +79,7 @@ public class MemberController {
 
         if(emailResult == 0){
             if(!memberInsertReq.getPassword().equals(memberInsertReq.getPasswordCheck())){
-                throw new Exception("Check Password");
+                throw new RestApiException(CommonErrorCode.NOT_FOUND);
             }
             memberService.insertMember2(memberInsertReq);
         }
@@ -106,7 +107,7 @@ public class MemberController {
     public ResponseEntity<?> findPassword(@RequestBody @Valid MemberFindReq memberFindReq) throws Exception {
 
         if(memberFindReq.getEmail()==null){
-            throw new Exception("이메일을 입력해주세요");
+            throw new RestApiException(CommonErrorCode.INVALID_PARAMETER);
         }
 
         AES256 aes256 = new AES256();
@@ -114,7 +115,7 @@ public class MemberController {
         memberFindReq.setCellphone(aes256.encrypt(memberFindReq.getCellphone().trim()));
         Integer  check = memberService.selectMemberMemberCheck(memberFindReq);
         if(check == null){
-            throw  new Exception("등록된 이메일이 아닙니다.");
+            throw  new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND);
         }
 
         Mail mail = emailService.createMailAndChangePassword(memberFindReq.getEmail());

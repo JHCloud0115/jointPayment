@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,7 +35,7 @@ public class LoginController {
 
     @PostMapping("/logout")
     public boolean logOut(HttpServletRequest request, HttpServletResponse response) throws Exception {
-//        boolean result = memberLoginService.logOut(request);
+//        boolean result = memberLoginService.logOut(request);D
         Cookie cookie = new Cookie("accessToken", null);
         cookie.setMaxAge(0);
         cookie.setPath("/");
