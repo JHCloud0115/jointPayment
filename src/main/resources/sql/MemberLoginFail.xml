@@ -19,19 +19,19 @@
             m.email,mlf.try_count,mlf.edited_at
     </select>
 
-    <insert id="insertLoginFail"  parameterType="org.example.model.member.LoginFail" useGeneratedKeys="true" >
+    <insert id="insertLoginFail"  parameterType="org.example.model.member.LoginFail">
         INSERT INTO member_login_fail (
                                       login_fail_uid
                                      ,try_count
                                      ,edited_at
         ) SELECT
                 m.email as login_fail_uid
-               , COALESCE(MAX(try_count) + 1, 1)
+               , COALESCE(MAX(try_count) + 1, 1) as try_count
                , now()
         FROM
             member_login_fail mlf
         right join
-                member m  ON m.member_uid = mlf.login_fail_uid
+                member m  ON m.email = mlf.login_fail_uid
         WHERE
             m.email = #{loginFailUid}
     </insert>

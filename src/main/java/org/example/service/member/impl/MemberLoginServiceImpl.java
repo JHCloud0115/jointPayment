@@ -1,10 +1,10 @@
 package org.example.service.member.impl;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import org.example.common.constants.ApplicationConstants;
 import org.example.common.util.SHA256;
 import org.example.common.util.TokenProvider;
+import org.example.exception.errorCode.CommonErrorCode;
+import org.example.exception.exception.RestApiException;
 import org.example.mapper.member.MemberLoginFailMapper;
 import org.example.mapper.member.MemberLoginMapper;
 import org.example.mapper.member.MemberMapper;
@@ -13,25 +13,11 @@ import org.example.model.member.LoginFail;
 import org.example.model.member.Member;
 import org.example.model.member.MemberToken;
 import org.example.model.req.member.MemberPasswordReq;
-import org.example.model.req.member.MemberTokenReq;
-import org.example.model.response.TokenResponse;
-import org.example.model.response.member.LoginResp;
-import org.example.model.response.member.MemberLoginFailResp;
-import org.example.service.member.MemberLoginService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.stereotype.Service;
-
-import javax.servlet.http.Cookie;
 import org.example.model.response.TokenResponse;
 import org.example.model.response.member.MemberLoginFailResp;
 import org.example.service.member.MemberLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -78,18 +64,14 @@ public class MemberLoginServiceImpl implements MemberLoginService {
             Member member = memberMapper.selectMemberByEmail(memberPasswordReq.getEmail());
 
             if(Objects.isNull(member)){
-                throw new Exception("member null");
+                throw new RestApiException(CommonErrorCode.NOT_FOUND);
             }
-
-            // 캐셔에서는 모든걸다 200 으로 로직처리에서 에러나는건
-        // 500 으로 내려감
-        // custom exception 만들어야지 가능
-        // axios > catch > 처리
 
 
             if (member.getPassword() == null || ! member.getPassword().equals(SHA256.encrypt(memberPasswordReq.getPassword()))) {
-                throw new Exception("Check Password");
+                throw new RestApiException(CommonErrorCode.NOT_FOUND);
             }
+
             MemberLoginFailResp memberLoginFailResp = memberLoginFailMapper.selectMemberLoginFailCnt(member.getEmail());
 
             LoginFail loginFail = new LoginFail();
@@ -152,11 +134,10 @@ public class MemberLoginServiceImpl implements MemberLoginService {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                throw new Exception("Invalid token or user not found");
+                throw new RestApiException(CommonErrorCode.INVALID_PARAMETER);
             }
         }
 
-        throw new Exception("Invalid token or user not found");
+        throw new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND);
     }
-
 }

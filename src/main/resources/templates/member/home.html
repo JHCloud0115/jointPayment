@@ -45,7 +45,7 @@
 <script>
     function logout() {
 
-        const token = getCookie('accessToken'); // 토큰 이름에 맞게 수정하세요
+        const token = getCookie('accessToken');
 
         axios.post('/auth/logout', {}, {
             headers: {

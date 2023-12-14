@@ -36,8 +36,6 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/member/login","/member/regist", "/auth/logout").permitAll();
 
-
-
         return http.build();
     }
 

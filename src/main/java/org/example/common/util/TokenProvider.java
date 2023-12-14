@@ -2,32 +2,18 @@ package org.example.common.util;
 
 import io.jsonwebtoken.*;
 import org.apache.ibatis.annotations.Param;
+import org.example.exception.errorCode.CommonErrorCode;
+import org.example.exception.exception.RestApiException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.stereotype.Component;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 
 import javax.crypto.spec.SecretKeySpec;
-import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import io.jsonwebtoken.*;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
-
-import javax.crypto.spec.SecretKeySpec;
-import javax.xml.bind.DatatypeConverter;
-import java.security.Key;
-import java.util.*;
+import java.util.Objects;
 
 @Component
 public class TokenProvider {
@@ -106,7 +92,7 @@ public class TokenProvider {
             Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return true;
         } catch (ExpiredJwtException e){
-            throw  new Exception("Expired");
+            throw  new RestApiException(CommonErrorCode.TOKEN_EXPIRED);
         }catch (UnsupportedJwtException e){
             throw  new Exception("UnsupportedJwtException");
         }catch (IllegalArgumentException e){
