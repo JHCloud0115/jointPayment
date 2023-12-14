@@ -68,7 +68,8 @@ public class MemberLoginServiceImpl implements MemberLoginService {
             }
 
 
-            if (member.getPassword() == null || ! member.getPassword().equals(SHA256.encrypt(memberPasswordReq.getPassword()))) {
+            if (member.getPassword() == null
+                    || ! member.getPassword().equals(SHA256.encrypt(memberPasswordReq.getPassword()))) {
                 throw new RestApiException(CommonErrorCode.NOT_FOUND);
             }
 
@@ -138,6 +139,6 @@ public class MemberLoginServiceImpl implements MemberLoginService {
             }
         }
 
-        throw new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND);
+        throw new RestApiException(CommonErrorCode.INTERNAL_SERVER_ERROR);
     }
 }

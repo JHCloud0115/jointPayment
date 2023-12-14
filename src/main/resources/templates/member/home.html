@@ -47,16 +47,21 @@
 
         const token = getCookie('accessToken');
 
+        console.log(token);
+
         axios.post('/auth/logout', {}, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         })
             .then(function (response) {
-                deleteCookie("accessToken");
-                console.log("로그아웃 완료");
 
-                location.href="/member/login";
+                if (response.data.code === "0"){
+                    deleteCookie("accessToken");
+                    console.log("로그아웃 완료");
+
+                    location.href="/member/login";
+                }
             })
             .catch(function (error) {
                 alert('로그아웃에 실패했습니다.');

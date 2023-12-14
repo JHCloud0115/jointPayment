@@ -127,4 +127,9 @@ public class MemberServiceImpl implements MemberService {
         return memberMapper.updateMember(memberUpdateReq);
     }
 
+    @Override
+    public void deleteTestMemberToken(String email) throws Exception{
+        memberTokenMapper.deleteTokenByEmail(email);
+    }
+
 }

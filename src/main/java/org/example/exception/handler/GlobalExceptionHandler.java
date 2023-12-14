@@ -24,6 +24,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     // RuntimeException 처리
     @ExceptionHandler(RestApiException.class)
     public ResponseEntity<Object> handleCustomException(RestApiException e) {
+
+        System.out.println("Error start-----------");
+        System.out.println("message : " + e.getMessage());
+        int a = 0;
+        for(StackTraceElement stack : e.getStackTrace()){
+            System.out.println(stack.toString());
+            if (a == 10){
+                break;
+            }
+            a++;
+        }
+
+        System.out.println("Error end-----------");
+
         return handleExceptionInternal(e.getErrorCode());
     }
 
@@ -48,6 +62,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     // 대부분의 에러 처리
     @ExceptionHandler({Exception.class})
     public ResponseEntity<Object> handleAllException(Exception ex) {
+
+        if(ex instanceof RestApiException){
+            // 처리 어떻게하겠다
+        }
+
+        if(ex instanceof IllegalArgumentException){
+
+        }
         log.warn("handleAllException", ex);
         return handleExceptionInternal(CommonErrorCode.INTERNAL_SERVER_ERROR);
     }
@@ -61,7 +83,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     // 코드 가독성을 위해 에러 처리 메세지를 만드는 메소드 분리
     private ErrorResponse makeErrorResponse(ErrorCode errorCode) {
         return ErrorResponse.builder()
-                .code(errorCode.name())
+                .code(errorCode.getCode())
                 .message(errorCode.getMessage())
                 .build();
     }
@@ -74,7 +96,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     // 코드 가독성을 위해 에러 처리 메세지를 만드는 메소드 분리
     private ErrorResponse makeErrorResponse(ErrorCode errorCode, String message) {
         return ErrorResponse.builder()
-                .code(errorCode.name())
+                .code(errorCode.getCode())
                 .message(message)
                 .build();
     }
@@ -94,7 +116,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .collect(Collectors.toList());
 
         return ErrorResponse.builder()
-                .code(errorCode.name())
+                .code(errorCode.getCode())
                 .message(errorCode.getMessage())
                 .errors(validationErrorList)
                 .build();

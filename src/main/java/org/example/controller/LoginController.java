@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import org.example.model.CommonResponse;
 import org.example.model.req.member.MemberPasswordReq;
 import org.example.model.response.TokenResponse;
 import org.example.service.member.MemberLoginService;
@@ -27,20 +28,26 @@ public class LoginController {
 
 
     @PostMapping("/login")
-    public TokenResponse login(@RequestBody @Valid MemberPasswordReq memberPasswordReq) throws Exception {
+    public CommonResponse<TokenResponse> login(@RequestBody @Valid MemberPasswordReq memberPasswordReq) throws Exception {
        memberLoginService.loginInCnt(memberPasswordReq);
-       return memberLoginService.createToken(memberPasswordReq);
+        TokenResponse token = memberLoginService.createToken(memberPasswordReq);
+
+        return new CommonResponse<>(token);
     }
 
 
     @PostMapping("/logout")
-    public boolean logOut(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public CommonResponse<Void> logOut(HttpServletRequest request, HttpServletResponse response) throws Exception {
 //        boolean result = memberLoginService.logOut(request);D
         Cookie cookie = new Cookie("accessToken", null);
         cookie.setMaxAge(0);
         cookie.setPath("/");
         response.addCookie(cookie);
-        return true;
+
+        // TODO 이주희 : DB toke 삭제
+        // TODO 이주희 : CommonResponse 모든 api return 변경
+
+        return new CommonResponse<>();
     }
 
     // 게이트웨이 > 서버 전체를 혼자 구축 못해. ㅎㅎㅎ 하면 시니어개발자 할수있음

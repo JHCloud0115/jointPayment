@@ -45,7 +45,11 @@
                     #{refreshToken},
                     now(),
                     now()
-                )
+        ) ON DUPLICATE KEY
+        UPDATE access_token = #{accessToken},
+            refresh_token = #{refreshToken},
+            created_at = now(),
+            updated_at = now()
     </insert>
 
     <delete id="deleteTokenByEmail" parameterType="String">

@@ -26,9 +26,10 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
         if (token != null) {
             String email = tokenProvider.validateToken(token);
-            Authentication authentication = new UsernamePasswordAuthenticationToken(email, null);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            request.setAttribute("email",email);
+            // TODO 이주희 : 무슨기능인지 알아오기
+//            Authentication authentication = new UsernamePasswordAuthenticationToken(email, null);
+//            SecurityContextHolder.getContext().setAuthentication(authentication);
+//            request.setAttribute("email",email);
         }
 
         filterChain.doFilter(request, response);

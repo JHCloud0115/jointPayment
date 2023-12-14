@@ -58,7 +58,6 @@ public class MemberController {
      * @return
      * @throws Exception
      */
-
     @GetMapping("/email/check")
     public ResponseEntity<Integer> selectMemberEmailCheck(@RequestParam("email") String email) throws Exception{
         int emailResult =memberService.selectMemberEmailCheck(email);
@@ -71,7 +70,6 @@ public class MemberController {
      * @return
      * @throws Exception
      */
-
     @PostMapping("/regist")
     public CommonResponse<Void> insertMember2(@RequestBody @Valid MemberInsertReq memberInsertReq) throws Exception {
 
@@ -104,7 +102,7 @@ public class MemberController {
      * @throws Exception
      */
     @PostMapping("/find/password")
-    public ResponseEntity<?> findPassword(@RequestBody @Valid MemberFindReq memberFindReq) throws Exception {
+    public CommonResponse<String> findPassword(@RequestBody @Valid MemberFindReq memberFindReq) throws Exception {
 
         if(memberFindReq.getEmail()==null){
             throw new RestApiException(CommonErrorCode.INVALID_PARAMETER);
@@ -115,12 +113,16 @@ public class MemberController {
         memberFindReq.setCellphone(aes256.encrypt(memberFindReq.getCellphone().trim()));
         Integer  check = memberService.selectMemberMemberCheck(memberFindReq);
         if(check == null){
-            throw  new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND);
+            throw  new RestApiException(CommonErrorCode.INTERNAL_SERVER_ERROR);
         }
 
         Mail mail = emailService.createMailAndChangePassword(memberFindReq.getEmail());
         emailService.mailSend(mail);
-        return ResponseEntity.ok().body("이메일로 임시 비밀번호가 발송되었습니다.");
+
+
+        return new CommonResponse<>("이메일로 임시 비밀번호가 발송되었습니다.");
+
+//        return ResponseEntity.ok().body("이메일로 임시 비밀번호가 발송되었습니다.");
     }
 
 

@@ -31,4 +31,6 @@ public interface MemberService {
     MemberEmailResponse findEmail(MemberFindReq memberFindReq) throws Exception;
     boolean updateMypage(MemberUpdateReq memberUpdateReq) throws Exception;
 
+    void deleteTestMemberToken(String email) throws Exception;
+
 }
