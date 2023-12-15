@@ -29,7 +29,7 @@ public class LoginController {
 
     @PostMapping("/login")
     public CommonResponse<TokenResponse> login(@RequestBody @Valid MemberPasswordReq memberPasswordReq) throws Exception {
-       memberLoginService.loginInCnt(memberPasswordReq);
+        memberLoginService.loginInCnt(memberPasswordReq);
         TokenResponse token = memberLoginService.createToken(memberPasswordReq);
 
         return new CommonResponse<>(token);
@@ -38,12 +38,12 @@ public class LoginController {
 
     @PostMapping("/logout")
     public CommonResponse<Void> logOut(HttpServletRequest request, HttpServletResponse response) throws Exception {
-//        boolean result = memberLoginService.logOut(request);D
         Cookie cookie = new Cookie("accessToken", null);
         cookie.setMaxAge(0);
         cookie.setPath("/");
         response.addCookie(cookie);
 
+        memberLoginService.logOut(request);
         // TODO 이주희 : DB toke 삭제
         // TODO 이주희 : CommonResponse 모든 api return 변경
 

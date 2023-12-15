@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 public class MemberToken  {
     private int id;
     private String email;
-    private String token;
     private String accessToken;
     private String refreshToken;
     private LocalDateTime createdAt;
