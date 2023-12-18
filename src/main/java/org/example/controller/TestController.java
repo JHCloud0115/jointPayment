@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import org.example.model.CommonResponse;
 import org.example.service.member.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,8 +20,9 @@ public class TestController {
     }
 
     @GetMapping("/token")
-    public void deleteToken(@RequestParam("email") String email) throws Exception{
+    public CommonResponse<Void> deleteToken(@RequestParam("email") String email) throws Exception{
         memberService.deleteTestMemberToken(email);
+        return new CommonResponse<>();
     }
 
 }

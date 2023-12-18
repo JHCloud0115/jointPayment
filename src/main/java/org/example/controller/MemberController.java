@@ -14,7 +14,6 @@ import org.example.model.response.member.MemberEmailResponse;
 import org.example.service.member.EmailService;
 import org.example.service.member.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -59,9 +58,9 @@ public class MemberController {
      * @throws Exception
      */
     @GetMapping("/email/check")
-    public ResponseEntity<Integer> selectMemberEmailCheck(@RequestParam("email") String email) throws Exception{
+    public CommonResponse<Integer> selectMemberEmailCheck(@RequestParam("email") String email) throws Exception{
         int emailResult =memberService.selectMemberEmailCheck(email);
-        return ResponseEntity.ok(emailResult);
+        return new CommonResponse<>(emailResult);
     }
 
     /**
@@ -86,13 +85,15 @@ public class MemberController {
 
     /**
      * 이메일 찾기
+     *
      * @param memberFindReq
      * @return
      * @throws Exception
      */
     @PostMapping("/find/email")
-    public MemberEmailResponse findEmail(@RequestBody @Valid MemberFindReq memberFindReq) throws Exception{
-        return memberService.findEmail(memberFindReq);
+    public CommonResponse<MemberEmailResponse> findEmail(@RequestBody @Valid MemberFindReq memberFindReq) throws Exception{
+        MemberEmailResponse memberEmailResponse = memberService.findEmail(memberFindReq);
+        return new CommonResponse<>(memberEmailResponse);
     }
 
     /**
@@ -119,19 +120,19 @@ public class MemberController {
         Mail mail = emailService.createMailAndChangePassword(memberFindReq.getEmail());
         emailService.mailSend(mail);
 
-
         return new CommonResponse<>("이메일로 임시 비밀번호가 발송되었습니다.");
 
-//        return ResponseEntity.ok().body("이메일로 임시 비밀번호가 발송되었습니다.");
     }
 
 
     @PostMapping("/mypage")
-    public boolean updateMypage(@RequestBody @Valid MemberUpdateReq memberUpdateReq, HttpServletRequest request) throws Exception {
+    public CommonResponse<Boolean> updateMypage(@RequestBody @Valid MemberUpdateReq memberUpdateReq, HttpServletRequest request) throws Exception {
 
         String email = (String) request.getAttribute("email");
         memberUpdateReq.setEmail(email);
-        return  memberService.updateMypage(memberUpdateReq);
+        memberService.updateMypage(memberUpdateReq);
+
+        return new CommonResponse<>();
 
     }
 
