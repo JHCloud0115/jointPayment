@@ -8,4 +8,5 @@ import org.example.exception.errorCode.ErrorCode;
 @RequiredArgsConstructor
 public class RestApiException extends RuntimeException{
     private final ErrorCode errorCode;
+
 }

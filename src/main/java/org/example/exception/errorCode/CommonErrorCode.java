@@ -7,15 +7,15 @@ import org.springframework.http.HttpStatus;
 @Getter
 @RequiredArgsConstructor
 public enum CommonErrorCode implements ErrorCode {
-    INVALID_PARAMETER(HttpStatus.BAD_REQUEST, "Invalid parameter included"),
-    RESOURCE_NOT_FOUND(HttpStatus.NOT_FOUND, "Resource not exists"),
-    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error"),
-    NOT_FOUND(HttpStatus.NOT_FOUND,"Not found"),
-    TOKEN_EXPIRED(HttpStatus.NOT_ACCEPTABLE,"token not acceptable"),
-
+    INVALID_PARAMETER(HttpStatus.BAD_REQUEST, "01001", "Invalid parameter included"),
+    INTERNAL_SERVER_ERROR(HttpStatus.OK, "01003", "Internal server error"),
+    NOT_FOUND(HttpStatus.OK, "01004","Not found"),
+    TOKEN_EXPIRED(HttpStatus.OK, "01005","token not acceptable"),
     ;
 
     private final HttpStatus httpStatus;
+    private final String code;
     private final String message;
+
 
 }

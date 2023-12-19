@@ -2,7 +2,6 @@ package org.example.service.member.impl;
 
 import org.example.common.util.AES256;
 import org.example.common.util.SHA256;
-import org.example.common.util.TokenAuthenticationFilter;
 import org.example.common.util.TokenProvider;
 import org.example.mapper.member.MemberLoginFailMapper;
 import org.example.mapper.member.MemberMapper;
@@ -125,6 +124,11 @@ public class MemberServiceImpl implements MemberService {
      */
     public boolean updateMypage(MemberUpdateReq memberUpdateReq) throws Exception{
         return memberMapper.updateMember(memberUpdateReq);
+    }
+
+    @Override
+    public void deleteTestMemberToken(String email) throws Exception{
+        memberTokenMapper.deleteTokenByEmail(email);
     }
 
 }

@@ -4,6 +4,7 @@ import org.example.common.constants.ApplicationConstants;
 import org.example.common.util.SHA256;
 import org.example.common.util.TokenProvider;
 import org.example.exception.errorCode.CommonErrorCode;
+import org.example.exception.errorCode.ErrorCode;
 import org.example.exception.exception.RestApiException;
 import org.example.mapper.member.MemberLoginFailMapper;
 import org.example.mapper.member.MemberLoginMapper;
@@ -68,7 +69,8 @@ public class MemberLoginServiceImpl implements MemberLoginService {
             }
 
 
-            if (member.getPassword() == null || ! member.getPassword().equals(SHA256.encrypt(memberPasswordReq.getPassword()))) {
+            if (member.getPassword() == null
+                    || ! member.getPassword().equals(SHA256.encrypt(memberPasswordReq.getPassword()))) {
                 throw new RestApiException(CommonErrorCode.NOT_FOUND);
             }
 
@@ -116,28 +118,25 @@ public class MemberLoginServiceImpl implements MemberLoginService {
      **/
 
     @Override
-    public boolean logOut(HttpServletRequest request, String email) throws Exception {
+    public void logOut(HttpServletRequest request) throws Exception {
         String memberToken = request.getHeader("Authorization");
+
+        if(memberToken ==null){
+            throw new RestApiException(CommonErrorCode.NOT_FOUND);
+        }
 
         if (memberToken != null && memberToken.startsWith("Bearer ")) {
             String token = memberToken.substring(7);
 
-            try {
-               String username= tokenProvider.validateToken(token);
+            String username = tokenProvider.validateToken(token);
 
-                if (username != null) {
-                    int checkEmail = memberMapper.selectMemberIdCheck(username);
-                    if (checkEmail > ApplicationConstants.ZERO) {
-                        memberTokenMapper.deleteTokenByEmail(username);
-                        return true;
-                    }
+            if (username != null) {
+                int checkEmail = memberMapper.selectMemberIdCheck(username);
+                if (checkEmail > ApplicationConstants.ZERO) {
+                    memberTokenMapper.deleteTokenByEmail(username);
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new RestApiException(CommonErrorCode.INVALID_PARAMETER);
             }
         }
 
-        throw new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND);
     }
 }
